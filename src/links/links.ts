@@ -1,0 +1,12 @@
+export const LinkImagePage = '/image'
+export const LinkVideoPage = '/video'
+export const LinkJoinPage = '/join'
+export const LinkUploadPage = '/upload'
+export const LinkHomepage = "/";
+export const LinkLoginPage = "/login";
+export const LinkForgotPassword = "/newPassword";
+export const LinkLogoutPage = "/logout";
+export const LinkCollections = "/profile/collections"
+export const LinkProfile = "/profile"
+export const LinkLikePage = "/profile/likes"
+export const LinkEditProfile = "/edit-profile"
