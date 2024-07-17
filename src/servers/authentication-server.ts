@@ -3,6 +3,8 @@
 import { auth, signOut } from "@/auth";
 import { LinkHomepage } from "@/links/links";
 import { getUserProfilePicture } from "./visage-server";
+import prisma from "../../prisma/prisma.db";
+import { getUserDetailByIdEnum } from "./visage-server-enum";
 
 /**
  * This server action will return the profilePicture, userName, userId and isUserAuthenticated of a logged in user
@@ -73,5 +75,42 @@ export async function LogoutTheUser() {
   } catch (error) {
     console.log(error);
     throw new Error("something went wrong");
+  }
+}
+
+
+/**
+ * This server action will return the userDetail. it takes the UserId
+ * @param userId
+ * @returns
+ */
+export async function getUserDetailById(userId: string) {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          message: getUserDetailByIdEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    const userDetail = await prisma.user.findUnique({ where: { id: userId } });
+    return {
+      success: {
+        data: userDetail,
+        message: getUserDetailByIdEnum.FOUND_USER_DETAIL,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        failed: getUserDetailByIdEnum.FAILED_TO_GET_USER_DETAIL,
+      },
+    };
   }
 }

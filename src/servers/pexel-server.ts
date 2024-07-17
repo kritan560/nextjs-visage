@@ -3,6 +3,7 @@
 import {
   AugmentPexelCuratedPhotoIntoUniversalImage,
   AugmentPexelCuratedPhotosIntoUniversalImages,
+  AugmentPixelSearchedPhotoIntoUniversalImage,
 } from "@/augment/augment";
 import { pexel } from "./pexel-client";
 import { getPexelPhotoByIdEnum } from "./pexel-server-enums";
@@ -62,5 +63,29 @@ export async function getPexelPhotoById(photoId: string) {
   } catch (error) {
     console.error(error);
     return { failed: { data: null, message: getPexelPhotoByIdEnum.NULL } };
+  }
+}
+
+export async function getPexelPhotoByKeyword(
+  keyword: string,
+  page = 1,
+  per_page = 15
+) {
+  try {
+    const searchedPhoto = await pexel.photos.search({
+      query: keyword,
+      page,
+      per_page,
+    });
+    const typeChecker = pexel.typeCheckers.isPhotos(searchedPhoto);
+    if (typeChecker) {
+      const augmentedPixelPhoto =
+        await AugmentPixelSearchedPhotoIntoUniversalImage(searchedPhoto);
+      return augmentedPixelPhoto;
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+    throw new Error("failed to get pexel photo by keyword");
   }
 }

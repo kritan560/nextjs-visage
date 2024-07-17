@@ -67,7 +67,9 @@ export default async function JoinPage() {
               }}>
               <Button
                 type="submit"
-                className={"w-full border hover:bg-stone-100 h-12 hover:border-stone-500 active:bg-stone-200 text-base flex gap-x-2 items-center"}
+                className={
+                  "w-full border hover:bg-stone-100 h-12 hover:border-stone-500 active:bg-stone-200 text-base flex gap-x-2 items-center"
+                }
                 variant={"ghost"}>
                 <FcGoogle size={30} />
                 <p>Join With Google</p>
@@ -81,7 +83,9 @@ export default async function JoinPage() {
               }}>
               <Button
                 type="submit"
-                className={"border p-3 active:bg-stone-700 h-12 hover:text-stone-50 hover:bg-stone-800"}
+                className={
+                  "border p-3 active:bg-stone-700 h-12 hover:text-stone-50 hover:bg-stone-800"
+                }
                 variant={"ghost"}>
                 <FaGithub size={22} />
               </Button>

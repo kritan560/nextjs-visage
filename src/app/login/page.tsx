@@ -55,7 +55,7 @@ export default async function LoginPage() {
         <div className="fixed left-0 right-0 h-[800px] bg-black/40"></div>
 
         {/* card */}
-        <Card className="absolute mt-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 min-w-fit rounded-[2rem] p-6">
+        <Card className="absolute mt-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 min-w-fit rounded-[2rem] p-6">
           <CardHeader className="p-0">
             <CardTitle className="text-center font-semibold text-4xl text-stone-800">
               Welcome Back

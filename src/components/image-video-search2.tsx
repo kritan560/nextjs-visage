@@ -63,6 +63,7 @@ type ImageOrVideoSearchType = {
 const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   const { border, mediaType } = props;
 
+  const router = useRouter()
   const [openPopOver, setOpenPopOver] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
   const [keywords, setKeywords] = useState<string[] | null>([]);
@@ -114,6 +115,8 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   });
 
   async function onSubmit(values: ImageOrVideoSearchKeywordSchemaType) {
+    router.push(`/search/images/${values.searchedKeyword}`);
+
     // the logic is to add array to localstorage.
     const getItem = localStorage.getItem(searchedKeyword);
 

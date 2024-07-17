@@ -2,7 +2,7 @@
 
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { Images, LikedImages } from "@prisma/client";
-import { Photo, Photos } from "pexels";
+import { Photo, Photos, PhotosWithTotalResults } from "pexels";
 
 /**
  * takes the photos and returns the augmented Universal Image type response
@@ -89,4 +89,34 @@ export function AugmentPexelCuratedPhotoIntoUniversalImage(
   };
 
   return universalImage;
+}
+
+export function AugmentImagesIntoUniversalImages(images: Images[]) {
+  const augmentedImages: UniversalImagesType = images.map(
+    ({ title, location, tags, createdAt, updatedAt, ...img }) => {
+      const univeralImageType = img.image as UniversalImageType;
+      return {
+        ...univeralImageType,
+      };
+    }
+  );
+
+  return augmentedImages;
+}
+
+
+export async function AugmentPixelSearchedPhotoIntoUniversalImage(
+  photo: PhotosWithTotalResults
+): Promise<UniversalImagesType> {
+  const universalPhotos: UniversalImagesType = photo.photos.map((p) => {
+    const { liked, ...withoutLiked } = {
+      ...p,
+      photographer_id: String(p.photographer_id),
+      userId: "",
+      imageId: p.id.toString(),
+    };
+
+    return { ...withoutLiked, totalResult: photo.total_results };
+  });
+  return universalPhotos;
 }

@@ -2,6 +2,7 @@
 
 import {
   AugmentImageIntoUniversalImage,
+  AugmentImagesIntoUniversalImages,
   AugmentLikedImageIntoUniversalImage,
   AugmentLikedImagesIntoUniversalImages,
 } from "@/augment/augment";
@@ -11,11 +12,21 @@ import { revalidatePath } from "next/cache";
 import prisma from "../../prisma/prisma.db";
 import { getCurrentUserId } from "./authentication-server";
 import {
+  changeCollectionNameEnum,
   collectImageEnum,
+  createTokenForUserAccountDeletionEnum,
+  deleteAccountByUserIdEnum,
+  deleteCollectionNameEnum,
   getCollectionImagesIdsEnum,
+  getCollectionNameByIdEnum,
   getImageByIdEnum,
+  getImagesEnum,
   getUserProfilePictureEnum,
+  updateUserDetailEnum,
+  updateUserProfilePictureEnum,
 } from "./visage-server-enum";
+import { EditProfileFormSchemaType } from "@/schemas/schemas";
+import { capitalize } from "@/utility/utils";
 
 /**
  * This server action will only return the profile picture link.
@@ -307,7 +318,6 @@ export async function getCollectionImagesIds() {
   }
 }
 
-
 /**
  *
  */
@@ -334,3 +344,320 @@ export async function getImageById(id: string) {
     };
   }
 }
+
+/**
+ * return the user uploaded images.
+ */
+export async function getImages() {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          message: getImagesEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    const images = await prisma.images.findMany({ where: { userId } });
+
+    const augmentedImages = AugmentImagesIntoUniversalImages(images);
+    return {
+      success: {
+        data: augmentedImages,
+        message: getImagesEnum.USER_IMAGES,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: getImagesEnum.FAILED_TO_GET_IMAGES,
+      },
+    };
+  }
+}
+
+
+/**
+ * This server action will return the collectionName via collectionId.
+ * @param collectionNameId
+ * @returns
+ */
+export async function getCollectionNameById(collectionNameId: string) {
+  try {
+    const collectionName = await prisma.collectionNames.findUnique({
+      where: { id: collectionNameId },
+    });
+
+    if (collectionName) {
+      return {
+        success: {
+          data: collectionName,
+          message: getCollectionNameByIdEnum.COLLECTION_NAMES_RETRIVED,
+        },
+      };
+    }
+    return {
+      success: {
+        data: null,
+        message: getCollectionNameByIdEnum.COLLECTION_NOT_FOUND,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message:
+          getCollectionNameByIdEnum.FAILED_TO_RETRIVE_COLLECTION_NAME_BY_ID,
+      },
+    };
+  }
+}
+
+
+/**
+ * This server action will change the collectionName via collectionId
+ * @param collectionId
+ * @param newCollectionName
+ * @returns
+ */
+export async function changeCollectionName(
+  collectionId: string,
+  newCollectionName: string
+) {
+  try {
+    const updateCollectionName = await prisma.collectionNames.update({
+      where: { id: collectionId },
+      data: { collectionName: newCollectionName },
+    });
+
+    return {
+      success: {
+        data: updateCollectionName,
+        message: changeCollectionNameEnum.COLLECTION_NAME_CHANGED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: changeCollectionNameEnum.FAILED_TO_CHANGE_COLLECTION_NAME,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will delete the collection name via collectionId
+ * @param collectionId
+ * @returns
+ */
+export async function deleteCollectionName(collectionId: string) {
+  try {
+    const updateCollectionName = await prisma.collectionNames.delete({
+      where: { id: collectionId },
+    });
+    return {
+      success: {
+        data: updateCollectionName,
+        message: deleteCollectionNameEnum.COLLECTION_NAME_DELETED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: deleteCollectionNameEnum.FAILED_TO_DELETE_COLLECTION_NAME,
+      },
+    };
+  }
+}
+
+
+/**
+ * This server action will create the token for account deletion if token expired it will update the token when requested. NOTE: mail is sent in via frontend logic using SendEmail server action
+ * @param userId
+ * @returns
+ */
+export async function createTokenForUserAccountDeletion(userId: string) {
+  try {
+    const newToken = crypto.randomUUID();
+
+    const updatedUserWithToken = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        userAccountDeletionToken: {
+          upsert: {
+            where: { userId },
+            create: { token: newToken },
+            update: { token: newToken },
+          },
+        },
+      },
+      include: { userAccountDeletionToken: true },
+    });
+
+    return {
+      success: {
+        data: updatedUserWithToken,
+        message: createTokenForUserAccountDeletionEnum.TOKEN_CREATED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: createTokenForUserAccountDeletionEnum.FAILED_TO_CREATE_TOKEN,
+      },
+    };
+  }
+}
+
+
+/**
+ * this server action will update the userDetail profile picture is not included here because it was not the part of form data.
+ * @param param0
+ * @returns
+ */
+export async function updateUserDetail({
+  userId,
+  updatedData,
+}: {
+  userId: string;
+  updatedData: EditProfileFormSchemaType;
+}) {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        ...updatedData,
+        location: capitalize(updatedData.location ?? ""),
+        name: capitalize(updatedData.name),
+        lastName: capitalize(updatedData.lastName),
+      },
+    });
+    return {
+      success: {
+        data: updatedUser,
+        message: updateUserDetailEnum.USER_UPDATED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: updateUserDetailEnum.FAILED_TO_UPDATE_USER,
+      },
+    };
+  }
+}
+
+
+/**
+ * this server action will update the profile picture only. it is created seperatly because updating the profile picture was not the part of form data.
+ * @param userId
+ * @param profilePicture
+ * @returns
+ */
+export async function updateUserProfilePicture(
+  userId: string,
+  profilePicture: string
+) {
+  try {
+    const updatedProfilePicture = await prisma.user.update({
+      where: { id: userId },
+      data: { image: profilePicture },
+    });
+    return {
+      success: {
+        data: updatedProfilePicture,
+        message: updateUserProfilePictureEnum.PROFILE_PICTURE_UPDATED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: updateUserProfilePictureEnum.FAILED_TO_UPDATE_PROFILE_PICTURE,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will delete the account. It seaerch the account via token if token is expired the account will not be deleted you have to request new token and again have to go through process to delete an account.
+ * @param token
+ * @returns
+ */
+export async function deleteAccountByUserId(token: string) {
+  try {
+    const userAccountDeletionToken =
+      await prisma.userAccountDeletionToken.findUnique({
+        where: { token: token },
+      });
+
+    if (!userAccountDeletionToken) {
+      return {
+        failed: {
+          data: null,
+          message: deleteAccountByUserIdEnum.TOKEN_NOT_FOUND,
+        },
+      };
+    }
+
+    const userId = userAccountDeletionToken.userId;
+    const currentDate = new Date();
+    const tokenExpiredIn24Hour = 1 * 24 * 60 * 60 * 1000;
+
+    const tokenExpired =
+      currentDate.getTime() >=
+      userAccountDeletionToken?.createdAt.getTime() + tokenExpiredIn24Hour;
+
+    if (tokenExpired) {
+      return {
+        failed: {
+          data: null,
+          message: deleteAccountByUserIdEnum.TOKEN_EXPIRED,
+        },
+      };
+    }
+
+    const deletedAccount = await prisma.user.delete({ where: { id: userId } });
+
+    if (deletedAccount) {
+      return {
+        success: {
+          data: deletedAccount,
+          message: deleteAccountByUserIdEnum.ACCOUNT_DELETED,
+        },
+      };
+    }
+
+    return {
+      failed: {
+        data: null,
+        message: deleteAccountByUserIdEnum.FAILED_TO_DELETE_ACCOUNT,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      failed: {
+        data: null,
+        message: deleteAccountByUserIdEnum.FAILED_TO_DELETE_ACCOUNT,
+      },
+    };
+  }
+}
+
