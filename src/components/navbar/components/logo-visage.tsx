@@ -1,15 +1,17 @@
 import VisageLogo from "@/images/visage-logo.png";
+import { LinkHomepage } from "@/links/links";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function NavbarLogoVisage() {
   return (
-    <div className="flex gap-x-4 items-center">
+    <Link href={LinkHomepage} className="flex gap-x-4 items-center">
       <Image
         className="h-14 w-14 rounded-lg"
         src={VisageLogo}
         alt="visage-logo"
       />
       <p className="font-semibold text-2xl tracking-[0.008rem]">Visage</p>
-    </div>
+    </Link>
   );
 }

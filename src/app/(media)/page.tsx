@@ -13,7 +13,7 @@ const Page = async () => {
       {/* inside main image */}
       <div className="h-[500px] relative">
         <Image
-          className="-z-10"
+          className="-z-[1]"
           style={{ objectFit: "cover" }}
           src={MainImage}
           fill

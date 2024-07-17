@@ -25,6 +25,7 @@ export function JoinForm() {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+  
   return (
     <Form {...form}>
       <form

@@ -1,7 +1,11 @@
 "use server";
 
-import { AugmentPixelCuratedPhotosIntoUniversalImages } from "@/augment/augment";
+import {
+  AugmentPexelCuratedPhotoIntoUniversalImage,
+  AugmentPexelCuratedPhotosIntoUniversalImages,
+} from "@/augment/augment";
 import { pexel } from "./pexel-client";
+import { getPexelPhotoByIdEnum } from "./pexel-server-enums";
 
 /**
  * @param page number - the default value of page is 1
@@ -18,15 +22,45 @@ export async function getPexelCuratedPhotosByPage_PerPage(
     const typeChecker = pexel.typeCheckers.isPhotos(curatedPexelPhotos);
 
     if (typeChecker) {
-      const augmentedPixelCuratedPhoto =
-        AugmentPixelCuratedPhotosIntoUniversalImages(curatedPexelPhotos);
+      const augmentedPexelCuratedPhoto =
+        AugmentPexelCuratedPhotosIntoUniversalImages(curatedPexelPhotos);
 
-      return augmentedPixelCuratedPhoto;
+      return augmentedPexelCuratedPhoto;
     }
 
     return null;
   } catch (error) {
     console.error(error);
     throw new Error("failed to get curated photos");
+  }
+}
+
+/**
+ *
+ * @param photoId
+ * @returns
+ */
+export async function getPexelPhotoById(photoId: string) {
+  try {
+    const photo = await pexel.photos.show({ id: photoId });
+
+    const typeChecker = pexel.typeCheckers.isError(photo);
+    if (!typeChecker) {
+      const augmentedPexelPhoto =
+        AugmentPexelCuratedPhotoIntoUniversalImage(photo);
+
+      return {
+        success: {
+          data: augmentedPexelPhoto,
+          message: getPexelPhotoByIdEnum.FOUND_PHOTOS,
+        },
+      };
+    }
+    return {
+      failed: { data: null, message: getPexelPhotoByIdEnum.NOT_PHOTO_TYPE },
+    };
+  } catch (error) {
+    console.error(error);
+    return { failed: { data: null, message: getPexelPhotoByIdEnum.NULL } };
   }
 }

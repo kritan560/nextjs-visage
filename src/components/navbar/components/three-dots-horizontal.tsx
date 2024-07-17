@@ -17,7 +17,7 @@ import {
 import { FaXTwitter } from "react-icons/fa6";
 import { GiUsaFlag } from "react-icons/gi";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { Separator } from "../ui/separator";
+import { Separator } from "../../ui/separator";
 
 const hoverContents = [
   { seperator: false, title: "Login", href: "/login" },

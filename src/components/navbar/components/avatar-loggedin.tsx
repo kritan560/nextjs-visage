@@ -1,24 +1,24 @@
 "use client";
 
 import {
-    LinkCollections,
-    LinkEditProfile,
-    LinkLogoutPage,
-    LinkProfile,
+  LinkCollections,
+  LinkEditProfile,
+  LinkLogoutPage,
+  LinkProfile
 } from "@/links/links";
 import { ChevronUp } from "lucide-react";
 import { User } from "next-auth";
 import Link from "next/link";
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "../ui/hover-card";
-import { Separator } from "../ui/separator";
-import { SocialLogosSize } from "./constants";
-import { AvatarPublicLinks, SocialLogosLinks } from "./links";
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../../ui/hover-card";
+import { Separator } from "../../ui/separator";
+import { SocialLogosSize } from "../constants";
+import { AvatarPublicLinks, SocialLogosLinks } from "../links";
 
 const components: { title: string; href: string }[] = [
   {

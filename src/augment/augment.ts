@@ -1,15 +1,15 @@
 // !!! make UniversalImages , UniversalImage Type
 
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
-import { LikedImages } from "@prisma/client";
-import { Photos } from "pexels";
+import { Images, LikedImages } from "@prisma/client";
+import { Photo, Photos } from "pexels";
 
 /**
  * takes the photos and returns the augmented Universal Image type response
  * @param photo
  * @returns
  */
-export async function AugmentPixelCuratedPhotosIntoUniversalImages(
+export async function AugmentPexelCuratedPhotosIntoUniversalImages(
   photo: Photos
 ): Promise<UniversalImagesType> {
   // removing the "liked" property from photo.photos and converting the photographer_id to string..
@@ -41,4 +41,52 @@ export function AugmentLikedImageIntoUniversalImage(
     ...img,
     id: img.id,
   };
+}
+
+/**
+ *
+ */
+export function AugmentLikedImagesIntoUniversalImages(
+  likedImages: LikedImages[]
+): UniversalImagesType {
+  const augmentedLikeImages = likedImages.map((likedImage) => {
+    return likedImage.likedImage as UniversalImageType;
+  });
+
+  return augmentedLikeImages;
+}
+
+/**
+ *
+ * @param image
+ * @returns
+ */
+export function AugmentImageIntoUniversalImage(image: Images) {
+  const PrismaJsonValue = image.image as UniversalImageType;
+  const augmentedImages: UniversalImageType = {
+    ...PrismaJsonValue,
+    imageId: image.id,
+  };
+
+  return augmentedImages;
+}
+
+/**
+ *
+ * @param photo
+ * @returns
+ */
+export function AugmentPexelCuratedPhotoIntoUniversalImage(
+  photo: Photo
+): UniversalImageType {
+  // removing the "liked" property by destructuring and
+  // converting the photographer_id to string because it is what in type Photo
+  const { liked, ...universalImage } = {
+    ...photo,
+    photographer_id: String(photo.photographer_id),
+    imageId: photo.id.toString(),
+    userId: "",
+  };
+
+  return universalImage;
 }

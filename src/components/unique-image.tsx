@@ -35,7 +35,6 @@ export function UniqueImage(props: UniqueImageProps) {
   const { globalCollectImagesIds } = useGlobalCollectImageIdsStore();
   const { globalLikedImagesIds } = useGlobalLikeImageStore();
 
-  console.log(image);
   return (
     <div
       key={image.id}

@@ -1,13 +1,21 @@
+"use server";
+
+import {
+  AugmentImageIntoUniversalImage,
+  AugmentLikedImageIntoUniversalImage,
+  AugmentLikedImagesIntoUniversalImages,
+} from "@/augment/augment";
+import { LinkLikePage } from "@/links/links";
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
+import { revalidatePath } from "next/cache";
 import prisma from "../../prisma/prisma.db";
+import { getCurrentUserId } from "./authentication-server";
 import {
   collectImageEnum,
+  getCollectionImagesIdsEnum,
+  getImageByIdEnum,
   getUserProfilePictureEnum,
 } from "./visage-server-enum";
-import { getCurrentUserId } from "./authentication-server";
-import { revalidatePath } from "next/cache";
-import { LinkLikePage } from "@/links/links";
-import { AugmentLikedImageIntoUniversalImage } from "@/augment/augment";
 
 /**
  * This server action will only return the profile picture link.
@@ -167,13 +175,10 @@ export async function likeImage(image: UniversalImageType) {
       };
     }
 
-    const { id, totalResult, ...likeImageSchemaData } = image;
+    const { id, totalResult, ...likeImageSchemaData } = image; // this const part is not needed check!!!
+
     const collectedPhoto = await prisma.likedImages.create({
-      data: {
-        ...likeImageSchemaData,
-        likedImage: image,
-        userId,
-      },
+      data: { likedImage: image, userId: userId },
     });
 
     const augmentedLikeImage =
@@ -196,6 +201,136 @@ export async function likeImage(image: UniversalImageType) {
         redirect: false,
         message: "failed to create like photo",
       },
+    };
+  }
+}
+
+/**
+ * This server action gets all the liked images of authenticated user.
+ * @returns
+ */
+export async function getLikedImages() {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return { failed: { data: null, message: "user not logged in" } };
+    }
+
+    const collectPhotos = await prisma.likedImages.findMany({
+      where: { userId },
+    });
+
+    const augmentedLikeImage =
+      AugmentLikedImagesIntoUniversalImages(collectPhotos);
+    return {
+      success: {
+        data: augmentedLikeImage,
+        message: "got the success photo",
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return { failed: { data: null, message: "failed to get like photo" } };
+  }
+}
+
+/**
+ * This server action returns all the collection names of logged in user
+ * @returns
+ */
+export async function getCollectionNames() {
+  try {
+    const { userId } = await getCurrentUserId();
+    const collectionName = await prisma.collectionNames.findMany({
+      where: { userId },
+    });
+
+    const collectionNamesSorted = collectionName.sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
+
+    return {
+      success: {
+        data: collectionNamesSorted,
+        message: "collection name retrived",
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      error: { data: null, message: "failed to retrive collection name" },
+    };
+  }
+}
+
+/**
+ * This server action will return all the collectionIds. CollectionIds are inside the collectonName it will loop through the collection names and return the collectionIds.
+ * @returns
+ */
+export async function getCollectionImagesIds() {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          message: getCollectionImagesIdsEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    let collectionNamesIds: string[] = [];
+    const ids = await prisma.collectionNames.findMany({ where: { userId } });
+    ids.map((id) =>
+      (id.collectionImages as UniversalImagesType).map((id) =>
+        collectionNamesIds.push(String(id.id))
+      )
+    );
+
+    return {
+      success: {
+        data: collectionNamesIds,
+        message: getCollectionImagesIdsEnum.COLLECTION_NAMES_IDS,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message:
+          getCollectionImagesIdsEnum.FAILED_TO_RETRIVE_COLLECTION_NAME_IDS,
+      },
+    };
+  }
+}
+
+
+/**
+ *
+ */
+export async function getImageById(id: string) {
+  try {
+    const image = await prisma.images.findUnique({ where: { id } });
+    if (image) {
+      const augmentImageIntoUniversalImage =
+        AugmentImageIntoUniversalImage(image);
+      return {
+        success: {
+          data: augmentImageIntoUniversalImage,
+          message: getImageByIdEnum.USER_IMAGE,
+        },
+      };
+    }
+    return {
+      failed: { data: null, message: getImageByIdEnum.FAILED_TO_GET_IMAGE },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: { data: null, message: getImageByIdEnum.FAILED_TO_GET_IMAGE },
     };
   }
 }

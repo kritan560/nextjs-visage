@@ -4,11 +4,15 @@ import { LinkHomepage } from "@/links/links";
 import { signOut } from "next-auth/react";
 import { useEffect } from "react";
 
-export default function LogoutPage() {
+const LogoutPage = () => {
   useEffect(() => {
-    async function signOutUser() {
-      await signOut({ redirect: true, callbackUrl: LinkHomepage });
+    async function signoutUser() {
+      await signOut({ callbackUrl: LinkHomepage, redirect: true });
     }
-    signOutUser();
+    signoutUser();
   }, []);
-}
+
+  return <></>;
+};
+
+export default LogoutPage;

@@ -61,7 +61,7 @@ export default function HeartIcon(props: HeartIconProps) {
           "flex gap-x-2 items-center border rounded-md h-14 px-4 cursor-pointer transition hover:border-stone-500 active:border-stone-400",
         !nameIncluded &&
           "bg-gray-300 p-2 rounded-lg hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition duration-200",
-        "z-10"
+        "z-[1]"
       )}
       onClick={handleHeartClick}>
       {globalLikedImagesIds?.includes(image.id) ? (

@@ -20,9 +20,11 @@ export default auth((req) => {
   const LoginURL = new URL(LinkLoginPage, req.nextUrl);
   const HomepageURL = new URL(LinkHomepage, req.nextUrl);
 
+  // you need to be logged-In to access this links
   const UNAUTHORIZED_ROUTES = [LinkProfile, LinkEditProfile];
   const UNAUTHORIZED = UNAUTHORIZED_ROUTES.includes(currentRoute);
 
+  // you need to be loggedout to access this links
   const AUTHORIZED_ROUTES = [LinkLoginPage, LinkJoinPage];
   const AUTHORIZED = AUTHORIZED_ROUTES.includes(currentRoute);
 

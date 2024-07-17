@@ -90,8 +90,9 @@ model LikedImages {
 }
 
 model Images {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  image Json   @unique // Json is type of UniversalImageType
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  imageId String @unique
+  image   Json   @unique // Json is type of UniversalImageType
 
   title     String?
   location  String?

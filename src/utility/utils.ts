@@ -28,7 +28,7 @@ export function StructureTheImageParam(
 
     "a silent storyteller",
 
-    "pixel holds a piece of the artist's heart",
+    "pexel holds a piece of the artist's heart",
 
     "dance of perception and reality",
 

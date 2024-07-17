@@ -7,10 +7,7 @@ import {
 import { cn } from "@/lib/utils";
 import { LinkCollections } from "@/links/links";
 import { collectImage } from "@/servers/visage-server";
-import {
-  UniversalImageType,
-  UniversalImagesType,
-} from "@/types/visage-type";
+import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CirclePlus } from "lucide-react";
 import Image from "next/image";
@@ -28,7 +25,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "../ui/dialog";
-import { CollectIconForm } from "./collect-icon-form"
+import { CollectIconForm } from "./collect-icon-form";
 
 type CollectIconProps = {
   image: UniversalImageType;
@@ -96,11 +93,11 @@ export default function CollectIcon(props: CollectIconProps) {
               "flex gap-x-2 items-center border rounded-md h-14 px-4 cursor-pointer transition hover:border-stone-500 active:border-stone-400",
             !nameIncluded &&
               "bg-gray-300 p-2 rounded-lg hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition duration-200",
-            "z-10"
+            ""
           )}>
           {globalCollectImagesIds?.includes(image.imageId) ? (
             <>
-              <IoBookmarksSharp fill="rgb(234 88 12)" />
+              <IoBookmarksSharp fill="rgb(197 129 50)" />
               <p>{nameIncluded && "Collect"}</p>
             </>
           ) : (
@@ -111,7 +108,7 @@ export default function CollectIcon(props: CollectIconProps) {
           )}
         </div>
       </DialogTrigger>
-      <DialogContent className="min-w-[650px] p-12 h-[500px] overflow-y-auto scrollbar-thumb-orange-600 scrollbar-thumb-rounded-lg scrollbar-track-stone-600 scrollbar-thin">
+      <DialogContent className="min-w-[650px] p-12 h-[500px] overflow-y-auto scrollbar-thumb-visage-600 scrollbar-thumb-rounded-lg scrollbar-track-stone-600 scrollbar-thin">
         <DialogHeader>
           <DialogTitle className="text-center font-semibold text-3xl flex flex-col gap-y-4">
             <span>Save to Collection</span>

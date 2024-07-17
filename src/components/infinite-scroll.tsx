@@ -60,7 +60,7 @@ export default function InfiniteScroll(props: InfiniteScrollProps) {
             "scale-[2.0] text-center block bottom-0",
             initialLoading && "animate-pulse"
           )}
-          color="rgb(234 88 12)"
+          color="rgb(197 129 50)"
           loading={isPending || initialLoading}
         />
       </div>

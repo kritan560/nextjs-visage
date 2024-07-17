@@ -2,8 +2,8 @@ import { signIn } from "@/auth";
 import AdjustPadding from "@/components/adjust-padding";
 import { JoinForm } from "@/components/join/join-form";
 import { JoinRandomImages } from "@/components/join/join-random-image";
-import { NavbarButton } from "@/components/navbar/button";
-import { NavbarIcon } from "@/components/navbar/icon";
+import { NavbarButton } from "@/components/navbar/components/button";
+import NavbarLogoVisage from "@/components/navbar/components/logo-visage";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LinkLoginPage } from "@/links/links";
@@ -22,7 +22,7 @@ export default async function JoinPage() {
   return (
     <AdjustPadding>
       <AdjustPadding className="py-4 flex justify-between items-center fixed top-0 z-10 left-0 right-0 bg-white">
-        <NavbarIcon />
+        <NavbarLogoVisage />
         <NavbarButton
           buttonName="Login"
           href={LinkLoginPage}

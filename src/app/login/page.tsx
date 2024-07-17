@@ -2,8 +2,8 @@ import { signIn } from "@/auth";
 import AdjustPadding from "@/components/adjust-padding";
 import { LoginForm } from "@/components/login/login-form";
 import { MasonryClient } from "@/components/masonry-client";
-import { NavbarButton } from "@/components/navbar/button";
-import { NavbarIcon } from "@/components/navbar/icon";
+import { NavbarButton } from "@/components/navbar/components/button";
+import NavbarLogoVisage from "@/components/navbar/components/logo-visage";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -24,7 +24,7 @@ export default async function LoginPage() {
     <>
       <AdjustPadding>
         <AdjustPadding className="py-4 flex justify-between items-center fixed top-0 z-10 left-0 right-0 bg-white">
-          <NavbarIcon />
+          <NavbarLogoVisage />
           <NavbarButton
             buttonName="Join"
             href={LinkJoinPage}

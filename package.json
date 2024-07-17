@@ -32,6 +32,7 @@
     "next": "14.2.5",
     "next-auth": "^5.0.0-beta.19",
     "next-view-transitions": "^0.2.0",
+    "nextjs-toploader": "^1.6.12",
     "pexels": "^1.4.0",
     "react": "^18",
     "react-copy-to-clipboard": "^5.1.0",
