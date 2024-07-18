@@ -1,7 +1,7 @@
 import { useGlobalLikeImageStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { LinkLoginPage } from "@/links/links";
-import { likeImage } from "@/servers/visage-server";
+import { likeImage } from "@/servers/visage/visage-server";
 import { UniversalImageType } from "@/types/visage-type";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -60,8 +60,7 @@ export default function HeartIcon(props: HeartIconProps) {
         nameIncluded &&
           "flex gap-x-2 items-center border rounded-md h-14 px-4 cursor-pointer transition hover:border-stone-500 active:border-stone-400",
         !nameIncluded &&
-          "bg-gray-300 p-2 rounded-lg hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition duration-200",
-        "z-[1]"
+          "bg-gray-300 p-2 rounded-lg hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition duration-200 z-[1]"
       )}
       onClick={handleHeartClick}>
       {globalLikedImagesIds?.includes(image.id) ? (

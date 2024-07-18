@@ -1,10 +1,10 @@
-import InitGlobalStore from "@/components/init-global-store";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel-server";
+import InitGlobalStore from "@/components/shared/init-global-store";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
 import {
   getCollectionImagesIds,
   getCollectionNames,
   getLikedImages,
-} from "@/servers/visage-server";
+} from "@/servers/visage/visage-server";
 import React from "react";
 
 type ImageLayoutProps = {

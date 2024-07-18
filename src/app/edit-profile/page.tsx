@@ -1,9 +1,9 @@
-import AdjustPadding from "@/components/adjust-padding";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
 import EditProfileChangeImage from "@/components/profile/edit-profile/edit-profile-change-image";
 import { EditProfileForm } from "@/components/profile/edit-profile/edit-profile-form";
-import { getCurrentUserId, getUserDetailById } from "@/servers/authentication-server";
+import { getCurrentUserId, getUserDetailById } from "@/servers/authentication/authentication-server";
 
 export default async function EditProfilePage() {
   const { userId } = await getCurrentUserId();

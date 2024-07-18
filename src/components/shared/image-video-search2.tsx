@@ -1,20 +1,29 @@
 "use client";
 
+import { useGlobalCollectionNameStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import {
   ImageOrVideoSearchKeywordSchema,
   ImageOrVideoSearchKeywordSchemaType,
 } from "@/schemas/schemas";
+import { UniversalImagesType } from "@/types/visage-type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, Image as LucideImage, Search, Video } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "./ui/button";
-import { Form, FormControl, FormField, FormItem } from "./ui/form";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
-import { Input } from "./ui/input";
-import { Separator } from "./ui/separator";
+import { CollectionImageResizable } from "../profile/collections/collection-resizable";
+import { Button } from "../ui/button";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
+import { Input } from "../ui/input";
+import { Separator } from "../ui/separator";
+import { ScrollArea } from "../ui/scroll-area";
 
 const searchedKeyword = "searchedKeyword";
 
@@ -63,11 +72,12 @@ type ImageOrVideoSearchType = {
 const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   const { border, mediaType } = props;
 
-  const router = useRouter()
+  const router = useRouter();
   const [openPopOver, setOpenPopOver] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
   const [keywords, setKeywords] = useState<string[] | null>([]);
   const [hoverElement, setHoverElement] = useState(onHoverDisplayElement[0]);
+  const { globalCollectionNames } = useGlobalCollectionNameStore();
 
   // accessibility features. (escape key press / click elsewhere to close popover)
   function handleKeyDown(e: KeyboardEvent) {
@@ -203,7 +213,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                         {...field}
                         autoComplete="off"
                         maxLength={40}
-                        onClick={() => setOpenPopOver(true)}
+                        onClick={() => setOpenPopOver(!openPopOver)}
                         type="text"
                         className={cn(
                           "text-lg ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 border-none pl-4",
@@ -237,10 +247,15 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
 
       <div
         className={cn(
-          "absolute rounded-md top-0 bg-white h-fit w-full p-4",
-          openPopOver ? "visible ring-1 ring-stone-300" : "invisible"
+          "absolute rounded-md top-0 bg-white w-full",
+          openPopOver ? "visible ring-1 ring-stone-300 z-[7]" : "invisible"
         )}>
-        <div className="mt-10">
+        <ScrollArea
+          onScroll={() => {
+            console.log("scroll-popover scrolling");
+          }}
+          id="scroll-popover"
+          className="mt-10 h-96 p-4">
           <div className="flex justify-between items-center">
             <p className="font-bold text-xl text-stone-800">Recent Searches</p>
             <Button
@@ -250,23 +265,54 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               Clear
             </Button>
           </div>
-          <div className="flex gap-x-4">
+          <div className="grid grid-cols-4 gap-3">
             {keywords?.map((keyword, index) => (
-              <Button
+              <Link
+                href={`/search/images/${keyword}`}
                 key={index}
-                className="h-12 text-base font-medium flex gap-x-2 items-center"
-                variant={"outline"}>
+                className="h-12 w-full text-base font-medium flex gap-x-2 items-center border rounded-md px-4 hover:bg-stone-100 transition truncate">
                 {keyword}
                 <Search
                   type="submit"
                   strokeWidth={2.4}
                   size={20}
                 />
-              </Button>
+              </Link>
             ))}
           </div>
-          <div className="flex gap-x-4"></div>
-        </div>
+
+          {/* collections names */}
+          <h2 className="font-bold text-xl text-stone-800 mt-6 mb-2">
+            Collections
+          </h2>
+          <div className="grid grid-cols-2 gap-4">
+            {globalCollectionNames?.map((collection) => {
+              const collectionImages =
+                collection.collectionImages as unknown as UniversalImagesType;
+              return (
+                <Link
+                  href={`/collections/${collection.id}`}
+                  key={collection.id}
+                  className="flex gap-x-2 items-center hover:bg-stone-100 transition rounded-md">
+                  <div className="h-20 w-20">
+                    <CollectionImageResizable
+                      gapSize="sm"
+                      images={collectionImages}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-y-2">
+                    <p className="font-medium text-base capitalize text-stone-800">
+                      {collection.collectionName}
+                    </p>
+                    <p className="text-stone-500 text-sm font-medium">
+                      {collection.collectionImages.length} Content
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </ScrollArea>
       </div>
     </div>
   );

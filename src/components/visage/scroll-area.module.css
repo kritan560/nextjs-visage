@@ -1,0 +1,5 @@
+.scrollbar {
+  &[data-orientation="vertical"] .thumb {
+    background-color: rgb(158, 103, 40);
+  }
+}

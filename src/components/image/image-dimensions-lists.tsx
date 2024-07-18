@@ -3,7 +3,7 @@
 import { UniversalImageType } from "@/types/visage-type";
 import { handleDownloadImageClick } from "@/utility/utils";
 import { useEffect, useState, useTransition } from "react";
-import DownloadButtonDialog from "../download-button-dialog";
+import DownloadButtonDialog from "../shared/download-button-dialog";
 
 type ImageDimensionListProps = {
   obj: [string, string];

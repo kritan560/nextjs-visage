@@ -6,9 +6,9 @@ import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
 import { cn } from "@/lib/utils";
 import { MediaType } from "@/types/visage-type";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel-server";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
 import AdjustPadding from "./adjust-padding";
-import { MasonryClient } from "./masonry-client";
+import { MasonryClient } from "../masonry/masonry-client";
 import { UniqueImage } from "./unique-image";
 
 type InfiniteScrollProps = {

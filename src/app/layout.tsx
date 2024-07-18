@@ -1,11 +1,13 @@
+import VisageScrollArea from "@/components/visage/visage-scroll-area";
 import VisageLogo from "@/images/visage-logo.png";
-import VisageScrollArea from "@/components/visage-scroll-area";
 import { cn } from "@/lib/utils";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "react-hot-toast";
 import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "react-hot-toast";
+import "./globals.css";
 
 const plus_Jakarta_sans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -22,6 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body className={cn(plus_Jakarta_sans.className, "")}>
         <NextTopLoader
           color="rgb(197 129 50)"
@@ -30,9 +35,10 @@ export default function RootLayout({
           showSpinner={false}
           height={4}
         />
-
         <Toaster />
-        <VisageScrollArea>{children}</VisageScrollArea>
+        <MantineProvider>
+          <VisageScrollArea>{children}</VisageScrollArea>
+        </MantineProvider>
       </body>
     </html>
   );

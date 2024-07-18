@@ -1,8 +1,8 @@
 "use client";
 
 import { UniversalImagesType } from "@/types/visage-type";
-import { MasonryClient } from "../masonry-client";
-import { UniqueImage } from "../unique-image";
+import { MasonryClient } from "../masonry/masonry-client";
+import { UniqueImage } from "../shared/unique-image";
 
 type GalleryProps = {
   images: UniversalImagesType | undefined;

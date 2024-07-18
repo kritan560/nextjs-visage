@@ -1,14 +1,14 @@
 import { signIn } from "@/auth";
-import AdjustPadding from "@/components/adjust-padding";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { LoginForm } from "@/components/login/login-form";
-import { MasonryClient } from "@/components/masonry-client";
+import { MasonryClient } from "@/components/masonry/masonry-client";
 import { NavbarButton } from "@/components/navbar/components/button";
 import NavbarLogoVisage from "@/components/navbar/components/logo-visage";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { LinkJoinPage } from "@/links/links";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel-server";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
 import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";

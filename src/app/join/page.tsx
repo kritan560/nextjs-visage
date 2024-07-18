@@ -1,5 +1,5 @@
 import { signIn } from "@/auth";
-import AdjustPadding from "@/components/adjust-padding";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { JoinForm } from "@/components/join/join-form";
 import { JoinRandomImages } from "@/components/join/join-random-image";
 import { NavbarButton } from "@/components/navbar/components/button";
@@ -7,7 +7,7 @@ import NavbarLogoVisage from "@/components/navbar/components/logo-visage";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LinkLoginPage } from "@/links/links";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel-server";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 

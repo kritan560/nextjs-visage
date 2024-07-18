@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { VisageFormItem } from "../visage-form-item";
+import { VisageFormItem } from "../visage/visage-form-item";
 import { JoinFormSchema, JoinFormSchemaType } from "@/schemas/schemas";
 
 export function JoinForm() {

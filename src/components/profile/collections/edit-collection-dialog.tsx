@@ -1,19 +1,5 @@
 "use client";
 
-import {
-  EditCollectionNameFormSchema,
-  EditCollectionNameFormSchemaType,
-} from "@/schemas/schemas";
-import {
-  changeCollectionName,
-  deleteCollectionName,
-} from "@/servers/visage-server";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { AiOutlineEdit } from "react-icons/ai";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,7 +9,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form, FormField } from "@/components/ui/form";
-import { VisageFormItem } from "@/components/visage-form-item";
+import { VisageFormItem } from "@/components/visage/visage-form-item";
+import {
+  EditCollectionNameFormSchema,
+  EditCollectionNameFormSchemaType,
+} from "@/schemas/schemas";
+import {
+  changeCollectionName,
+  deleteCollectionName,
+} from "@/servers/visage/visage-server";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { AiOutlineEdit } from "react-icons/ai";
 
 type EditCollectionDialogProps = {
   collectionId: string;

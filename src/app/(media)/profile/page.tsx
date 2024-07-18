@@ -1,5 +1,5 @@
 import Gallery from "@/components/profile/gallery";
-import { getImages } from "@/servers/visage-server";
+import { getImages } from "@/servers/visage/visage-server";
 
 export default async function GalleryPage() {
   const { failed, success } = await getImages();

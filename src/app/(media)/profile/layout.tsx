@@ -1,13 +1,13 @@
-import AdjustPadding from "@/components/adjust-padding";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
-import EditProfileButton from "@/components/profile/edit-profile-button";
 import { LinkEditProfile } from "@/links/links";
-import { getCurrentUser } from "@/servers/authentication-server";
+import { getCurrentUser } from "@/servers/authentication/authentication-server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ProfileLink from "../../../components/profile/profile-link";
+import EditProfileButton from "@/components/profile/edit-profile/edit-profile-button";
 
 type ProfileLayoutProps = {
   children: React.ReactNode;
@@ -19,7 +19,7 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
   const { profilePicture, userName } = await getCurrentUser();
 
   return (
-    <div>
+    <>
       <NavbarWithSearch />
       <div className="w-fit mx-auto mt-16">
         <div className="space-y-8 flex items-center flex-col">
@@ -66,6 +66,6 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
 
       {/* children */}
       <AdjustPadding className="mt-8">{children}</AdjustPadding>
-    </div>
+    </>
   );
 }

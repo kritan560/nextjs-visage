@@ -1,8 +1,8 @@
 "use client";
 
 import React, { memo, useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Button } from "../ui/button";
 import { Copy, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

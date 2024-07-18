@@ -8,9 +8,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import DownloadButtonDialog from "../download-button-dialog";
-import CollectIcon from "../icons/collect-icon";
-import HeartIcon from "../icons/heart-icon";
+import DownloadButtonDialog from "../shared/download-button-dialog";
+import CollectIcon from "../icons/collect-icon/collect-icon";
+import HeartIcon from "../icons/heart-icon/heart-icon";
 import { Button } from "../ui/button";
 import {
   Dialog,

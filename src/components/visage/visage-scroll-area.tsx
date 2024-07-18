@@ -3,7 +3,9 @@
 import { useGlobalScrollAreaPositionState } from "@/global-states/scroll-area-state";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { ScrollArea } from "./ui/scroll-area";
+// import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@mantine/core";
+import classes from "./scroll-area.module.css";
 
 type VisageScrollAreaProps = {
   children: React.ReactNode;
@@ -17,23 +19,16 @@ type VisageScrollAreaProps = {
  */
 const VisageScrollArea = (props: VisageScrollAreaProps) => {
   const { children, className } = props;
-
-  const { setPosition } = useGlobalScrollAreaPositionState();
-
-  function handleOnScrollCapture(e: React.UIEvent<HTMLDivElement, UIEvent>) {
-    const target = e.target as HTMLDivElement;
-    const scrollY = target.scrollTop;
-
-    setPosition(scrollY);
-  }
+  const { setPosition: onScrollPositionChange } =
+    useGlobalScrollAreaPositionState();
 
   return (
     <ScrollArea
-      type="auto"
-      onScrollCapture={(event) => {
-        handleOnScrollCapture(event);
-      }}
+      type="always"
+      classNames={classes}
+      onScrollPositionChange={onScrollPositionChange}
       scrollHideDelay={150}
+      scrollbars="y"
       className={cn("h-screen", className)}>
       {children}
     </ScrollArea>

@@ -1,6 +1,6 @@
-import { getCurrentUser } from "@/servers/authentication-server";
-import AdjustPadding from "../adjust-padding";
-import ImageSearchVideo2 from "../image-video-search2";
+import { getCurrentUser } from "@/servers/authentication/authentication-server";
+import AdjustPadding from "../shared/adjust-padding";
+import ImageSearchVideo2 from "../shared/image-video-search2";
 import { NavbarAvatarLoggedIn } from "./components/avatar-loggedin";
 import Explore from "./components/explore";
 import License from "./components/license";

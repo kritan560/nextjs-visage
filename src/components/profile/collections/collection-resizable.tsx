@@ -1,13 +1,15 @@
 import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { cn } from "@/lib/utils";
 import { UniversalImagesType } from "@/types/visage-type";
 import Image from "next/image";
 
 type CollectionImageResizableProps = {
   images: UniversalImagesType;
+  gapSize?: "sm" | "base";
 };
 
 export function CollectionImageResizable(props: CollectionImageResizableProps) {
-  const { images } = props;
+  const { images, gapSize = "base" } = props;
 
   if (images.length <= 0) {
     return null;
@@ -38,7 +40,11 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
         direction="horizontal"
         className="max-w-md rounded-lg border">
         <ResizablePanel defaultSize={50}>
-          <div className="flex h-full items-center justify-center mr-1 relative">
+          <div
+            className={cn(
+              "flex h-full items-center justify-center relative",
+              gapSize === "sm" ? "mr-[1px]" : "mr-1 "
+            )}>
             <Image
               src={images[0].src.medium}
               alt=""
@@ -49,7 +55,11 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
         </ResizablePanel>
 
         <ResizablePanel defaultSize={50}>
-          <div className="flex h-full items-center justify-center ml-1 relative">
+          <div
+            className={cn(
+              "flex h-full items-center justify-center relative",
+              gapSize === "sm" ? "ml-[1px]" : "ml-1"
+            )}>
             <Image
               src={images[1].src.medium}
               alt=""
@@ -68,7 +78,11 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
         direction="horizontal"
         className="max-w-md rounded-lg border">
         <ResizablePanel defaultSize={50}>
-          <div className="flex h-full items-center justify-center mr-2 relative">
+          <div
+            className={cn(
+              "flex h-full items-center justify-center relative",
+              gapSize === "sm" ? "mr-[2px]" : "mr-2"
+            )}>
             <Image
               src={images[images.length - 3].src.medium}
               alt=""
@@ -92,7 +106,11 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
             </ResizablePanel>
 
             <ResizablePanel defaultSize={50}>
-              <div className="flex h-full mt-2 items-center justify-center relative">
+              <div
+                className={cn(
+                  "flex h-full items-center justify-center relative",
+                  gapSize === "sm" ? "mt-[2px]" : "mt-2"
+                )}>
                 <Image
                   src={images[images.length - 1].src.medium}
                   alt=""

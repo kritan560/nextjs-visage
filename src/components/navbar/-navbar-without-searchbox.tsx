@@ -1,6 +1,6 @@
 import { LinkJoinPage, LinkUploadPage } from "@/links/links";
-import { getCurrentUser } from "@/servers/authentication-server";
-import AdjustPadding from "../adjust-padding";
+import { getCurrentUser } from "@/servers/authentication/authentication-server";
+import AdjustPadding from "../shared/adjust-padding";
 import { NavbarAvatarLoggedIn } from "./components/avatar-loggedin";
 import { NavbarButton } from "./components/button";
 import Explore from "./components/explore";
@@ -14,7 +14,7 @@ const NavbarWithoutSearchBox = async () => {
   const { isUserAuthenticated, profilePicture } = await getCurrentUser();
 
   const userAuthenticated = (
-    <div className="text-white">
+    <div className="text-white z-[11] relative">
       <div className="flex justify-between items-center">
         <LogoVisage />
 

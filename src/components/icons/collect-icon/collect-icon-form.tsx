@@ -6,22 +6,19 @@ import {
   useGlobalCollectImageIdsStore,
   useGlobalCollectionNameStore,
 } from "@/global-states/visage-image-state";
+import { LinkLoginPage } from "@/links/links";
 import {
   NewCollectionNameFormSchema,
   NewCollectionNameFormSchemaType,
 } from "@/schemas/schemas";
-import { collectImage } from "@/servers/visage-server";
-import { collectImageEnum } from "@/servers/visage-server-enum";
-import {
-  UniversalImageType,
-  UniversalImagesType,
-} from "@/types/visage-type";
+import { collectImage } from "@/servers/visage/visage-server";
+import { collectImageEnum } from "@/servers/visage/visage-server-enum";
+import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { LinkLoginPage } from "@/links/links";
-import { VisageFormItem } from "../visage-form-item";
+import { VisageFormItem } from "../../visage/visage-form-item";
 
 type CollectIconForm = {
   image: UniversalImageType;

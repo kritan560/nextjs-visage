@@ -1,9 +1,9 @@
 "use client";
 
-import { MasonryClient } from "@/components/masonry-client";
+import { MasonryClient } from "@/components/masonry/masonry-client";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { UniqueImage } from "@/components/unique-image";
-import { getPexelPhotoByKeyword } from "@/servers/pexel-server";
+import { UniqueImage } from "@/components/shared/unique-image";
+import { getPexelPhotoByKeyword } from "@/servers/pexel/pexel-server";
 import { UniversalImagesType } from "@/types/visage-type";
 import Link from "next/link";
 import { generate } from "random-words";
@@ -63,13 +63,13 @@ export default function ImageSearch(props: ImageSearchProps) {
 
   return (
     <div className="mt-4">
-      <ScrollArea className="w-[1100px] max-w-6xl">
+      <ScrollArea className="w-[1240px] max-w-7xl">
         <div className="flex gap-x-2 items-center py-2">
           {randomKeywords.map((keyword, index) => (
             <Link
               href={`/search/images/${keyword}`}
               key={index}
-              className="px-6 py-4 cursor-pointer border rounded-md hover:bg-emerald-600 active:bg-emerald-500 bg-transparent transition hover:text-white text-stone-800 font-medium text-base">
+              className="px-6 py-4 cursor-pointer border rounded-md hover:bg-visage-600 active:bg-visage-500 bg-transparent transition hover:text-white text-stone-800 font-medium text-base">
               {keyword}
             </Link>
           ))}
@@ -96,11 +96,11 @@ export default function ImageSearch(props: ImageSearchProps) {
       </MasonryClient>
       <div
         ref={ref}
-        className="h-9 text-center w-full overflow-x-clip my-4">
+        className="h-9 text-center w-full overflow-x-clip my-4 ">
         <PropagateLoader
           size={30}
           className="scale-[2.0]"
-          color="rgb(234 88 12)"
+          color="rgb(197 129 50)"
           loading={isPending}
         />
       </div>{" "}

@@ -11,12 +11,12 @@ import { create } from "zustand";
 // }));
 
 interface ScrollAreaPositionState {
-  position: number;
-  setPosition: (bool: number) => void;
+  position: { x: number; y: number };
+  setPosition: (value: { x: number; y: number }) => void;
 }
 
 export const useGlobalScrollAreaPositionState =
   create<ScrollAreaPositionState>()((set) => ({
-    position: 0,
+    position: { x: 0, y: 0 },
     setPosition: (value) => set({ position: value }),
   }));

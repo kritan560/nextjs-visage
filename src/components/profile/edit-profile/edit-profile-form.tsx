@@ -11,7 +11,7 @@ import {
 import {
   createTokenForUserAccountDeletion,
   updateUserDetail,
-} from "@/servers/visage-server";
+} from "@/servers/visage/visage-server";
 import { getBaseURL } from "@/utility/base-url";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { VisageFormItem } from "@/components/visage-form-item";
+import { VisageFormItem } from "@/components/visage/visage-form-item";
 
 type EditProfileFormProps = {
   profileId: string;

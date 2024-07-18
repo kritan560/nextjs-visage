@@ -1,4 +1,4 @@
-import { TruncatePhotgrapherNameCharacterLimit } from "@/components/constants/constants";
+import { TruncatePhotgrapherNameCharacterLimit } from "@/constants/constants";
 
 /**
  * Truncate the name of photographer that has length greater than 15

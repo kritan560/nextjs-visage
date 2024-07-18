@@ -1,6 +1,6 @@
 "use client";
 
-import AdjustPadding from "@/components/adjust-padding";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { Button } from "@/components/ui/button";
 import {
   Command,

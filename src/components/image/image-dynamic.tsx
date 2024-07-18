@@ -1,6 +1,6 @@
 "use client";
 
-import AdjustPadding from "@/components/adjust-padding";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { cn } from "@/lib/utils";
 import { UniversalImageType } from "@/types/visage-type";
 import { handleDownloadImageClick } from "@/utility/utils";
@@ -8,9 +8,9 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import DownloadButtonDialog from "../download-button-dialog";
-import CollectIcon from "../icons/collect-icon";
-import HeartIcon from "../icons/heart-icon";
+import DownloadButtonDialog from "../shared/download-button-dialog";
+import CollectIcon from "../icons/collect-icon/collect-icon";
+import HeartIcon from "../icons/heart-icon/heart-icon";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,

@@ -6,6 +6,10 @@ import {
 } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa6";
 
+/**
+ * this is the public links i.e authorized and unauthorized user can access.
+ * can increase the links count but be aware of frontend flex-col length.
+ */
 export const AvatarPublicLinks = [
   {
     title: "Image & Video API",
@@ -29,6 +33,10 @@ export const AvatarPublicLinks = [
   },
 ];
 
+/**
+ * max number of socialLogos to be used is 5. coz of padding used in frontend.
+ * you can change the name and logo here
+ */
 export const SocialLogosLinks: {
   socialLogoName: string;
   socialLogo: any;
@@ -37,26 +45,26 @@ export const SocialLogosLinks: {
   {
     socialLogoName: "Facebook",
     socialLogo: FaFacebookF,
-    href: "",
+    href: "#",
   },
   {
     socialLogoName: "Instagram",
     socialLogo: FaInstagram,
-    href: "",
+    href: "#1",
   },
   {
     socialLogoName: "Linkedin",
     socialLogo: FaLinkedin,
-    href: "",
+    href: "#2",
   },
   {
     socialLogoName: "Pinterest",
     socialLogo: FaPinterest,
-    href: "",
+    href: "#3",
   },
   {
     socialLogoName: "Whatsapp",
     socialLogo: FaWhatsapp,
-    href: "",
+    href: "#4",
   },
 ];

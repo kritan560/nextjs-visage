@@ -8,8 +8,8 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { LinkEditProfile, LinkHomepage, LinkLoginPage } from "@/links/links";
-import { deleteAccountByUserId } from "@/servers/visage-server";
-import { deleteAccountByUserIdEnum } from "@/servers/visage-server-enum";
+import { deleteAccountByUserId } from "@/servers/visage/visage-server";
+import { deleteAccountByUserIdEnum } from "@/servers/visage/visage-server-enum";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

@@ -1,6 +1,6 @@
 "use client";
 
-import { updateUserProfilePicture } from "@/servers/visage-server";
+import { updateUserProfilePicture } from "@/servers/visage/visage-server";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useState, useTransition } from "react";

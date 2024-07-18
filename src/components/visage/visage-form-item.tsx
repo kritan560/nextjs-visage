@@ -1,6 +1,6 @@
 import React from "react";
-import { FormControl, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { Input } from "./ui/input";
+import { FormControl, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 
 type VisageFormItemProps = {

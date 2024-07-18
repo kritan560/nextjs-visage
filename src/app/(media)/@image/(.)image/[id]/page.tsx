@@ -1,7 +1,7 @@
 import ImageDynamicInterception from "@/components/image/image-dynamic-interception";
-import { getPexelPhotoById } from "@/servers/pexel-server";
-import { getPexelPhotoByIdEnum } from "@/servers/pexel-server-enums";
-import { getImageById } from "@/servers/visage-server";
+import { getPexelPhotoById } from "@/servers/pexel/pexel-server";
+import { getPexelPhotoByIdEnum } from "@/servers/pexel/pexel-server-enums";
+import { getImageById } from "@/servers/visage/visage-server";
 import { UniversalImageType } from "@/types/visage-type";
 import { destructureTheIdFromStructuredParams } from "@/utility/utils";
 

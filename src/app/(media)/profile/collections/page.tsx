@@ -1,6 +1,6 @@
 "use client";
 
-import { CollectionImageResizable } from "@/components/profile/collections/resizable";
+import { CollectionImageResizable } from "@/components/profile/collections/collection-resizable";
 import { useGlobalCollectionNameStore } from "@/global-states/visage-image-state";
 import { UniversalImagesType } from "@/types/visage-type";
 import Link from "next/link";

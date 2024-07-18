@@ -1,6 +1,6 @@
-import { MasonryClient } from "@/components/masonry-client";
-import { UniqueImage } from "@/components/unique-image";
-import { getLikedImages } from "@/servers/visage-server";
+import { MasonryClient } from "@/components/masonry/masonry-client";
+import { UniqueImage } from "@/components/shared/unique-image";
+import { getLikedImages } from "@/servers/visage/visage-server";
 
 export default async function LikesPage() {
   const { failed, success } = await getLikedImages();

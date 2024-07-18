@@ -8,16 +8,24 @@ type NavbarWhenScrolledProps = {
   threshold?: number;
 };
 
+let scrolled = false;
 export function NavbarWhenScrolled(props: NavbarWhenScrolledProps) {
   const { children, threshold = 500 } = props;
 
   const { position } = useGlobalScrollAreaPositionState();
 
+  if (position.y > threshold) {
+    scrolled = true;
+  }
+  if (position.y < threshold) {
+    scrolled = false;
+  }
+
   return (
     <div
       className={cn(
         "fixed top-0 z-10 right-0 left-0 transition",
-        position > threshold ? "opacity-100" : "opacity-0 -z-10"
+        scrolled ? "opacity-100" : "opacity-0 -z-10"
       )}>
       {children}
     </div>

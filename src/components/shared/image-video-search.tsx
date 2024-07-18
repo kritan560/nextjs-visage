@@ -11,9 +11,9 @@ import { ChevronDown, Image as Picture, Search, Video } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "./ui/button";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
+import { Input } from "../ui/input";
 
 const className =
   "flex items-center gap-x-2 h-10 cursor-pointer font-semibold text-base";

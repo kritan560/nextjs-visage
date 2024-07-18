@@ -1,10 +1,10 @@
 "use server";
 
-import AdjustPadding from "@/components/adjust-padding";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
 import ImageSearch from "@/components/search/images/image-search";
-import { getPexelPhotoByKeyword } from "@/servers/pexel-server";
+import { getPexelPhotoByKeyword } from "@/servers/pexel/pexel-server";
 
 type ImageSearchPageProps = {
   params: { keyword: string };

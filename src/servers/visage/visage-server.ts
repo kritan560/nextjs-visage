@@ -9,8 +9,8 @@ import {
 import { LinkLikePage } from "@/links/links";
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { revalidatePath } from "next/cache";
-import prisma from "../../prisma/prisma.db";
-import { getCurrentUserId } from "./authentication-server";
+import prisma from "../../../prisma/prisma.db";
+import { getCurrentUserId } from "../authentication/authentication-server";
 import {
   changeCollectionNameEnum,
   collectImageEnum,
