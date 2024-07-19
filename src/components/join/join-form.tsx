@@ -82,7 +82,7 @@ export function JoinForm() {
           variant={"visage"}
           size={"visage"}
           type="submit">
-          Share your content on ImageHive
+          Share your content on visage
         </Button>
       </form>
     </Form>

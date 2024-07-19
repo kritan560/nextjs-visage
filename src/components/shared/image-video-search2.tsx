@@ -22,8 +22,8 @@ import {
   HoverCardTrigger,
 } from "../ui/hover-card";
 import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 
 const searchedKeyword = "searchedKeyword";
 
@@ -67,10 +67,11 @@ type onHoverDisplayElementsType = {
 type ImageOrVideoSearchType = {
   border?: boolean;
   mediaType?: MediaType;
+  userId: string | undefined;
 };
 
 const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
-  const { border, mediaType } = props;
+  const { border, mediaType, userId } = props;
 
   const router = useRouter();
   const [openPopOver, setOpenPopOver] = useState(false);
@@ -78,6 +79,10 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   const [keywords, setKeywords] = useState<string[] | null>([]);
   const [hoverElement, setHoverElement] = useState(onHoverDisplayElement[0]);
   const { globalCollectionNames } = useGlobalCollectionNameStore();
+  const hasCollection =
+    globalCollectionNames
+      ?.map((collectionName) => collectionName.collectionImages)
+      .reduce((prev, current) => prev + current.length, 0) ?? 0;
 
   // accessibility features. (escape key press / click elsewhere to close popover)
   function handleKeyDown(e: KeyboardEvent) {
@@ -213,10 +218,14 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                         {...field}
                         autoComplete="off"
                         maxLength={40}
-                        onClick={() => setOpenPopOver(!openPopOver)}
+                        onClick={() => {
+                          if (!!userId) {
+                            setOpenPopOver(!openPopOver);
+                          }
+                        }}
                         type="text"
                         className={cn(
-                          "text-lg ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 border-none pl-4",
+                          "text-lg ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-white border-none pl-4",
                           !border && "bg-slate-100",
                           openPopOver && "bg-white"
                         )}
@@ -251,11 +260,14 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
           openPopOver ? "visible ring-1 ring-stone-300 z-[7]" : "invisible"
         )}>
         <ScrollArea
-          onScroll={() => {
-            console.log("scroll-popover scrolling");
-          }}
-          id="scroll-popover"
-          className="mt-10 h-96 p-4">
+          className={cn(
+            "mt-10 p-4",
+            hasCollection > 0
+              ? hasCollection > 2
+                ? "h-96"
+                : "h-[272px]"
+              : "h-fit"
+          )}>
           <div className="flex justify-between items-center">
             <p className="font-bold text-xl text-stone-800">Recent Searches</p>
             <Button
@@ -282,36 +294,47 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
           </div>
 
           {/* collections names */}
-          <h2 className="font-bold text-xl text-stone-800 mt-6 mb-2">
-            Collections
-          </h2>
-          <div className="grid grid-cols-2 gap-4">
-            {globalCollectionNames?.map((collection) => {
-              const collectionImages =
-                collection.collectionImages as unknown as UniversalImagesType;
-              return (
-                <Link
-                  href={`/collections/${collection.id}`}
-                  key={collection.id}
-                  className="flex gap-x-2 items-center hover:bg-stone-100 transition rounded-md">
-                  <div className="h-20 w-20">
-                    <CollectionImageResizable
-                      gapSize="sm"
-                      images={collectionImages}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-y-2">
-                    <p className="font-medium text-base capitalize text-stone-800">
-                      {collection.collectionName}
-                    </p>
-                    <p className="text-stone-500 text-sm font-medium">
-                      {collection.collectionImages.length} Content
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          {hasCollection > 0 && (
+            <>
+              <h2 className="font-bold text-xl text-stone-800 mt-6 mb-2">
+                Collections
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                {globalCollectionNames
+                  ?.filter((collectionName) => {
+                    if (collectionName.userId === userId) {
+                      return collectionName;
+                    }
+                  })
+                  .map((collection) => {
+                    const collectionImages =
+                      collection.collectionImages as unknown as UniversalImagesType;
+
+                    return (
+                      <Link
+                        href={`/collections/${collection.id}`}
+                        key={collection.id}
+                        className="flex gap-x-2 items-center hover:bg-stone-100 transition rounded-md">
+                        <div className="h-20 w-20">
+                          <CollectionImageResizable
+                            gapSize="sm"
+                            images={collectionImages}
+                          />
+                        </div>
+                        <div className="flex flex-col gap-y-2">
+                          <p className="font-medium text-base capitalize text-stone-800">
+                            {collection.collectionName}
+                          </p>
+                          <p className="text-stone-500 text-sm font-medium">
+                            {collection.collectionImages.length} Content
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+              </div>
+            </>
+          )}
         </ScrollArea>
       </div>
     </div>

@@ -17,8 +17,8 @@ export const useGlobalCollectImageIdsStore = create<CollectImageIdsType>()(
  *
  */
 type LikeImageStoreType = {
-  globalLikedImagesIds: number[] | undefined;
-  setGlobalLikedImageId: (id: number[] | undefined) => void;
+  globalLikedImagesIds: string[] | undefined;
+  setGlobalLikedImageId: (id: string[] | undefined) => void;
 };
 export const useGlobalLikeImageStore = create<LikeImageStoreType>()((set) => ({
   globalLikedImagesIds: [],

@@ -50,7 +50,6 @@ export default function EditCollectionDialog(props: EditCollectionDialogProps) {
   async function onSubmit(values: EditCollectionNameFormSchemaType) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     const { failed, success } = await changeCollectionName(
       collectionId,
       values.collectionName

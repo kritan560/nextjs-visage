@@ -1,17 +1,20 @@
 "use client";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   useGlobalCollectImageIdsStore,
   useGlobalCollectionNameStore,
 } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
-import { LinkCollections } from "@/links/links";
+import { LinkCollections, LinkLoginPage } from "@/links/links";
 import { collectImage } from "@/servers/visage/visage-server";
+import { collectImageEnum } from "@/servers/visage/visage-server-enum";
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CirclePlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaCheckCircle } from "react-icons/fa";
@@ -26,7 +29,6 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { CollectIconForm } from "./collect-icon-form";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 type CollectIconProps = {
   image: UniversalImageType;
@@ -41,7 +43,9 @@ export default function CollectIcon(props: CollectIconProps) {
     useGlobalCollectImageIdsStore();
   const { globalCollectionNames, setGlobalCollectionNames } =
     useGlobalCollectionNameStore();
+  const router = useRouter();
 
+  console.log(globalCollectImagesIds, '<<<')
   async function handleAddToCollection(
     collectionName: string,
     collectionNameId?: string
@@ -55,6 +59,7 @@ export default function CollectIcon(props: CollectIconProps) {
     if (success) {
       toast.success(success.message);
 
+      // console.log(success.data, "<<<<");
       const successDataCollectionNameId = success.data.id;
 
       const updatedDataCollectionName = globalCollectionNames?.filter(
@@ -82,6 +87,9 @@ export default function CollectIcon(props: CollectIconProps) {
 
     if (failed) {
       toast.error(failed.message);
+      if (failed.message === collectImageEnum.USER_NOT_LOGGED_IN) {
+        router.push(LinkLoginPage);
+      }
     }
   }
 
@@ -110,7 +118,9 @@ export default function CollectIcon(props: CollectIconProps) {
         </div>
       </DialogTrigger>
       <DialogContent className="min-w-[650px] h-[500px] p-8">
-        <ScrollArea type="auto" className="h-[434px] w-full">
+        <ScrollArea
+          type="auto"
+          className="h-[434px] w-full">
           <DialogHeader>
             <DialogTitle className="text-center font-semibold text-3xl flex flex-col gap-y-4">
               <span>Save to Collection</span>
@@ -162,6 +172,7 @@ export default function CollectIcon(props: CollectIconProps) {
                           src={image.src.medium}
                           alt=""
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           className="rounded-md"
                           style={{ objectFit: "cover" }}
                         />

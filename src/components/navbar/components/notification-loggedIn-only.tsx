@@ -40,7 +40,7 @@ export function NavbarNotificationLoggedInOnly() {
                 />
               </div>
               <div className="text-slate-800">
-                Virtual high five for joining ImageHive! We are striving to
+                Virtual high five for joining visage! We are striving to
                 build the most extraordinary photo community and are proud to
                 work with talented photographers from around the world who
                 submit thousands of free photos per day. You can help the

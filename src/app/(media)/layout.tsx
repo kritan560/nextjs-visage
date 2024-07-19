@@ -22,9 +22,7 @@ export default async function ImageLayout(props: ImageLayoutProps) {
     await getCollectionImagesIds();
 
   const likedImages = likedImagesSuccess?.data;
-  const likedImagesIds = likedImages?.map((likedImage) =>
-    parseInt(likedImage.imageId)
-  );
+  const likedImagesIds = likedImages?.map((likedImage) => likedImage.imageId);
 
   const collectionNames = collectionNameSuccess?.data;
   const collectionImagesIds = collectionImagesIdsSuccess?.data;

@@ -1,4 +1,8 @@
-import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
 import { UniversalImagesType } from "@/types/visage-type";
 import Image from "next/image";
@@ -19,13 +23,14 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
     return (
       <ResizablePanelGroup
         direction="horizontal"
-        className="max-w-md rounded-lg border">
-        <ResizablePanel defaultSize={50}>
+        className="h-80 w-80 rounded-lg border">
+        <ResizablePanel defaultSize={100}>
           <div className="flex h-full items-center justify-center relative">
             <Image
               src={images[0].src.medium}
               alt=""
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
             />
           </div>
@@ -49,10 +54,13 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
               src={images[0].src.medium}
               alt=""
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
             />
           </div>
         </ResizablePanel>
+
+        <ResizableHandle className="pointer-events-none" />
 
         <ResizablePanel defaultSize={50}>
           <div
@@ -64,6 +72,7 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
               src={images[1].src.medium}
               alt=""
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
             />
           </div>
@@ -87,12 +96,15 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
               src={images[images.length - 3].src.medium}
               alt=""
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
             />
           </div>
         </ResizablePanel>
 
-        <ResizablePanel defaultSize={50}>
+        <ResizableHandle className="pointer-events-none" />
+
+        <ResizablePanel >
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={50}>
               <div className="flex h-full items-center justify-center relative">
@@ -100,10 +112,13 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
                   src={images[images.length - 2].src.medium}
                   alt=""
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   style={{ objectFit: "cover" }}
                 />
               </div>
             </ResizablePanel>
+
+            <ResizableHandle className="pointer-events-none" />
 
             <ResizablePanel defaultSize={50}>
               <div
@@ -115,6 +130,7 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
                   src={images[images.length - 1].src.medium}
                   alt=""
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   style={{ objectFit: "cover" }}
                 />
               </div>

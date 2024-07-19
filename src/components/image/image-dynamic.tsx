@@ -108,7 +108,7 @@ export default function ImageDynamic(props: ImageDynamicProps) {
                 onClick={() =>
                   handleDownloadImageClick(
                     image.src.original,
-                    image.alt ?? String(image.id)
+                    image.alt ?? image.imageId
                   )
                 }
                 variant={"visage"}
@@ -193,6 +193,8 @@ export default function ImageDynamic(props: ImageDynamicProps) {
           src={image.src.large}
           alt={image.alt ?? ""}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+
           style={{ objectFit: "contain", borderRadius: 20 }}
         />
       </div>

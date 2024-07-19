@@ -82,7 +82,6 @@ export function EditProfileForm(props: EditProfileFormProps) {
   async function onSubmit(values: EditProfileFormSchemaType) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     if (profileId) {
       const { failed, success } = await updateUserDetail({
         userId: profileId,

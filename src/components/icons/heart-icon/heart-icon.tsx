@@ -21,18 +21,15 @@ export default function HeartIcon(props: HeartIconProps) {
 
   async function handleHeartClick() {
     // if there is imageId then remove it
-    if (globalLikedImagesIds?.includes(parseInt(image.imageId))) {
+    if (globalLikedImagesIds?.includes(image.imageId)) {
       setGlobalLikedImageId(
-        globalLikedImagesIds?.filter((id) => id != parseInt(image.imageId))
+        globalLikedImagesIds?.filter((id) => id != image.imageId)
       );
     }
 
     // if there is not then include it
-    if (
-      globalLikedImagesIds &&
-      !globalLikedImagesIds.includes(parseInt(image.imageId))
-    ) {
-      setGlobalLikedImageId([...globalLikedImagesIds, parseInt(image.imageId)]);
+    if (globalLikedImagesIds && !globalLikedImagesIds.includes(image.imageId)) {
+      setGlobalLikedImageId([...globalLikedImagesIds, image.imageId]);
     }
 
     const { failed, success } = await likeImage(image);
@@ -43,7 +40,7 @@ export default function HeartIcon(props: HeartIconProps) {
       // if the collectImage action failed the revert the state too
       if (globalLikedImagesIds) {
         setGlobalLikedImageId(
-          globalLikedImagesIds.filter((id) => id != parseInt(image.imageId))
+          globalLikedImagesIds.filter((id) => id != image.imageId)
         );
       }
 
@@ -63,7 +60,7 @@ export default function HeartIcon(props: HeartIconProps) {
           "bg-gray-300 p-2 rounded-lg hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition duration-200 z-[1]"
       )}
       onClick={handleHeartClick}>
-      {globalLikedImagesIds?.includes(image.id) ? (
+      {globalLikedImagesIds?.includes(image.imageId) ? (
         <>
           <Heart
             size={18}

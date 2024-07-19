@@ -12,6 +12,7 @@ export function NavbarButton(props: NavbarButtonProps) {
   return (
     <Link href={href}>
       <Button
+        className="capitalize"
         variant={"visage"}
         size={"visage"}>
         {buttonName}

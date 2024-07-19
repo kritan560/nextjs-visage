@@ -12,7 +12,7 @@ import React, { useEffect } from "react";
 
 type InitGlobalStoreProps = {
   children: React.ReactNode;
-  likedImagesIds: number[] | undefined;
+  likedImagesIds: string[] | undefined;
   universalImagesType: UniversalImagesType | null;
   collectionNames: CollectionNames[] | undefined;
   collectImagesIds: string[] | undefined;

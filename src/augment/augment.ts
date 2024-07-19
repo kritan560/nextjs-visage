@@ -104,7 +104,6 @@ export function AugmentImagesIntoUniversalImages(images: Images[]) {
   return augmentedImages;
 }
 
-
 export async function AugmentPixelSearchedPhotoIntoUniversalImage(
   photo: PhotosWithTotalResults
 ): Promise<UniversalImagesType> {
@@ -119,4 +118,11 @@ export async function AugmentPixelSearchedPhotoIntoUniversalImage(
     return { ...withoutLiked, totalResult: photo.total_results };
   });
   return universalPhotos;
+}
+
+export function AugmentImagesImageField(images: Images[]) {
+  const img = images.map((img) => {
+    return { ...img, image: img.image as UniversalImageType };
+  });
+  return img;
 }

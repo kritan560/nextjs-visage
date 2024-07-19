@@ -32,6 +32,8 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
             src={image.src.large}
             fill
             alt=""
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+
             className="rounded-l-md"
             style={{ objectFit: "cover" }}
           />
@@ -72,7 +74,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
               onClick={() =>
                 handleDownloadImageClick(
                   image.src.original,
-                  image.alt ?? String(image.id)
+                  image.alt ?? image.imageId
                 )
               }
               variant={"default"}

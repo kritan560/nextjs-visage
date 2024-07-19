@@ -11,6 +11,7 @@ export default function CollectionsPage() {
     useGlobalCollectionNameStore();
 
   return (
+    <>
     <div className="grid grid-cols-3 gap-x-8 gap-y-14">
       {collectionNamesSuccess &&
         collectionNamesSuccess.map((collection) => (
@@ -36,5 +37,7 @@ export default function CollectionsPage() {
           </Link>
         ))}
     </div>
+    <div className="h-8"></div>
+    </>
   );
 }

@@ -8,6 +8,7 @@ import Link from "next/link";
 import React from "react";
 import ProfileLink from "../../../components/profile/profile-link";
 import EditProfileButton from "@/components/profile/edit-profile/edit-profile-button";
+import { getTotalViewsCount } from "@/servers/visage/visage-server";
 
 type ProfileLayoutProps = {
   children: React.ReactNode;
@@ -17,6 +18,8 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
   const { children } = props;
 
   const { profilePicture, userName } = await getCurrentUser();
+  const { failed, success } = await getTotalViewsCount();
+  const totalViews = success?.data ?? 0;
 
   return (
     <>
@@ -31,6 +34,7 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
               className="rounded-full "
               height={120}
               width={120}
+              priority
             />
           ) : (
             <div className="w-12 h-12 rounded-full uppercase flex justify-center items-center font-bold text-xl">
@@ -50,7 +54,7 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
           {/* total views  */}
           <div className="flex flex-col items-center gap-y-1">
             <p className="text-base text-stone-500">Total Views</p>
-            <span className="font-semibold text-2xl">0</span>
+            <span className="font-semibold text-2xl">{totalViews}</span>
           </div>
         </div>
       </div>

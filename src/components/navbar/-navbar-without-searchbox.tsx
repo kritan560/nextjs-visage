@@ -11,10 +11,10 @@ import { NavbarThreeDotsHorizontal } from "./components/three-dots-horizontal";
 import Upload from "./components/upload";
 
 const NavbarWithoutSearchBox = async () => {
-  const { isUserAuthenticated, profilePicture } = await getCurrentUser();
+  const { isUserAuthenticated, profilePicture, userName } = await getCurrentUser();
 
   const userAuthenticated = (
-    <div className="text-white z-[11] relative">
+    <div className="text-white">
       <div className="flex justify-between items-center">
         <LogoVisage />
 
@@ -22,7 +22,7 @@ const NavbarWithoutSearchBox = async () => {
           <Explore />
           <License />
           <NavbarNotificationLoggedInOnly />
-          <NavbarAvatarLoggedIn profilePicture={profilePicture} />
+          <NavbarAvatarLoggedIn userName={userName} profilePicture={profilePicture} />
           <NavbarButton
             buttonName="upload"
             href={LinkUploadPage}
@@ -51,7 +51,7 @@ const NavbarWithoutSearchBox = async () => {
     </div>
   );
   return (
-    <AdjustPadding className="">
+    <AdjustPadding className="z-[11] relative">
       {isUserAuthenticated ? userAuthenticated : anonymousUser}
     </AdjustPadding>
   );

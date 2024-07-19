@@ -50,19 +50,21 @@ export async function getCurrentUser() {
 }
 
 /**
- * This server action will only return the UserId and username. This action is created for sole purpose to reduce the DB calls made for profile picture.
+ * This server action will only return the isUserAuthenticataed, UserId and username. This action is created for sole purpose to reduce the DB calls made for profile picture.
  * @returns
  */
 export async function getCurrentUserId() {
   const userStatus = await auth();
 
   // change the profile picture here so the whenever this is called the profile picture gets updated
+  const isUserAuthenticated = !!userStatus;
   const userId = userStatus?.user?.id;
   const userName = userStatus?.user?.name;
 
   return {
     userId,
     userName,
+    isUserAuthenticated
   };
 }
 
@@ -73,7 +75,7 @@ export async function LogoutTheUser() {
   try {
     await signOut({ redirect: true, redirectTo: LinkHomepage });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw new Error("something went wrong");
   }
 }

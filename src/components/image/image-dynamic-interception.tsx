@@ -130,7 +130,7 @@ export default function ImageDynamicInterception(
                   onClick={() =>
                     handleDownloadImageClick(
                       image.src.original,
-                      image.alt ?? String(image.id)
+                      image.alt ?? image.imageId
                     )
                   }
                   variant={"visage"}
@@ -215,6 +215,8 @@ export default function ImageDynamicInterception(
             src={image.src.large}
             alt={image.alt ?? ""}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+
             style={{ objectFit: "contain", borderRadius: 20 }}
           />
         </div>

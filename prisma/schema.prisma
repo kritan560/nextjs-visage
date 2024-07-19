@@ -94,9 +94,11 @@ model Images {
   imageId String @unique
   image   Json   @unique // Json is type of UniversalImageType
 
-  title     String?
-  location  String?
-  tags      String?
+  title    String?
+  location String?
+  tags     String?
+  views    Int?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -12,7 +12,7 @@ import { NavbarButton } from "./components/button";
 import { LinkJoinPage, LinkUploadPage } from "@/links/links";
 
 const NavbarWithSearchBox = async () => {
-  const { isUserAuthenticated, profilePicture } = await getCurrentUser();
+  const { userId, profilePicture, userName } = await getCurrentUser();
 
   const userAuthenticated = (
     <div className="text-stone-800 bg-white">
@@ -20,14 +20,14 @@ const NavbarWithSearchBox = async () => {
         <LogoVisage />
 
         <div className="flex-grow">
-          <ImageSearchVideo2 />
+          <ImageSearchVideo2 userId={userId} />
         </div>
 
         <div className="flex gap-x-6 items-center">
           <Explore />
           <License />
           <NavbarNotificationLoggedInOnly />
-          <NavbarAvatarLoggedIn profilePicture={profilePicture} />
+          <NavbarAvatarLoggedIn userName={userName} profilePicture={profilePicture} />
           <NavbarButton
             buttonName="Upload"
             href={LinkUploadPage}
@@ -42,7 +42,7 @@ const NavbarWithSearchBox = async () => {
       <LogoVisage />
 
       <div className="flex-grow">
-        <ImageSearchVideo2 />
+        <ImageSearchVideo2 userId={userId} />
       </div>
 
       <div className="flex gap-x-8 items-center">
@@ -60,7 +60,7 @@ const NavbarWithSearchBox = async () => {
 
   return (
     <AdjustPadding className="bg-white">
-      {isUserAuthenticated ? userAuthenticated : anonymousUser}
+      {!!userId ? userAuthenticated : anonymousUser}
     </AdjustPadding>
   );
 };

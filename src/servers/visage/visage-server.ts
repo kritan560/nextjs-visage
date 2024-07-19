@@ -2,31 +2,37 @@
 
 import {
   AugmentImageIntoUniversalImage,
+  AugmentImagesImageField,
   AugmentImagesIntoUniversalImages,
   AugmentLikedImageIntoUniversalImage,
   AugmentLikedImagesIntoUniversalImages,
 } from "@/augment/augment";
+import { DailyUploadCount } from "@/constants/constants";
 import { LinkLikePage } from "@/links/links";
+import { EditProfileFormSchemaType } from "@/schemas/schemas";
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
+import { capitalize } from "@/utility/utils";
+import { Images } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import prisma from "../../../prisma/prisma.db";
 import { getCurrentUserId } from "../authentication/authentication-server";
 import {
   changeCollectionNameEnum,
   collectImageEnum,
+  createImagesEnum,
   createTokenForUserAccountDeletionEnum,
   deleteAccountByUserIdEnum,
   deleteCollectionNameEnum,
   getCollectionImagesIdsEnum,
   getCollectionNameByIdEnum,
+  getDailyUploadCountEnum,
   getImageByIdEnum,
   getImagesEnum,
   getUserProfilePictureEnum,
+  getTotalViewsCountEnum,
   updateUserDetailEnum,
   updateUserProfilePictureEnum,
 } from "./visage-server-enum";
-import { EditProfileFormSchemaType } from "@/schemas/schemas";
-import { capitalize } from "@/utility/utils";
 
 /**
  * This server action will only return the profile picture link.
@@ -175,7 +181,7 @@ export async function likeImage(image: UniversalImageType) {
       const augmentedLikeImage =
         AugmentLikedImageIntoUniversalImage(deletedPhoto);
 
-      revalidatePath(LinkLikePage);
+      // revalidatePath(LinkLikePage);
 
       return {
         success: {
@@ -296,7 +302,7 @@ export async function getCollectionImagesIds() {
     const ids = await prisma.collectionNames.findMany({ where: { userId } });
     ids.map((id) =>
       (id.collectionImages as UniversalImagesType).map((id) =>
-        collectionNamesIds.push(String(id.id))
+        collectionNamesIds.push(id.imageId)
       )
     );
 
@@ -324,7 +330,16 @@ export async function getCollectionImagesIds() {
 export async function getImageById(id: string) {
   try {
     const image = await prisma.images.findUnique({ where: { id } });
+
     if (image) {
+      const previousViewCount = image.views ?? 0;
+
+      // updating the views count
+      await prisma.images.update({
+        data: { views: previousViewCount + 1 },
+        where: { id: image.id },
+      });
+
       const augmentImageIntoUniversalImage =
         AugmentImageIntoUniversalImage(image);
       return {
@@ -381,7 +396,6 @@ export async function getImages() {
   }
 }
 
-
 /**
  * This server action will return the collectionName via collectionId.
  * @param collectionNameId
@@ -418,7 +432,6 @@ export async function getCollectionNameById(collectionNameId: string) {
     };
   }
 }
-
 
 /**
  * This server action will change the collectionName via collectionId
@@ -480,7 +493,6 @@ export async function deleteCollectionName(collectionId: string) {
   }
 }
 
-
 /**
  * This server action will create the token for account deletion if token expired it will update the token when requested. NOTE: mail is sent in via frontend logic using SendEmail server action
  * @param userId
@@ -521,7 +533,6 @@ export async function createTokenForUserAccountDeletion(userId: string) {
   }
 }
 
-
 /**
  * this server action will update the userDetail profile picture is not included here because it was not the part of form data.
  * @param param0
@@ -560,7 +571,6 @@ export async function updateUserDetail({
     };
   }
 }
-
 
 /**
  * this server action will update the profile picture only. it is created seperatly because updating the profile picture was not the part of form data.
@@ -661,3 +671,113 @@ export async function deleteAccountByUserId(token: string) {
   }
 }
 
+/**
+ * This server action will perform checks for dailyUploadCount and create images if daily count not exceed.
+ */
+export async function createImages(images: Images[]) {
+  const augmentedImages = AugmentImagesImageField(images);
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          message: createImagesEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    const { success } = await getDailyUploadCount();
+    if (success) {
+      const dailyUploadCount = success.data;
+      const dailyUploadCountLimit = DailyUploadCount;
+
+      // checks to ensure the daily upload limit won't exceed.
+      if (images.length + dailyUploadCount > dailyUploadCountLimit) {
+        return {
+          failed: {
+            data: null,
+            message: `${
+              createImagesEnum.DAILY_COUNT_EXCEDDED
+            } Upload Limit Left : ${dailyUploadCountLimit - dailyUploadCount}`,
+          },
+        };
+      }
+    }
+
+    const newImages = await prisma.images.createMany({
+      data: augmentedImages,
+    });
+    return {
+      success: { data: newImages, message: createImagesEnum.IMAGE_CREATED },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: createImagesEnum.FAILED_TO_CREATE_IMAGES,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will return the number of images uploaded in a 24 hr interval
+ */
+export async function getDailyUploadCount() {
+  try {
+    const today = new Date();
+    const a24hrBefore = new Date().getTime() - 86400000;
+    const aDayBefore = new Date(a24hrBefore);
+
+    // find all uploaded images between 24 hr interval.
+    const dailyUploadCount = await prisma.images.findMany({
+      where: { createdAt: { gte: aDayBefore, lte: today } },
+    });
+    return {
+      success: {
+        data: dailyUploadCount.length,
+        message: getDailyUploadCountEnum.UPLOAD_COUNT,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: getDailyUploadCountEnum.FAILED_TO_GET_UPLOAD_COUNT,
+      },
+    };
+  }
+}
+
+/**
+ *
+ */
+export async function getTotalViewsCount() {
+  try {
+    const { userId } = await getCurrentUserId();
+    if (!userId) {
+      return {
+        failed: { data: null, message: getTotalViewsCountEnum.USER_NOT_LOGGED_IN },
+      };
+    }
+
+    const totalViews = await prisma.images.findMany({
+      where: {
+        userId: userId,
+      },
+      select: { views: true },
+    });
+
+    const views = totalViews.reduce((prev, current) => {
+      return current.views ?? 0 + prev;
+    }, 0);
+
+    return { success: { data: views, message: getTotalViewsCountEnum.FOUND_VIEWS } };
+  } catch (error) {
+    return { failed: { data: null, message: getTotalViewsCountEnum.FOUND_VIEWS } };
+  }
+}

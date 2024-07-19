@@ -45,11 +45,11 @@ export enum updateUserDetailEnum {
   USER_UPDATED = "USER_UPDATED",
 }
 
-// export enum getUserDetailByIdEnum {
-//   FAILED_TO_GET_USER_DETAIL = "FAILED_TO_GET_USER_DETAIL",
-//   FOUND_USER_DETAIL = "FOUND_USER_DETAIL",
-//   USER_NOT_LOGGED_IN = "USER_NOT_LOGGED_IN",
-// }
+export enum getTotalViewsCountEnum {
+  FAILED_TO_GET_VIEWS = "FAILED_TO_GET_VIEWS",
+  FOUND_VIEWS = "FOUND_USER_DETAIL",
+  USER_NOT_LOGGED_IN = "USER_NOT_LOGGED_IN",
+}
 
 export enum updateUserProfilePictureEnum {
   FAILED_TO_UPDATE_PROFILE_PICTURE = "FAILED_TO_UPDATE_PROFILE_PICTURE",

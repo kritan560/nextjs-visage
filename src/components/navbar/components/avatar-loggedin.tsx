@@ -4,7 +4,7 @@ import {
   LinkCollections,
   LinkEditProfile,
   LinkLogoutPage,
-  LinkProfile
+  LinkProfile,
 } from "@/links/links";
 import { ChevronUp } from "lucide-react";
 import { User } from "next-auth";
@@ -46,10 +46,11 @@ const components: { title: string; href: string }[] = [
 
 type NavbarAvatarLoggedInProps = {
   profilePicture: User["image"];
+  userName: string | null | undefined;
 };
 
 export function NavbarAvatarLoggedIn(props: NavbarAvatarLoggedInProps) {
-  const { profilePicture } = props;
+  const { profilePicture, userName } = props;
 
   const [hoverCardOpen, setHoverCardOpen] = useState(false);
 
@@ -84,8 +85,17 @@ export function NavbarAvatarLoggedIn(props: NavbarAvatarLoggedInProps) {
             <div key={component.href}>
               <Link
                 href={component.href}
-                className="h-10 px-6 hover:bg-stone-100 flex items-center cursor-pointer ">
-                {component.title}
+                className="h-10 px-6 hover:bg-stone-100 flex items-center cursor-pointer truncate">
+                {component.title === "Logout" ? (
+                  <>
+                    <span>{component.title}</span>{" "}
+                    <span className="underline ml-1 text-stone-600">
+                      ({userName})
+                    </span>
+                  </>
+                ) : (
+                  component.title
+                )}
               </Link>
               {component.title === "Logout" && <Separator className="my-3" />}
               {component.title === "Imprint & terms" && (
