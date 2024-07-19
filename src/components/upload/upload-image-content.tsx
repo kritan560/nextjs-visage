@@ -30,7 +30,6 @@ let uploadedDataArray: ReturnType<typeof AugmentImagesImageField> = [];
 
 export default function UploadImageContent() {
   const router = useRouter();
-  //   const [uploadedData, setUploadedData] = useState<Images[]>([]);
   const [uploadedData, setUploadedData] = useState<
     ReturnType<typeof AugmentImagesImageField>
   >([]);
@@ -164,7 +163,7 @@ export default function UploadImageContent() {
         </div>
 
         {/* left side image thumbnails */}
-        <div className="fixed left-0 translate-x-[70%] top-1/2 -translate-y-1/2">
+        <div className="fixed left-0 translate-x-[40%] top-1/2 -translate-y-1/2 w-28">
           <div className="h-96">
             <CldUploadWidget
               uploadPreset={"scmoywbv"}
@@ -174,12 +173,14 @@ export default function UploadImageContent() {
                 multiple: true,
                 maxFiles: dailyUploadCountLeft > 5 ? 5 : dailyUploadCountLeft,
                 clientAllowedFormats: ["jpg", "png", "jpeg"],
-              }}>
+              }}
+            >
               {({ open }) => {
                 return (
                   <div
                     onClick={() => open()}
-                    className="flex justify-center items-center rounded-lg bg-stone-100 h-20 aspect-square cursor-pointer">
+                    className="flex justify-center items-center rounded-lg bg-stone-100 h-20 aspect-square cursor-pointer mx-auto"
+                  >
                     <Plus
                       size={25}
                       strokeWidth={4}
@@ -191,37 +192,35 @@ export default function UploadImageContent() {
             </CldUploadWidget>
 
             {/* loop the image thumbnail here */}
-            <ScrollArea
-              type="hover"
-              className="h-[298px]">
-              <div className="pr-2">
-                {uploadedData.map((data) => (
-                  <div
-                    id={data.imageId}
-                    key={data.imageId}
-                    onClick={() => {
-                      document.getElementById(data.imageId)?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                      });
-                    }}
-                    className={cn(
-                      "aspect-square h-20 rounded-lg relative border-white my-2",
-                      activeImage === data.imageId
-                        ? "outline-[3px] outline-visage-600 outline border-[3px]"
-                        : "outline-none"
-                    )}>
-                    <Image
-                      src={data.image.src.original}
-                      alt=""
-                      fill
-                      className="rounded-lg"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: "cover" }}
-                    />
-                  </div>
-                ))}
-              </div>
+            <ScrollArea type="hover" className="h-[298px]">
+              {/* this div is for scrollbar padding */}
+              {uploadedData.map((data) => (
+                <div
+                  id={data.imageId}
+                  key={data.imageId}
+                  onClick={() => {
+                    document.getElementById(data.imageId)?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
+                  }}
+                  className={cn(
+                    "aspect-square h-[72px] cursor-pointer mx-auto rounded-lg relative border-white my-2",
+                    activeImage === data.imageId
+                      ? "outline-[3px] outline-visage-600 outline border-[3px]"
+                      : "outline-none"
+                  )}
+                >
+                  <Image
+                    src={data.image.src.original}
+                    alt=""
+                    fill
+                    className="rounded-lg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              ))}
             </ScrollArea>
           </div>
         </div>
@@ -233,10 +232,7 @@ export default function UploadImageContent() {
           <AdjustPadding>
             <div className="flex justify-between py-8 h-full">
               <div className="flex gap-x-4 items-start text-visage-600">
-                <FaRegCircleDot
-                  size={30}
-                  className="m-[6px]"
-                />
+                <FaRegCircleDot size={30} className="m-[6px]" />
                 <div>
                   <h2 className="font-semibold text-lg">Content uploaded</h2>
                   <p className="font-medium">
@@ -248,7 +244,8 @@ export default function UploadImageContent() {
                 onClick={handleSubmitClick}
                 type="button"
                 className="h-14 px-6"
-                variant={"visage"}>
+                variant={"visage"}
+              >
                 {" "}
                 Submit Your Content
               </Button>
@@ -276,10 +273,7 @@ export default function UploadImageContent() {
           <span className="absolute top-4 right-8 text-stone-400 text-sm font-medium">
             ({DailyUploadCount - dailyUploadCountLeft}/{DailyUploadCount})
           </span>
-          <Image
-            src={uploadIcon}
-            alt="upload icon"
-          />
+          <Image src={uploadIcon} alt="upload icon" />
           <h1 className="text-4xl font-bold text-stone-700">Click to upload</h1>
 
           <CldUploadWidget
@@ -291,7 +285,8 @@ export default function UploadImageContent() {
               maxFiles: dailyUploadCountLeft > 5 ? 5 : dailyUploadCountLeft,
               // maxFiles: 2,
               clientAllowedFormats: ["jpg", "png", "jpeg"],
-            }}>
+            }}
+          >
             {({ open }) => {
               return (
                 <Button
@@ -299,7 +294,8 @@ export default function UploadImageContent() {
                   className="h-14 px-8"
                   variant={"visage"}
                   type="button"
-                  disabled={dailyUploadCountLeft <= 0}>
+                  disabled={dailyUploadCountLeft <= 0}
+                >
                   Upload
                 </Button>
               );
@@ -321,9 +317,7 @@ export default function UploadImageContent() {
           </div>
 
           <Link href={LinkHomepage}>
-            <Button
-              className="h-12 px-8 text-base"
-              variant={"outline"}>
+            <Button className="h-12 px-8 text-base" variant={"outline"}>
               Skip Upload
             </Button>
           </Link>
