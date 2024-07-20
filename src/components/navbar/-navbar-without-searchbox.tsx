@@ -9,24 +9,27 @@ import LogoVisage from "./components/logo-visage";
 import { NavbarNotificationLoggedInOnly } from "./components/notification-loggedIn-only";
 import { NavbarThreeDotsHorizontal } from "./components/three-dots-horizontal";
 import Upload from "./components/upload";
+import { ModeToggle } from "../mode-toggle";
 
 const NavbarWithoutSearchBox = async () => {
-  const { isUserAuthenticated, profilePicture, userName } = await getCurrentUser();
+  const { isUserAuthenticated, profilePicture, userName } =
+    await getCurrentUser();
 
   const userAuthenticated = (
     <div className="text-white">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <LogoVisage />
 
-        <div className="flex gap-x-7 items-center ">
+        <div className="flex items-center gap-x-7">
           <Explore />
           <License />
           <NavbarNotificationLoggedInOnly />
-          <NavbarAvatarLoggedIn userName={userName} profilePicture={profilePicture} />
-          <NavbarButton
-            buttonName="upload"
-            href={LinkUploadPage}
+          <NavbarAvatarLoggedIn
+            userName={userName}
+            profilePicture={profilePicture}
           />
+          <ModeToggle />
+          <NavbarButton buttonName="upload" href={LinkUploadPage} />
         </div>
       </div>
     </div>
@@ -34,24 +37,22 @@ const NavbarWithoutSearchBox = async () => {
 
   const anonymousUser = (
     <div className="text-white">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <LogoVisage />
 
-        <div className="flex gap-x-9 items-center ">
+        <div className="flex items-center gap-x-9">
           <Explore />
           <License />
           <Upload />
           <NavbarThreeDotsHorizontal />
-          <NavbarButton
-            buttonName="join"
-            href={LinkJoinPage}
-          />
+          <ModeToggle />
+          <NavbarButton buttonName="join" href={LinkJoinPage} />
         </div>
       </div>
     </div>
   );
   return (
-    <AdjustPadding className="z-[11] relative">
+    <AdjustPadding className="relative z-[11]">
       {isUserAuthenticated ? userAuthenticated : anonymousUser}
     </AdjustPadding>
   );

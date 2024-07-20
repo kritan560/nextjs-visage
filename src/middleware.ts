@@ -1,11 +1,16 @@
 import { auth } from "@/auth";
 import {
+  LinkCollections,
   LinkEditProfile,
   LinkForgotPassword,
   LinkHomepage,
+  LinkImagePage,
   LinkJoinPage,
+  LinkLikePage,
   LinkLoginPage,
+  LinkLogoutPage,
   LinkProfile,
+  LinkUploadPage,
   LinkVideoPage,
 } from "./links/links";
 import { NextResponse } from "next/server";
@@ -21,7 +26,16 @@ export default auth((req) => {
   const HomepageURL = new URL(LinkHomepage, req.nextUrl);
 
   // you need to be logged-In to access this links
-  const UNAUTHORIZED_ROUTES = [LinkProfile, LinkEditProfile];
+  const UNAUTHORIZED_ROUTES = [
+    LinkProfile,
+    LinkEditProfile,
+    LinkUploadPage,
+    LinkLogoutPage,
+    LinkCollections,
+    LinkProfile,
+    LinkLikePage,
+    LinkEditProfile,
+  ];
   const UNAUTHORIZED = UNAUTHORIZED_ROUTES.includes(currentRoute);
 
   // you need to be loggedout to access this links

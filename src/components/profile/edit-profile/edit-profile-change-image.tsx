@@ -14,7 +14,7 @@ type EditProfileChangeImageProps = {
 };
 
 export default function EditProfileChangeImage(
-  props: EditProfileChangeImageProps
+  props: EditProfileChangeImageProps,
 ) {
   const { profilePicture, userId } = props;
   const [isPending, startTransition] = useTransition();
@@ -27,7 +27,7 @@ export default function EditProfileChangeImage(
     startTransition(async () => {
       const { failed, success } = await updateUserProfilePicture(
         userId,
-        secure_url
+        secure_url,
       );
       if (success) {
         toast.success(success.message);
@@ -42,7 +42,7 @@ export default function EditProfileChangeImage(
   }
 
   return (
-    <div className="flex gap-x-12 items-center">
+    <div className="flex items-center gap-x-12">
       <Image
         src={userProfilePicture ?? ""}
         alt=""
@@ -50,16 +50,15 @@ export default function EditProfileChangeImage(
         height={120}
         className="rounded-full"
       />
-      <CldUploadWidget
-        uploadPreset={"scmoywbv"}
-        onSuccess={handleSuccess}>
+      <CldUploadWidget uploadPreset={"scmoywbv"} onSuccess={handleSuccess}>
         {({ open }) => {
           return (
             <Button
               onClick={() => open()}
               className="h-14 px-6"
               variant={"visage"}
-              type="button">
+              type="button"
+            >
               Change Image
             </Button>
           );

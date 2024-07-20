@@ -17,6 +17,9 @@ import { revalidatePath } from "next/cache";
 import prisma from "../../../prisma/prisma.db";
 import { getCurrentUserId } from "../authentication/authentication-server";
 import {
+  GetCollectionNamesEnum,
+  GetLikedImagesEnum,
+  LikeImageEnum,
   changeCollectionNameEnum,
   collectImageEnum,
   createImagesEnum,
@@ -28,19 +31,31 @@ import {
   getDailyUploadCountEnum,
   getImageByIdEnum,
   getImagesEnum,
-  getUserProfilePictureEnum,
   getTotalViewsCountEnum,
+  getUserProfilePictureEnum,
   updateUserDetailEnum,
   updateUserProfilePictureEnum,
 } from "./visage-server-enum";
+import { AuthFailedEnum } from "../authentication/authentication-server-enums";
 
 /**
- * This server action will only return the profile picture link.
- * @param userId
+ * This server action will only return the profile picture image link.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param userId - The user id
  * @returns
  */
 export async function getUserProfilePicture(userId?: string) {
   try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: { data: null, message: AuthFailedEnum.USER_NOT_LOGGED_IN },
+      };
+    }
+
     const profilePicture = await prisma.user.findUnique({
       where: { id: userId },
       select: { image: true },
@@ -64,6 +79,11 @@ export async function getUserProfilePicture(userId?: string) {
 
 /**
  * it will remove, update or create the collectImageIds schema based on previousCollection.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ * @param collectionName - The collection Name
+ * @param collectionNameId - The collectionNames id
+ * @param image - The universalImage
  * @returns
  */
 export async function collectImage(
@@ -76,7 +96,7 @@ export async function collectImage(
 
     if (!userId) {
       return {
-        failed: { data: null, message: collectImageEnum.USER_NOT_LOGGED_IN },
+        failed: { data: null, message: AuthFailedEnum.USER_NOT_LOGGED_IN },
       };
     }
 
@@ -154,8 +174,15 @@ export async function collectImage(
 }
 
 /**
- * This server action takes the image of UniversalImageType add it to the liked image for the logged in user. when clicked and removes when clicked again.
- * @param image
+ * This server action takes the image of UniversalImageType
+ *
+ * add image to the liked image for the logged in user.
+ *
+ * when clicked and removes when clicked again.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param image - The UniversalImageType
  * @returns
  */
 export async function likeImage(image: UniversalImageType) {
@@ -164,7 +191,11 @@ export async function likeImage(image: UniversalImageType) {
 
     if (!userId) {
       return {
-        failed: { data: null, redirect: true, message: "User not logged in" },
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
       };
     }
 
@@ -187,7 +218,7 @@ export async function likeImage(image: UniversalImageType) {
         success: {
           data: augmentedLikeImage,
           redirect: false,
-          message: "Image unliked",
+          message: LikeImageEnum.IMAGE_LIKED,
         },
       };
     }
@@ -207,7 +238,7 @@ export async function likeImage(image: UniversalImageType) {
       success: {
         data: augmentedLikeImage,
         redirect: false,
-        message: "Image Liked",
+        message: LikeImageEnum.IMAGE_LIKED,
       },
     };
   } catch (error) {
@@ -216,7 +247,7 @@ export async function likeImage(image: UniversalImageType) {
       failed: {
         data: null,
         redirect: false,
-        message: "failed to create like photo",
+        message: LikeImageEnum.FAILED_TO_LIKE_PHOTO,
       },
     };
   }
@@ -224,6 +255,8 @@ export async function likeImage(image: UniversalImageType) {
 
 /**
  * This server action gets all the liked images of authenticated user.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
  * @returns
  */
 export async function getLikedImages() {
@@ -231,7 +264,9 @@ export async function getLikedImages() {
     const { userId } = await getCurrentUserId();
 
     if (!userId) {
-      return { failed: { data: null, message: "user not logged in" } };
+      return {
+        failed: { data: null, message: AuthFailedEnum.USER_NOT_LOGGED_IN },
+      };
     }
 
     const collectPhotos = await prisma.likedImages.findMany({
@@ -243,22 +278,40 @@ export async function getLikedImages() {
     return {
       success: {
         data: augmentedLikeImage,
-        message: "got the success photo",
+        message: GetLikedImagesEnum.GOT_LIKED_PHOTO,
       },
     };
   } catch (error) {
     console.error(error);
-    return { failed: { data: null, message: "failed to get like photo" } };
+    return {
+      failed: {
+        data: null,
+        message: GetLikedImagesEnum.FAILED_TO_GET_LIKED_PHOTO,
+      },
+    };
   }
 }
 
 /**
  * This server action returns all the collection names of logged in user
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
  * @returns
  */
 export async function getCollectionNames() {
   try {
     const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const collectionName = await prisma.collectionNames.findMany({
       where: { userId },
     });
@@ -270,19 +323,26 @@ export async function getCollectionNames() {
     return {
       success: {
         data: collectionNamesSorted,
-        message: "collection name retrived",
+        message: GetCollectionNamesEnum.GOT_COLLECTION_NAMES,
       },
     };
   } catch (error) {
     console.error(error);
     return {
-      error: { data: null, message: "failed to retrive collection name" },
+      error: {
+        data: null,
+        message: GetCollectionNamesEnum.FAILED_TO_GET_COLLECTION_NAMES,
+      },
     };
   }
 }
 
 /**
- * This server action will return all the collectionIds. CollectionIds are inside the collectonName it will loop through the collection names and return the collectionIds.
+ * This server action will return all the collectionIds.
+ *
+ * CollectionIds are inside the collectonName it will loop through the collection names and return the collectionIds.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
  * @returns
  */
 export async function getCollectionImagesIds() {
@@ -293,7 +353,7 @@ export async function getCollectionImagesIds() {
       return {
         failed: {
           data: null,
-          message: getCollectionImagesIdsEnum.USER_NOT_LOGGED_IN,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
         },
       };
     }
@@ -325,10 +385,18 @@ export async function getCollectionImagesIds() {
 }
 
 /**
+ * This server action will search for the unique image in DB.
  *
+ * if image is found, augment image into universalImage and return it
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param id - The Image Id
  */
 export async function getImageById(id: string) {
   try {
+    // user auth checks is not necessary here because unauth user can also query the image via id
+
     const image = await prisma.images.findUnique({ where: { id } });
 
     if (image) {
@@ -361,7 +429,13 @@ export async function getImageById(id: string) {
 }
 
 /**
- * return the user uploaded images.
+ * This server action will search for all images uploaded by the user.
+ *
+ * if found augment the image into UniversalImages
+ *
+ * return the user uploaded augmented images.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
  */
 export async function getImages() {
   try {
@@ -371,7 +445,7 @@ export async function getImages() {
       return {
         failed: {
           data: null,
-          message: getImagesEnum.USER_NOT_LOGGED_IN,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
         },
       };
     }
@@ -398,11 +472,25 @@ export async function getImages() {
 
 /**
  * This server action will return the collectionName via collectionId.
- * @param collectionNameId
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param collectionNameId - The collectionName id
  * @returns
  */
 export async function getCollectionNameById(collectionNameId: string) {
   try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
     const collectionName = await prisma.collectionNames.findUnique({
       where: { id: collectionNameId },
     });
@@ -435,8 +523,11 @@ export async function getCollectionNameById(collectionNameId: string) {
 
 /**
  * This server action will change the collectionName via collectionId
- * @param collectionId
- * @param newCollectionName
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param collectionId - The CollectionName id
+ * @param newCollectionName - The new CollectionName
  * @returns
  */
 export async function changeCollectionName(
@@ -444,6 +535,18 @@ export async function changeCollectionName(
   newCollectionName: string
 ) {
   try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const updateCollectionName = await prisma.collectionNames.update({
       where: { id: collectionId },
       data: { collectionName: newCollectionName },
@@ -468,11 +571,26 @@ export async function changeCollectionName(
 
 /**
  * This server action will delete the collection name via collectionId
- * @param collectionId
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param collectionId - The collection Id
  * @returns
  */
 export async function deleteCollectionName(collectionId: string) {
   try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const updateCollectionName = await prisma.collectionNames.delete({
       where: { id: collectionId },
     });
@@ -494,12 +612,31 @@ export async function deleteCollectionName(collectionId: string) {
 }
 
 /**
- * This server action will create the token for account deletion if token expired it will update the token when requested. NOTE: mail is sent in via frontend logic using SendEmail server action
+ * This server action will create the token for account deletion.
+ *
+ * if token expired it will update the token when requested.
+ *
+ * NOTE: mail is sent in via frontend logic using SendEmail server action
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
  * @param userId
  * @returns
  */
 export async function createTokenForUserAccountDeletion(userId: string) {
   try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const newToken = crypto.randomUUID();
 
     const updatedUserWithToken = await prisma.user.update({
@@ -534,9 +671,14 @@ export async function createTokenForUserAccountDeletion(userId: string) {
 }
 
 /**
- * this server action will update the userDetail profile picture is not included here because it was not the part of form data.
- * @param param0
- * @returns
+ * this server action will update the userDetail.
+ *
+ * NOTE: profile picture is not included here because it was not the part of form data.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param {string} userId - The user id
+ * @param updatedData - The updated Data
  */
 export async function updateUserDetail({
   userId,
@@ -546,6 +688,18 @@ export async function updateUserDetail({
   updatedData: EditProfileFormSchemaType;
 }) {
   try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
@@ -573,9 +727,14 @@ export async function updateUserDetail({
 }
 
 /**
- * this server action will update the profile picture only. it is created seperatly because updating the profile picture was not the part of form data.
- * @param userId
- * @param profilePicture
+ * this server action will update the profile picture only.
+ *
+ * it is created seperatly because updating the profile picture was not the part of form data.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param userId - The user Id
+ * @param profilePicture - The user Profile picture Link
  * @returns
  */
 export async function updateUserProfilePicture(
@@ -583,6 +742,18 @@ export async function updateUserProfilePicture(
   profilePicture: string
 ) {
   try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const updatedProfilePicture = await prisma.user.update({
       where: { id: userId },
       data: { image: profilePicture },
@@ -605,8 +776,17 @@ export async function updateUserProfilePicture(
 }
 
 /**
- * This server action will delete the account. It seaerch the account via token if token is expired the account will not be deleted you have to request new token and again have to go through process to delete an account.
- * @param token
+ * This server action will delete the account.
+ *
+ * It seaerch the account via token
+ *
+ * if token is expired the account will not be deleted
+ *
+ * you have to request new token and again have to go through process to delete an account.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param token - The token for an account
  * @returns
  */
 export async function deleteAccountByUserId(token: string) {
@@ -672,18 +852,36 @@ export async function deleteAccountByUserId(token: string) {
 }
 
 /**
- * This server action will perform checks for dailyUploadCount and create images if daily count not exceed.
+ * This server action will perform checks for dailyUploadCount
+ *
+ * create images if daily count not exceed.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param images - The prisma Images Types
  */
 export async function createImages(images: Images[]) {
   const augmentedImages = AugmentImagesImageField(images);
   try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const { userId } = await getCurrentUserId();
 
     if (!userId) {
       return {
         failed: {
           data: null,
-          message: createImagesEnum.USER_NOT_LOGGED_IN,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
         },
       };
     }
@@ -725,9 +923,23 @@ export async function createImages(images: Images[]) {
 
 /**
  * This server action will return the number of images uploaded in a 24 hr interval
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
  */
 export async function getDailyUploadCount() {
   try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const today = new Date();
     const a24hrBefore = new Date().getTime() - 86400000;
     const aDayBefore = new Date(a24hrBefore);
@@ -754,14 +966,31 @@ export async function getDailyUploadCount() {
 }
 
 /**
+ * This server action will get the totalViewsCount and totalContent of currently loggedin User
  *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
  */
 export async function getTotalViewsCount() {
   try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
     const { userId } = await getCurrentUserId();
     if (!userId) {
       return {
-        failed: { data: null, message: getTotalViewsCountEnum.USER_NOT_LOGGED_IN },
+        failed: {
+          data: null,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
       };
     }
 
@@ -772,12 +1001,21 @@ export async function getTotalViewsCount() {
       select: { views: true },
     });
 
-    const views = totalViews.reduce((prev, current) => {
-      return current.views ?? 0 + prev;
-    }, 0);
+    const totalContent = totalViews.length;
+    const views: number = totalViews.reduce(
+      (prev, current) => prev + current.views,
+      0
+    );
 
-    return { success: { data: views, message: getTotalViewsCountEnum.FOUND_VIEWS } };
+    return {
+      success: {
+        data: { views, totalContent },
+        message: getTotalViewsCountEnum.FOUND_VIEWS,
+      },
+    };
   } catch (error) {
-    return { failed: { data: null, message: getTotalViewsCountEnum.FOUND_VIEWS } };
+    return {
+      failed: { data: null, message: getTotalViewsCountEnum.FOUND_VIEWS },
+    };
   }
 }

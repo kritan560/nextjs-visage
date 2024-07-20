@@ -97,7 +97,7 @@ model Images {
   title    String?
   location String?
   tags     String?
-  views    Int?
+  views    Int     @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

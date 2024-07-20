@@ -27,9 +27,9 @@ export function SecondaryNavbar() {
         {SecondaryNavbarLinks.map((nav) => (
           <Link
             className={cn(
-              "px-4 py-3 font-semibold text-base transition bg-visage-100 rounded-full",
+              "px-4 py-3 font-semibold text-base transition bg-visage-100 dark:bg-visage-900 dark:text-white rounded-full",
               pathname === nav.href &&
-                "bg-visage-500 text-white  hover:bg-visage-600/80 active:bg-visage-600"
+              "bg-visage-500 dark:bg-visage-600 text-white  hover:bg-visage-600/80 active:bg-visage-600 dark:hover:bg-visage-700 dark:active:bg-visage-600"
             )}
             key={nav.href}
             href={nav.href}>

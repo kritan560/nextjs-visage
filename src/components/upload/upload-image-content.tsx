@@ -3,7 +3,6 @@
 import { AugmentImagesImageField } from "@/augment/augment";
 import { Button } from "@/components/ui/button";
 import { DailyUploadCount } from "@/constants/constants";
-import uploadIcon from "@/images/upload-icon.png";
 import { cn } from "@/lib/utils";
 import { LinkHomepage, LinkProfile } from "@/links/links";
 import { getCurrentUserId } from "@/servers/authentication/authentication-server";
@@ -22,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { FaRegCircleDot } from "react-icons/fa6";
+import UploadIcon from "../icons/upload-icon";
 import AdjustPadding from "../shared/adjust-padding";
 import { ScrollArea } from "../ui/scroll-area";
 import UploadedImageData from "./uploaded-image-data";
@@ -43,6 +43,7 @@ export default function UploadImageContent() {
     if (uploadedData.length > 0) {
       setIsDataUploaded(true);
     }
+    window.scrollTo({ top: 0 });
   }, [uploadedData.length]);
 
   useEffect(() => {
@@ -171,16 +172,14 @@ export default function UploadImageContent() {
               onClose={handleClose}
               options={{
                 multiple: true,
-                maxFiles: dailyUploadCountLeft > 5 ? 5 : dailyUploadCountLeft,
+                maxFiles: 5,
                 clientAllowedFormats: ["jpg", "png", "jpeg"],
-              }}
-            >
+              }}>
               {({ open }) => {
                 return (
                   <div
                     onClick={() => open()}
-                    className="flex justify-center items-center rounded-lg bg-stone-100 h-20 aspect-square cursor-pointer mx-auto"
-                  >
+                    className="flex justify-center items-center rounded-lg bg-stone-100 h-20 aspect-square cursor-pointer mx-auto">
                     <Plus
                       size={25}
                       strokeWidth={4}
@@ -192,7 +191,9 @@ export default function UploadImageContent() {
             </CldUploadWidget>
 
             {/* loop the image thumbnail here */}
-            <ScrollArea type="hover" className="h-[298px]">
+            <ScrollArea
+              type="hover"
+              className="h-[298px]">
               {/* this div is for scrollbar padding */}
               {uploadedData.map((data) => (
                 <div
@@ -209,8 +210,7 @@ export default function UploadImageContent() {
                     activeImage === data.imageId
                       ? "outline-[3px] outline-visage-600 outline border-[3px]"
                       : "outline-none"
-                  )}
-                >
+                  )}>
                   <Image
                     src={data.image.src.original}
                     alt=""
@@ -232,7 +232,10 @@ export default function UploadImageContent() {
           <AdjustPadding>
             <div className="flex justify-between py-8 h-full">
               <div className="flex gap-x-4 items-start text-visage-600">
-                <FaRegCircleDot size={30} className="m-[6px]" />
+                <FaRegCircleDot
+                  size={30}
+                  className="m-[6px]"
+                />
                 <div>
                   <h2 className="font-semibold text-lg">Content uploaded</h2>
                   <p className="font-medium">
@@ -244,8 +247,7 @@ export default function UploadImageContent() {
                 onClick={handleSubmitClick}
                 type="button"
                 className="h-14 px-6"
-                variant={"visage"}
-              >
+                variant={"visage"}>
                 {" "}
                 Submit Your Content
               </Button>
@@ -268,25 +270,26 @@ export default function UploadImageContent() {
         </p>
       </div>
 
-      <AdjustPadding className="relative">
-        <div className="h-[700px] mt-8 w-full border-2 border-dashed border-stone-300 rounded-[2rem] flex flex-col justify-center items-center space-y-12 p-6 relative">
+      <AdjustPadding className="relative mt-8">
+
+        <div className="h-[700px] w-full border-2 border-dashed border-stone-300 rounded-[2rem] flex flex-col justify-center items-center gap-y-11 p-6 relative">
+
           <span className="absolute top-4 right-8 text-stone-400 text-sm font-medium">
             ({DailyUploadCount - dailyUploadCountLeft}/{DailyUploadCount})
           </span>
-          <Image src={uploadIcon} alt="upload icon" />
-          <h1 className="text-4xl font-bold text-stone-700">Click to upload</h1>
 
+          <UploadIcon />{" "}
+
+          <h1 className="text-4xl font-bold text-stone-700">Click to upload</h1>
           <CldUploadWidget
             uploadPreset={"scmoywbv"}
             onSuccess={handleSuccess}
             onClose={handleClose}
             options={{
               multiple: true,
-              maxFiles: dailyUploadCountLeft > 5 ? 5 : dailyUploadCountLeft,
-              // maxFiles: 2,
+              maxFiles: 5,
               clientAllowedFormats: ["jpg", "png", "jpeg"],
-            }}
-          >
+            }}>
             {({ open }) => {
               return (
                 <Button
@@ -294,14 +297,12 @@ export default function UploadImageContent() {
                   className="h-14 px-8"
                   variant={"visage"}
                   type="button"
-                  disabled={dailyUploadCountLeft <= 0}
-                >
+                  disabled={dailyUploadCountLeft <= 0}>
                   Upload
                 </Button>
               );
             }}
           </CldUploadWidget>
-
           <div className="text-base font-medium text-stone-400">
             <p>
               (You have{" "}
@@ -315,15 +316,15 @@ export default function UploadImageContent() {
               upload left for the day)
             </p>
           </div>
-
           <Link href={LinkHomepage}>
-            <Button className="h-12 px-8 text-base" variant={"outline"}>
+            <Button
+              className="h-12 px-8 text-base"
+              variant={"outline"}>
               Skip Upload
             </Button>
           </Link>
-
           {/* blur part */}
-          <div className="h-28 w-full absolute blur-xl bottom-0 left-0 right-0 bg-white"></div>
+          <div className="h-28 w-full blur-md absolute -bottom-2 left-0 right-0 bg-white scale-x-105 scale-y-110"></div>
         </div>
       </AdjustPadding>
     </AdjustPadding>

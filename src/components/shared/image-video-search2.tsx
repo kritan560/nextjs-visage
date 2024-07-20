@@ -36,8 +36,9 @@ const onHoverDisplayElement: onHoverDisplayElementsType = [
     element: (
       <div
         className={
-          "flex items-center gap-x-2 h-10 cursor-pointer font-semibold text-base"
-        }>
+          "flex h-10 cursor-pointer items-center gap-x-2 text-base font-semibold"
+        }
+      >
         <LucideImage size={IconSize} />
         <p>Image</p>
       </div>
@@ -48,8 +49,9 @@ const onHoverDisplayElement: onHoverDisplayElementsType = [
     element: (
       <div
         className={
-          "flex items-center gap-x-2 h-10 cursor-pointer font-semibold text-base"
-        }>
+          "flex h-10 cursor-pointer items-center gap-x-2 text-base font-semibold"
+        }
+      >
         <Video size={IconSize} />
         <p>Video</p>
       </div>
@@ -155,42 +157,45 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
     <div className="relative">
       <div
         className={cn(
-          "bg-white h-12 rounded-md flex items-center z-10 relative",
+          "relative z-10 flex h-12 items-center rounded-md bg-white dark:bg-black dark:text-stone-50",
           border ? "bg-white" : "bg-stone-100",
-          openPopOver && "bg-white ring-1 ring-stone-300"
+          openPopOver && "bg-white ring-1 ring-stone-300",
         )}
-        ref={inputRef}>
+        ref={inputRef}
+      >
         {" "}
-        <HoverCard
-          openDelay={100}
-          closeDelay={100}>
+        <HoverCard openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>
             <Button
               variant={"ghost"}
               className={cn(
-                "flex items-center w-32 justify-center px-4 group mx-1 rounded-md",
-                border && "border border-stone-400 bg-stone-200"
-              )}>
+                "group mx-1 flex w-32 items-center justify-center rounded-md px-4",
+                border &&
+                  "border border-stone-400 bg-stone-200 dark:bg-stone-900",
+              )}
+            >
               {hoverElement?.element}
 
-              <div className="ml-2 transition duration-300 group-hover:rotate-180 ">
+              <div className="ml-2 transition duration-300 group-hover:rotate-180">
                 <ChevronDown size={17} />
               </div>
             </Button>
           </HoverCardTrigger>
           <HoverCardContent
-            className="-ml-1 p-0 mt-[2px] py-2 w-fit"
-            align="start">
+            className="-ml-1 mt-[2px] w-fit p-0 py-2"
+            align="start"
+          >
             <div className="flex flex-col">
               {onHoverDisplayElement.map((element) => (
                 <div
                   key={element.elementName}
                   onClick={() => handleElementClick(element)}
                   className={cn(
-                    "hover:bg-stone-200 px-7 flex justify-center",
+                    "flex justify-center px-7 hover:bg-stone-200 dark:hover:bg-stone-800",
                     hoverElement?.elementName == element.elementName &&
-                      "text-visage-600"
-                  )}>
+                      "text-visage-600",
+                  )}
+                >
                   {element.element}
                 </div>
               ))}
@@ -198,16 +203,14 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
           </HoverCardContent>
         </HoverCard>
         {!border && (
-          <Separator
-            orientation="vertical"
-            className="h-9 bg-stone-300"
-          />
+          <Separator orientation="vertical" className="h-9 bg-stone-300" />
         )}
         <div className="flex-grow">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex items-center">
+              className="flex items-center"
+            >
               <FormField
                 control={form.control}
                 name="searchedKeyword"
@@ -225,9 +228,9 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                         }}
                         type="text"
                         className={cn(
-                          "text-lg ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-white border-none pl-4",
+                          "border-none bg-white pl-4 text-lg ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-black",
                           !border && "bg-slate-100",
-                          openPopOver && "bg-white"
+                          openPopOver && "bg-white",
                         )}
                         placeholder={`Search for free ${hoverElement?.elementName}`}
                       />
@@ -235,19 +238,13 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                   </FormItem>
                 )}
               />
-              <Separator
-                orientation="vertical"
-                className="h-9 bg-stone-300"
-              />
+              <Separator orientation="vertical" className="h-9 bg-stone-300" />
               <Button
                 type="submit"
                 variant={"ghost"}
-                className="hover:text-visage-600 cursor-pointer transition">
-                <Search
-                  type="submit"
-                  strokeWidth={2.4}
-                  size={20}
-                />
+                className="cursor-pointer transition hover:text-visage-600"
+              >
+                <Search type="submit" strokeWidth={2.4} size={20} />
               </Button>
             </form>
           </Form>
@@ -256,9 +253,10 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
 
       <div
         className={cn(
-          "absolute rounded-md top-0 bg-white w-full",
-          openPopOver ? "visible ring-1 ring-stone-300 z-[7]" : "invisible"
-        )}>
+          "absolute top-0 w-full rounded-md bg-white dark:bg-black",
+          openPopOver ? "visible z-[7] ring-1 ring-stone-300" : "invisible",
+        )}
+      >
         <ScrollArea
           className={cn(
             "mt-10 p-4",
@@ -266,29 +264,30 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               ? hasCollection > 2
                 ? "h-96"
                 : "h-[272px]"
-              : "h-fit"
-          )}>
-          <div className="flex justify-between items-center">
-            <p className="font-bold text-xl text-stone-800">Recent Searches</p>
+              : "h-fit",
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <p className="text-xl font-bold text-stone-800 dark:text-stone-400">
+              Recent Searches
+            </p>
             <Button
               variant={"link"}
               className="text-base"
-              onClick={handleClearClick}>
+              onClick={handleClearClick}
+            >
               Clear
             </Button>
           </div>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 gap-3 min-[750px]:grid-cols-4">
             {keywords?.map((keyword, index) => (
               <Link
                 href={`/search/images/${keyword}`}
                 key={index}
-                className="h-12 w-full text-base font-medium flex gap-x-2 items-center border rounded-md px-4 hover:bg-stone-100 transition truncate">
+                className="flex h-12 w-full items-center gap-x-2 truncate rounded-md border bg-white px-4 text-base font-medium transition hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-600"
+              >
                 {keyword}
-                <Search
-                  type="submit"
-                  strokeWidth={2.4}
-                  size={20}
-                />
+                <Search type="submit" strokeWidth={2.4} size={20} />
               </Link>
             ))}
           </div>
@@ -296,7 +295,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
           {/* collections names */}
           {hasCollection > 0 && (
             <>
-              <h2 className="font-bold text-xl text-stone-800 mt-6 mb-2">
+              <h2 className="mb-2 mt-6 text-xl font-bold text-stone-800 dark:text-stone-400">
                 Collections
               </h2>
               <div className="grid grid-cols-2 gap-4">
@@ -314,7 +313,8 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                       <Link
                         href={`/collections/${collection.id}`}
                         key={collection.id}
-                        className="flex gap-x-2 items-center hover:bg-stone-100 transition rounded-md">
+                        className="flex items-center gap-x-2 rounded-md transition hover:bg-stone-100 dark:hover:bg-stone-900"
+                      >
                         <div className="h-20 w-20">
                           <CollectionImageResizable
                             gapSize="sm"
@@ -322,10 +322,10 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                           />
                         </div>
                         <div className="flex flex-col gap-y-2">
-                          <p className="font-medium text-base capitalize text-stone-800">
+                          <p className="text-base font-medium capitalize text-stone-800 dark:text-stone-400">
                             {collection.collectionName}
                           </p>
-                          <p className="text-stone-500 text-sm font-medium">
+                          <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
                             {collection.collectionImages.length} Content
                           </p>
                         </div>

@@ -19,7 +19,8 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
 
   const { profilePicture, userName } = await getCurrentUser();
   const { failed, success } = await getTotalViewsCount();
-  const totalViews = success?.data ?? 0;
+  const totalViews = success?.data.views;
+  const totalContent = success?.data.totalContent
 
   return (
     <>
@@ -43,7 +44,7 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
           )}
 
           {/* profile name */}
-          <h1 className="font-medium capitalize text-stone-700 text-5xl">
+          <h1 className="font-medium capitalize text-stone-700 dark:text-stone-400 text-5xl">
             {userName ?? ""}
           </h1>
           {/* profile edit button */}
@@ -53,7 +54,7 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
 
           {/* total views  */}
           <div className="flex flex-col items-center gap-y-1">
-            <p className="text-base text-stone-500">Total Views</p>
+            <p className="text-base text-stone-500 dark:text-stone-400">Total Views</p>
             <span className="font-semibold text-2xl">{totalViews}</span>
           </div>
         </div>
@@ -65,7 +66,7 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
 
       {/* profile links */}
       <AdjustPadding className="mt-12 font-medium">
-        <ProfileLink />
+        <ProfileLink totalContent={totalContent}/>
       </AdjustPadding>
 
       {/* children */}

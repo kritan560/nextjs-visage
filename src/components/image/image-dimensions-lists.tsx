@@ -17,7 +17,7 @@ export default function ImageDimensionLists(props: ImageDimensionListProps) {
   const [isPending, startTransition] = useTransition();
 
   const getImageDimensions = (
-    url: string
+    url: string,
   ): Promise<{ width: number; height: number }> => {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -43,10 +43,10 @@ export default function ImageDimensionLists(props: ImageDimensionListProps) {
   return (
     <>
       {isPending ? (
-        <div className="text-lg p-4 hover:bg-stone-100">
-          <div className="flex gap-x-5 items-center">
+        <div className="p-4 text-lg hover:bg-stone-100 dark:hover:bg-stone-800">
+          <div className="flex items-center gap-x-5">
             <p className="font-semibold">{obj[0]}</p>
-            <p className="flex justify-center items-center text-stone-600 font-medium animate-pulse bg-stone-200 w-full rounded-lg">
+            <p className="flex w-full animate-pulse items-center justify-center rounded-lg bg-stone-200 font-medium text-stone-600">
               loading...
             </p>
           </div>
@@ -55,14 +55,15 @@ export default function ImageDimensionLists(props: ImageDimensionListProps) {
         image && (
           <DownloadButtonDialog image={image}>
             <div
-              className="text-lg p-4 hover:bg-stone-100 cursor-pointer active:bg-stone-200/80"
+              className="cursor-pointer p-4 text-lg hover:bg-stone-100 active:bg-stone-200/80 dark:hover:bg-stone-800"
               onClick={(e) => {
                 handleDownloadImageClick(
                   obj[1],
-                  image.alt ?? image.photographer
+                  image.alt ?? image.photographer,
                 );
-              }}>
-              <div className="flex gap-x-5 items-center">
+              }}
+            >
+              <div className="flex items-center gap-x-5">
                 <p className="font-semibold">{obj[0]}</p>
                 <p className="font-medium text-stone-300">
                   {height} x {width}

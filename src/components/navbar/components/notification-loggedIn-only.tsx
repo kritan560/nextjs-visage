@@ -39,18 +39,18 @@ export function NavbarNotificationLoggedInOnly() {
                   className="rounded-full"
                 />
               </div>
-              <div className="text-slate-800">
+              <div className="text-slate-800 dark:text-slate-300">
                 Virtual high five for joining visage! We are striving to
                 build the most extraordinary photo community and are proud to
                 work with talented photographers from around the world who
                 submit thousands of free photos per day. You can help the
                 community by:
-                <ul className="list-disc underline pl-12 text-slate-700">
+                <ul className="list-disc underline pl-12 text-slate-700 dark:text-slate-400">
                   <li>Uploading your photos</li>
                   <li>Following photographers that inspire you</li>
                   <li>Discovering and liking trending photos</li>
                 </ul>
-                <p className="text-sm text-slate-500">4 years ago</p>
+                <p className="text-sm text-slate-500 dark:text-slate-300">4 years ago</p>
               </div>
             </div>
           </div>

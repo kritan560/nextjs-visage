@@ -29,11 +29,11 @@ export function VisageFormItem(props: VisageFormItemProps) {
   } = props;
 
   return (
-    <FormItem className={cn("w-full relative", className)}>
+    <FormItem className={cn("relative w-full", className)}>
       {showLabel && (
-        <FormLabel className="text-base text-stone-600">
+        <FormLabel className="text-base text-stone-600 dark:text-stone-300">
           {labelName}
-          <span className="text-rose-500 text-lg font-semibold">
+          <span className="text-lg font-semibold text-rose-500">
             {requiredCollectionLabel && "*"}
           </span>
         </FormLabel>
@@ -42,17 +42,17 @@ export function VisageFormItem(props: VisageFormItemProps) {
         <Input
           disabled={disabled}
           className={cn(
-            "h-12 font-medium placeholder:text-stone-400/80 px-4 border rounded-md w-full focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-500",
+            "h-12 w-full rounded-md border px-4 font-medium placeholder:text-stone-400/80 focus-visible:border-slate-500 focus-visible:ring-0 focus-visible:ring-offset-0",
             inputTextSize === "sm" && "text-sm",
             inputTextSize === "base" && "text-base",
-            inputTextSize === "large" && "text-lg"
+            inputTextSize === "large" && "text-lg",
           )}
           {...field}
           type={inputType}
           placeholder={inputPlaceholder}
         />
       </FormControl>
-      <FormMessage className="absolute -bottom-7 rounded-b-md mr-4 bg-rose-200 w-full p-1 truncate" />
+      <FormMessage className="absolute -bottom-7 mr-4 w-full truncate rounded-b-md bg-rose-200 p-1" />
     </FormItem>
   );
 }

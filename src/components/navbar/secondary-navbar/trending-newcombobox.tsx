@@ -14,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useGlobalImagesStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { LinkVideoPage } from "@/links/links";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -37,14 +38,21 @@ export default function TrendingNewComboBox() {
   const [value, setValue] = React.useState("trending");
   const pathname = usePathname();
   const isVideos = pathname.startsWith(LinkVideoPage);
+  const { globalImages, setGlobalImages } = useGlobalImagesStore();
 
   useEffect(() => {
     if (!isVideos) {
       if (value === "trending") {
         setTitle("Trending Stock Photos");
+        if (globalImages) {
+          setGlobalImages(globalImages.reverse());
+        }
       }
       if (value === "new") {
         setTitle("New Stock Photos");
+        if (globalImages) {
+          setGlobalImages(globalImages.reverse());
+        }
       }
     }
     if (isVideos) {

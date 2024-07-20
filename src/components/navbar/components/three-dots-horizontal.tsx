@@ -25,7 +25,7 @@ const hoverContents = [
   {
     seperator: true,
     title: (
-      <div className="text-stone-800 flex gap-x-2 items-center">
+      <div className="text-stone-800 dark:text-stone-200 flex gap-x-2 items-center">
         Change Language <GiUsaFlag size={18} />{" "}
       </div>
     ),
@@ -64,11 +64,11 @@ export function NavbarThreeDotsHorizontal() {
           <HiDotsHorizontal size={20} />
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className="px-0 w-fit py-2 text-stone-700/80">
+      <HoverCardContent className="px-0 w-fit py-2 text-stone-700/80 dark:text-stone-300">
         {hoverContents.map((content) => (
           <div key={content.href}>
             <Link
-              className="px-6 text-sm font-semibold py-2 whitespace-nowrap block cursor-pointer hover:bg-stone-100 capitalize"
+              className="px-6 text-sm font-semibold py-2 whitespace-nowrap block cursor-pointer hover:bg-stone-100 dark:hover:bg-stone-800 capitalize"
               key={content.href}
               href={content.href}>
               {content.title}

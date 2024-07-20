@@ -40,22 +40,21 @@ export function JoinRandomImages(props: JoinRandomImagesProps) {
   return (
     <Carousel
       plugins={[plugin.current]}
-      className="pointer-events-none">
-      <CarouselContent>
+      className="pointer-events-none " >
+      <CarouselContent className="">
         {imagesCollection.map((_, index) => (
-          <CarouselItem
+          <CarouselItem className=""
             key={index}
-            className="">
-            <Card className="border-none">
-              <CardContent className="h-screen p-0 w-full relative rounded-2xl">
+          >
+            <Card className="border-none ">
+              <CardContent className="h-[724px] p-0 w-full relative rounded-2xl">
                 <Image
                   src={_.src.large.toString()}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-
                   style={{ objectFit: "cover" }}
                   alt=""
-                  className="rounded-2xl"
+                  className="rounded-2xl h-screen"
                 />
                 <p className="text-white font-semibold text-sm absolute bottom-6 right-6">
                   Photgraphed by {_.photographer}

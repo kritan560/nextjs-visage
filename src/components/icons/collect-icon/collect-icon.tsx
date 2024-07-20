@@ -7,8 +7,8 @@ import {
 } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { LinkCollections, LinkLoginPage } from "@/links/links";
+import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
 import { collectImage } from "@/servers/visage/visage-server";
-import { collectImageEnum } from "@/servers/visage/visage-server-enum";
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CirclePlus } from "lucide-react";
@@ -45,25 +45,23 @@ export default function CollectIcon(props: CollectIconProps) {
     useGlobalCollectionNameStore();
   const router = useRouter();
 
-  console.log(globalCollectImagesIds, '<<<')
   async function handleAddToCollection(
     collectionName: string,
-    collectionNameId?: string
+    collectionNameId?: string,
   ) {
     const { failed, success } = await collectImage(
       collectionName,
       image,
-      collectionNameId
+      collectionNameId,
     );
 
     if (success) {
       toast.success(success.message);
 
-      // console.log(success.data, "<<<<");
       const successDataCollectionNameId = success.data.id;
 
       const updatedDataCollectionName = globalCollectionNames?.filter(
-        (data) => data.id !== successDataCollectionNameId
+        (data) => data.id !== successDataCollectionNameId,
       );
 
       if (updatedDataCollectionName) {
@@ -77,8 +75,8 @@ export default function CollectIcon(props: CollectIconProps) {
         const updatedCollectionImageIds: string[] = [];
         collectionNames.map((data) =>
           (data.collectionImages as UniversalImagesType).map((data) =>
-            updatedCollectionImageIds.push(data.imageId)
-          )
+            updatedCollectionImageIds.push(data.imageId),
+          ),
         );
 
         setGlobalCollectImageId(updatedCollectionImageIds);
@@ -87,7 +85,7 @@ export default function CollectIcon(props: CollectIconProps) {
 
     if (failed) {
       toast.error(failed.message);
-      if (failed.message === collectImageEnum.USER_NOT_LOGGED_IN) {
+      if (failed.message === AuthFailedEnum.USER_NOT_LOGGED_IN) {
         router.push(LinkLoginPage);
       }
     }
@@ -99,11 +97,12 @@ export default function CollectIcon(props: CollectIconProps) {
         <div
           className={cn(
             nameIncluded &&
-              "flex gap-x-2 items-center border rounded-md h-14 px-4 cursor-pointer transition hover:border-stone-500 active:border-stone-400",
+              "flex h-14 cursor-pointer items-center gap-x-2 rounded-md border px-4 transition hover:border-stone-500 active:border-stone-400",
             !nameIncluded &&
-              "bg-gray-300 p-2 rounded-lg hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition duration-200",
-            ""
-          )}>
+              "cursor-pointer rounded-lg bg-gray-300 p-2 transition duration-200 hover:bg-gray-200 active:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:active:bg-gray-800",
+            "",
+          )}
+        >
           {globalCollectImagesIds?.includes(image.imageId) ? (
             <>
               <IoBookmarksSharp fill="rgb(197 129 50)" />
@@ -111,59 +110,55 @@ export default function CollectIcon(props: CollectIconProps) {
             </>
           ) : (
             <>
-              <IoBookmarksOutline />
+              <IoBookmarksOutline className="" />
               <p>{nameIncluded && "Collect"}</p>
             </>
           )}
         </div>
       </DialogTrigger>
-      <DialogContent className="min-w-[650px] h-[500px] p-8">
-        <ScrollArea
-          type="auto"
-          className="h-[434px] w-full">
+      <DialogContent className="h-[500px] min-w-[650px] p-8">
+        <ScrollArea type="auto" className="h-[434px] w-full">
           <DialogHeader>
-            <DialogTitle className="text-center font-semibold text-3xl flex flex-col gap-y-4">
+            <DialogTitle className="flex flex-col gap-y-4 text-center text-3xl font-semibold">
               <span>Save to Collection</span>
               <Link
                 href={LinkCollections}
-                className="border-b border-dashed text-base font-medium text-stone-500 w-fit mx-auto border-stone-400 cursor-pointer hover:scale-105 transition active:scale-100 mb-4">
+                className="mx-auto mb-4 w-fit cursor-pointer border-b border-dashed border-stone-400 text-base font-medium text-stone-500 transition hover:scale-105 active:scale-100 dark:text-stone-400"
+              >
                 All Collection
               </Link>
             </DialogTitle>
           </DialogHeader>
           <DialogDescription></DialogDescription>
           {/* 2nd dialog */}
-          <Dialog
-            open={open2ndDialog}
-            onOpenChange={setOpen2ndDialog}>
-            <div className="grid grid-cols-3 gap-3 justify-items-center">
+          <Dialog open={open2ndDialog} onOpenChange={setOpen2ndDialog}>
+            <div className="grid grid-cols-3 justify-items-center gap-3">
               <DialogTrigger asChild>
                 {/* create new collection */}
-                <div className="flex flex-col w-fit">
-                  <div className="w-40 rounded-md bg-stone-200 aspect-square flex justify-center items-center cursor-pointer hover:scale-105 transition group">
+                <div className="flex w-fit flex-col">
+                  <div className="group flex aspect-square w-40 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 dark:bg-stone-400">
                     <CirclePlus
                       size={45}
-                      className="group-hover:scale-110 transition text-stone-600"
+                      className="text-stone-600 transition group-hover:scale-110"
                     />
                   </div>
-                  <p className="w-40 mt-1 truncate text-center">
+                  <p className="mt-1 w-40 truncate text-center">
                     Create new Collection
                   </p>
                 </div>
               </DialogTrigger>
 
               {globalCollectionNames?.map((collectionName) => (
-                <div
-                  key={collectionName.id}
-                  className="flex flex-col w-fit">
+                <div key={collectionName.id} className="flex w-fit flex-col">
                   <div
                     onClick={() =>
                       handleAddToCollection(
                         collectionName.collectionName,
-                        collectionName.id
+                        collectionName.id,
                       )
                     }
-                    className="w-40 rounded-md bg-stone-200 aspect-square cursor-pointer relative flex justify-center items-center hover:scale-105 active:scale-100 transition">
+                    className="relative flex aspect-square w-40 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 active:scale-100"
+                  >
                     {(
                       collectionName.collectionImages as UniversalImagesType
                     )?.find((img) => img.imageId == image.imageId) ? (
@@ -176,39 +171,39 @@ export default function CollectIcon(props: CollectIconProps) {
                           className="rounded-md"
                           style={{ objectFit: "cover" }}
                         />
-                        <div className="absolute bg-emerald-600/80 rounded-md w-40 h-40 flex justify-center items-center hover:bg-rose-600/80 group">
+                        <div className="group absolute flex h-40 w-40 items-center justify-center rounded-md bg-emerald-600/80 hover:bg-rose-600/80">
                           <FaCheckCircle
                             size={45}
-                            className="group-hover:hidden text-stone-50"
+                            className="text-stone-50 group-hover:hidden"
                           />
                           <IoMdCloseCircleOutline
                             size={45}
-                            className="group-hover:block hidden text-stone-50"
+                            className="hidden text-stone-50 group-hover:block"
                           />
                         </div>
                       </>
                     ) : (
-                      <div className="h-40 w-40 justify-center flex items-center hover:bg-black/75 rounded-md relative group transition">
+                      <div className="group relative flex h-40 w-40 items-center justify-center rounded-md transition hover:bg-black/75">
                         <LuImagePlus
                           size={45}
-                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:opacity-40 text-stone-600"
+                          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-stone-600 group-hover:opacity-40"
                         />{" "}
                         <CirclePlus
                           strokeWidth={"2px"}
                           size={45}
-                          className="group-hover:block hidden text-white z-[1]"
+                          className="z-[1] hidden text-white group-hover:block"
                         />
                       </div>
                     )}
                   </div>
-                  <p className="w-40 mt-1 capitalize truncate text-center">
+                  <p className="mt-1 w-40 truncate text-center capitalize">
                     {collectionName.collectionName}
                   </p>
                 </div>
               ))}
             </div>
 
-            <DialogContent className="p-12 min-w-[600px]">
+            <DialogContent className="min-w-[600px] p-12">
               <DialogHeader>
                 <DialogTitle className="text-center text-3xl font-semibold">
                   Save To New Collection
@@ -217,10 +212,7 @@ export default function CollectIcon(props: CollectIconProps) {
 
               <DialogDescription></DialogDescription>
 
-              <CollectIconForm
-                onOpenChange={setOpen2ndDialog}
-                image={image}
-              />
+              <CollectIconForm onOpenChange={setOpen2ndDialog} image={image} />
             </DialogContent>
           </Dialog>
         </ScrollArea>

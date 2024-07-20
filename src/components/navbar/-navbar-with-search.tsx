@@ -10,12 +10,13 @@ import Upload from "./components/upload";
 import { NavbarNotificationLoggedInOnly } from "./components/notification-loggedIn-only";
 import { NavbarButton } from "./components/button";
 import { LinkJoinPage, LinkUploadPage } from "@/links/links";
+import { ModeToggle } from "../mode-toggle";
 
 const NavbarWithSearchBox = async () => {
   const { userId, profilePicture, userName } = await getCurrentUser();
 
   const userAuthenticated = (
-    <div className="text-stone-800 bg-white">
+    <div className="">
       <div className="flex items-center gap-x-8">
         <LogoVisage />
 
@@ -23,15 +24,16 @@ const NavbarWithSearchBox = async () => {
           <ImageSearchVideo2 userId={userId} />
         </div>
 
-        <div className="flex gap-x-6 items-center">
+        <div className="flex items-center gap-x-6">
           <Explore />
           <License />
           <NavbarNotificationLoggedInOnly />
-          <NavbarAvatarLoggedIn userName={userName} profilePicture={profilePicture} />
-          <NavbarButton
-            buttonName="Upload"
-            href={LinkUploadPage}
+          <NavbarAvatarLoggedIn
+            userName={userName}
+            profilePicture={profilePicture}
           />
+          <ModeToggle />
+          <NavbarButton buttonName="Upload" href={LinkUploadPage} />
         </div>
       </div>
     </div>
@@ -45,21 +47,19 @@ const NavbarWithSearchBox = async () => {
         <ImageSearchVideo2 userId={userId} />
       </div>
 
-      <div className="flex gap-x-8 items-center">
+      <div className="flex items-center gap-x-8">
         <Explore />
         <License />
         <Upload />
         <NavbarThreeDotsHorizontal />
-        <NavbarButton
-          buttonName="join"
-          href={LinkJoinPage}
-        />
+        <ModeToggle />
+        <NavbarButton buttonName="join" href={LinkJoinPage} />
       </div>
     </div>
   );
 
   return (
-    <AdjustPadding className="bg-white">
+    <AdjustPadding className="bg-white dark:bg-stone-800 dark:text-stone-50">
       {!!userId ? userAuthenticated : anonymousUser}
     </AdjustPadding>
   );

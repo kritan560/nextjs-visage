@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { VisageFormItem } from "../../visage/visage-form-item";
+import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
 
 type CollectIconForm = {
   image: UniversalImageType;
@@ -73,7 +74,7 @@ export function CollectIconForm(props: CollectIconForm) {
     }
     if (failed) {
       toast.error(failed.message);
-      if (failed.message === collectImageEnum.USER_NOT_LOGGED_IN) {
+      if (failed.message === AuthFailedEnum.USER_NOT_LOGGED_IN) {
         router.push(LinkLoginPage);
       }
     }

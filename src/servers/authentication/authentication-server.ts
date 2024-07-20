@@ -4,11 +4,14 @@ import { auth, signOut } from "@/auth";
 import { LinkHomepage } from "@/links/links";
 import prisma from "../../../prisma/prisma.db";
 import { getUserProfilePicture } from "../visage/visage-server";
-import { getUserDetailByIdEnum } from "./authentication-server-enums";
+import {
+  AuthFailedEnum,
+  getUserDetailByIdEnum,
+} from "./authentication-server-enums";
 
 /**
  * This server action will return the profilePicture, userName, userId and isUserAuthenticated of a logged in user
- * @returns
+ * 
  * @example
  * const {isUserAuthenticated,
     profilePicture,
@@ -50,7 +53,9 @@ export async function getCurrentUser() {
 }
 
 /**
- * This server action will only return the isUserAuthenticataed, UserId and username. This action is created for sole purpose to reduce the DB calls made for profile picture.
+ * This server action will only return the isUserAuthenticataed, UserId and username.
+ *
+ * This action is created for sole purpose to reduce the DB calls made for profile picture.
  * @returns
  */
 export async function getCurrentUserId() {
@@ -64,7 +69,7 @@ export async function getCurrentUserId() {
   return {
     userId,
     userName,
-    isUserAuthenticated
+    isUserAuthenticated,
   };
 }
 
@@ -80,21 +85,23 @@ export async function LogoutTheUser() {
   }
 }
 
-
 /**
  * This server action will return the userDetail. it takes the UserId
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
  * @param userId
  * @returns
  */
 export async function getUserDetailById(userId: string) {
   try {
-    const { userId } = await getCurrentUserId();
+    const { isUserAuthenticated } = await getCurrentUserId();
 
-    if (!userId) {
+    if (!isUserAuthenticated) {
       return {
         failed: {
           data: null,
-          message: getUserDetailByIdEnum.USER_NOT_LOGGED_IN,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
         },
       };
     }

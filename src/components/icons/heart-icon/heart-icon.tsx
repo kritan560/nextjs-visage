@@ -23,7 +23,7 @@ export default function HeartIcon(props: HeartIconProps) {
     // if there is imageId then remove it
     if (globalLikedImagesIds?.includes(image.imageId)) {
       setGlobalLikedImageId(
-        globalLikedImagesIds?.filter((id) => id != image.imageId)
+        globalLikedImagesIds?.filter((id) => id != image.imageId),
       );
     }
 
@@ -40,7 +40,7 @@ export default function HeartIcon(props: HeartIconProps) {
       // if the collectImage action failed the revert the state too
       if (globalLikedImagesIds) {
         setGlobalLikedImageId(
-          globalLikedImagesIds.filter((id) => id != image.imageId)
+          globalLikedImagesIds.filter((id) => id != image.imageId),
         );
       }
 
@@ -55,18 +55,15 @@ export default function HeartIcon(props: HeartIconProps) {
     <div
       className={cn(
         nameIncluded &&
-          "flex gap-x-2 items-center border rounded-md h-14 px-4 cursor-pointer transition hover:border-stone-500 active:border-stone-400",
+          "flex h-14 cursor-pointer items-center gap-x-2 rounded-md border px-4 transition hover:border-stone-500 active:border-stone-400",
         !nameIncluded &&
-          "bg-gray-300 p-2 rounded-lg hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition duration-200 z-[1]"
+          "z-[1] cursor-pointer rounded-lg bg-gray-300 p-2 transition duration-200 hover:bg-gray-200 active:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:active:bg-gray-800",
       )}
-      onClick={handleHeartClick}>
+      onClick={handleHeartClick}
+    >
       {globalLikedImagesIds?.includes(image.imageId) ? (
         <>
-          <Heart
-            size={18}
-            fill="rgb(244, 63, 94)"
-            strokeWidth={0}
-          />
+          <Heart size={18} fill="rgb(244, 63, 94)" strokeWidth={0} />
           {nameIncluded && <p>Like</p>}
         </>
       ) : (

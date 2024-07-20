@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/theme-provider";
 import VisageScrollArea from "@/components/visage/visage-scroll-area";
 import VisageLogo from "@/images/visage-logo.png";
 import { cn } from "@/lib/utils";
@@ -23,22 +24,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
       </head>
       <body className={cn(plus_Jakarta_sans.className, "")}>
-        <NextTopLoader
-          color="rgb(197 129 50)"
-          crawlSpeed={600}
-          speed={400}
-          showSpinner={false}
-          height={4}
-        />
-        <Toaster />
-        <MantineProvider>
-          <VisageScrollArea>{children}</VisageScrollArea>
-        </MantineProvider>
+        <ThemeProvider attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange>
+
+          <NextTopLoader
+            color="rgb(197 129 50)"
+            crawlSpeed={600}
+            speed={400}
+            showSpinner={false}
+            height={4}
+          />
+
+          <Toaster />
+
+          <MantineProvider>
+            <VisageScrollArea>{children}</VisageScrollArea>
+          </MantineProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

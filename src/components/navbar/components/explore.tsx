@@ -36,7 +36,7 @@ export default function NavbarExplore() {
                   href={component.href}
                   key={component.href}
                   className={cn(
-                    "px-6 py-2 whitespace-nowrap hover:bg-stone-100 cursor-pointer block font-medium capitalize text-sm"
+                    "px-6 py-2 whitespace-nowrap hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer block font-medium capitalize text-sm"
                   )}>
                   {component.title}
                 </Link>

@@ -23,7 +23,7 @@ export default async function LoginPage() {
   return (
     <>
       <AdjustPadding>
-        <AdjustPadding className="py-4 flex justify-between items-center fixed top-0 z-10 left-0 right-0 bg-white">
+        <AdjustPadding className="py-4 flex justify-between items-center fixed top-0 z-10 left-0 right-0 bg-white dark:bg-black">
           <NavbarLogoVisage />
           <NavbarButton
             buttonName="Join"
@@ -57,7 +57,7 @@ export default async function LoginPage() {
         {/* card */}
         <Card className="absolute mt-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 min-w-fit rounded-[2rem] p-6">
           <CardHeader className="p-0">
-            <CardTitle className="text-center font-semibold text-4xl text-stone-800">
+            <CardTitle className="text-center font-semibold text-4xl text-stone-800 dark:text-stone-400">
               Welcome Back
             </CardTitle>
           </CardHeader>
@@ -72,7 +72,7 @@ export default async function LoginPage() {
                 <Button
                   type="submit"
                   className={
-                    "w-full border hover:bg-stone-100 h-12 hover:border-stone-500 active:bg-stone-200 text-base flex gap-x-2 items-center"
+                    "w-full border hover:bg-stone-100 h-12 hover:border-stone-500 active:bg-stone-200 text-base dark:hover:text-stone-800 flex gap-x-2 items-center"
                   }
                   variant={"ghost"}>
                   <FcGoogle size={30} />
@@ -98,7 +98,7 @@ export default async function LoginPage() {
 
             {/* separator */}
             <Separator className="w-full whitespace-pre h-[2px] relative">
-              <p className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white px-2 text-sm text-stone-500 font-medium">
+              <p className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white px-2 text-sm text-stone-500 font-medium dark:bg-inherit rounded-md">
                 <span>Or, sign in with your email</span>
               </p>
             </Separator>

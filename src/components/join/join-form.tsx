@@ -30,7 +30,7 @@ export function JoinForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-5">
+        className="space-y-9">
         <div className="flex gap-2 items-center w-full">
           <FormField
             control={form.control}

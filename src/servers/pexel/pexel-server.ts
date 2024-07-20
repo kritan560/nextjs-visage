@@ -9,6 +9,8 @@ import { pexel } from "./pexel-client";
 import { getPexelPhotoByIdEnum } from "./pexel-server-enums";
 
 /**
+ * This server action will get the curated photos.
+ *
  * @param page number - the default value of page is 1
  * @param per_page number - The default value of per_page is 15
  * @returns
@@ -37,8 +39,9 @@ export async function getPexelCuratedPhotosByPage_PerPage(
 }
 
 /**
+ * This server action will get the Pexel Photo by Id
  *
- * @param photoId
+ * @param photoId - The Photo Id
  * @returns
  */
 export async function getPexelPhotoById(photoId: string) {
@@ -57,15 +60,25 @@ export async function getPexelPhotoById(photoId: string) {
         },
       };
     }
+
+    // the return type is NULL coz in frontend it will switch to user uploaded images based on server NULL response
     return {
-      failed: { data: null, message: getPexelPhotoByIdEnum.NOT_PHOTO_TYPE },
+      failed: { data: null, message: getPexelPhotoByIdEnum.NULL },
     };
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return { failed: { data: null, message: getPexelPhotoByIdEnum.NULL } };
   }
 }
 
+/**
+ * This server action will get the Pexel photo by keyword
+ *
+ * @param keyword - The keyword for photos
+ * @param page  - The page number
+ * @param per_page - The amount of content per page
+ * @returns
+ */
 export async function getPexelPhotoByKeyword(
   keyword: string,
   page = 1,

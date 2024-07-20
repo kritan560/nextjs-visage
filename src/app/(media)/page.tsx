@@ -9,7 +9,8 @@ import { getCurrentUserId } from "@/servers/authentication/authentication-server
 import Image from "next/image";
 
 const Page = async () => {
-  const { isUserAuthenticated, userId } = await getCurrentUserId();
+  const { userId } = await getCurrentUserId();
+
   return (
     <div>
       {/* inside main image */}

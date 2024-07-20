@@ -1,8 +1,8 @@
-import AdjustPadding from "@/components/shared/adjust-padding";
 import { MasonryClient } from "@/components/masonry/masonry-client";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
 import EditCollectionDialog from "@/components/profile/collections/edit-collection-dialog";
+import AdjustPadding from "@/components/shared/adjust-padding";
 import { UniqueImage } from "@/components/shared/unique-image";
 import { LinkCollections, LinkProfile } from "@/links/links";
 import { getCurrentUser } from "@/servers/authentication/authentication-server";

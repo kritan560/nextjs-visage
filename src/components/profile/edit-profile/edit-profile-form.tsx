@@ -43,9 +43,8 @@ export function EditProfileForm(props: EditProfileFormProps) {
       return;
     }
 
-    const createTokenBeforeEmail = await createTokenForUserAccountDeletion(
-      profileId
-    );
+    const createTokenBeforeEmail =
+      await createTokenForUserAccountDeletion(profileId);
 
     if (createTokenBeforeEmail.success) {
       const email = createTokenBeforeEmail.success.data.email;
@@ -60,7 +59,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
       await SendEmail(
         email,
         `<p>to delete you account click the following link : ${getBaseURL()}/delete-account/${token}</p>`,
-        "About Deleting your account"
+        "About Deleting your account",
       );
     }
   }
@@ -99,10 +98,8 @@ export function EditProfileForm(props: EditProfileFormProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8">
-        <div className="flex gap-x-6 items-center">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="flex items-center gap-x-6">
           <FormField
             control={form.control}
             name="name"
@@ -130,7 +127,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
             )}
           />
         </div>
-        <div className="flex gap-x-6 items-center">
+        <div className="flex items-center gap-x-6">
           <FormField
             control={form.control}
             name="email"
@@ -159,14 +156,11 @@ export function EditProfileForm(props: EditProfileFormProps) {
           />
         </div>
 
-        <Button
-          type="button"
-          variant={"secondary"}
-          className="h-12 px-6">
+        <Button type="button" variant={"secondary"} className="h-12 px-6">
           Change Password
         </Button>
 
-        <h1 className="text-start font-semibold text-4xl pt-8">About You</h1>
+        <h1 className="pt-8 text-start text-4xl font-semibold">About You</h1>
 
         <FormField
           control={form.control}
@@ -175,10 +169,10 @@ export function EditProfileForm(props: EditProfileFormProps) {
             <div className="flex flex-col gap-y-1">
               <Textarea
                 placeholder="Tell us a little bit about yourself"
-                className="resize-none h-40"
+                className="h-40 resize-none text-lg placeholder:text-lg"
                 {...field}
               />
-              <div className="flex justify-between items-center font-medium text-stone-400">
+              <div className="flex items-center justify-between font-medium text-stone-400">
                 <p>Brief Description of your profile</p>
                 <p>
                   <span
@@ -186,8 +180,9 @@ export function EditProfileForm(props: EditProfileFormProps) {
                       shortBioWordCount < 150
                         ? "text-rose-500"
                         : "text-emerald-600",
-                      "mr-1"
-                    )}>
+                      "mr-1",
+                    )}
+                  >
                     {shortBioWordCount}
                   </span>
                   of 150
@@ -197,7 +192,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
           )}
         />
 
-        <div className="flex gap-x-6 items-center">
+        <div className="flex items-center gap-x-6">
           <FormField
             control={form.control}
             name="location"
@@ -224,7 +219,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
           />
         </div>
 
-        <div className="flex gap-x-6 items-center">
+        <div className="flex items-center gap-x-6">
           <FormField
             control={form.control}
             name="x"
@@ -251,7 +246,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
           />
         </div>
 
-        <div className="flex gap-x-6 items-center">
+        <div className="flex items-center gap-x-6">
           <FormField
             control={form.control}
             name="instagram"
@@ -278,52 +273,49 @@ export function EditProfileForm(props: EditProfileFormProps) {
           />
         </div>
 
-        <div className="text-lg pt-8">
-          <h1 className="text-center font-semibold text-4xl my-6">
+        <div className="pt-8 text-lg">
+          <h1 className="my-6 text-center text-4xl font-semibold">
             Additional Settings
           </h1>
 
           <p>Remove account and all Data</p>
-          <Dialog
-            open={dialogOpen}
-            onOpenChange={setDialogOpen}>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger>
-              <span className="border-b w-fit border-dashed border-stone-400 text-stone-600 cursor-pointer">
+              <span className="w-fit cursor-pointer border-b border-dashed border-stone-400 text-stone-600 dark:text-stone-400">
                 Remove Account
               </span>
             </DialogTrigger>
             <DialogContent className="min-w-[600px] p-12">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-semibold text-center">
+                <DialogTitle className="text-center text-2xl font-semibold">
                   Request to Close Your Visage Account
                 </DialogTitle>
               </DialogHeader>
 
-              <p className="text-lg text-justify">
+              <p className="text-justify text-lg">
                 Once you delete your account, it can&apos;t be restored. If you
                 continue, we will email you a link to confirm your account
                 removal.
               </p>
-              <div className="flex justify-between items-center mt-6">
-                <Dialog
-                  open={dialog2Open}
-                  onOpenChange={setDialog2Open}>
+              <div className="mt-6 flex items-center justify-between">
+                <Dialog open={dialog2Open} onOpenChange={setDialog2Open}>
                   <DialogTrigger>
                     <Button
                       onClick={handleMailSend}
                       variant={"destructive"}
-                      className="h-12 px-6 text-lg font-medium">
+                      className="h-12 px-6 text-lg font-medium"
+                    >
                       Delete My Account
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="min-w-[600px] p-12">
                     <DialogHeader>
-                      <DialogTitle className="text-2xl text-center">
+                      <DialogTitle className="text-center text-2xl">
                         Request to close your Visage Account
                       </DialogTitle>
                     </DialogHeader>
 
-                    <p className="text-lg mt-6">
+                    <p className="mt-6 text-lg">
                       To confirm the deletion of your Visage account, please
                       click on the link sent to{" "}
                       <span className="font-semibold">
@@ -331,7 +323,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
                       </span>
                     </p>
 
-                    <p className="text-stone-400 mt-6">
+                    <p className="mt-6 text-stone-400">
                       If you didn&apos;t receive this email, please{" "}
                       <span
                         onClick={async () => {
@@ -339,7 +331,8 @@ export function EditProfileForm(props: EditProfileFormProps) {
                           setDialogOpen(false);
                           await handleMailSend();
                         }}
-                        className="font-semibold border-b border-dashed border-stone-400 text-stone-800 cursor-pointer">
+                        className="cursor-pointer border-b border-dashed border-stone-400 font-semibold text-stone-800"
+                      >
                         click here
                       </span>{" "}
                       to receive it again.
@@ -349,7 +342,8 @@ export function EditProfileForm(props: EditProfileFormProps) {
                 <Button
                   variant={"outline"}
                   onClick={() => setDialogOpen(false)}
-                  className="h-12 px-6 text-lg font-medium">
+                  className="h-12 px-6 text-lg font-medium"
+                >
                   Cancel
                 </Button>
               </div>
@@ -357,11 +351,12 @@ export function EditProfileForm(props: EditProfileFormProps) {
           </Dialog>
         </div>
 
-        <div className="pt-10 mx-auto w-fit">
+        <div className="mx-auto w-fit pt-10">
           <Button
             type="submit"
             variant={"visage"}
-            className="h-12 px-6 text-lg">
+            className="h-12 px-6 text-lg"
+          >
             Save Profile
           </Button>
         </div>
