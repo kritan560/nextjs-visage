@@ -1,22 +1,23 @@
 "use client";
 
 import { useGlobalImagesStore } from "@/global-states/visage-image-state";
+import { cn } from "@/lib/utils";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
+import { MediaType, UniversalImagesType } from "@/types/visage-type";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
-import { cn } from "@/lib/utils";
-import { MediaType } from "@/types/visage-type";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
-import AdjustPadding from "./adjust-padding";
 import { MasonryClient } from "../masonry/masonry-client";
+import AdjustPadding from "./adjust-padding";
 import { UniqueImage } from "./unique-image";
 
 type InfiniteScrollProps = {
   mediaType: MediaType | undefined;
+  curatedAndImages: UniversalImagesType;
 };
 
 export default function InfiniteScroll(props: InfiniteScrollProps) {
-  const { mediaType } = props;
+  const { mediaType, curatedAndImages } = props;
 
   const { ref, inView } = useInView();
   const [isPending, startTransition] = useTransition();
@@ -30,6 +31,7 @@ export default function InfiniteScroll(props: InfiniteScrollProps) {
     if (inView) {
       startTransition(async () => {
         const curatedPhotos = await getPexelCuratedPhotosByPage_PerPage(page);
+
         if (globalImages && curatedPhotos) {
           setPexelCuratedPhotos([...globalImages, ...curatedPhotos]);
         }
@@ -40,33 +42,44 @@ export default function InfiniteScroll(props: InfiniteScrollProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
+  useEffect(() => {
+    setPexelCuratedPhotos([...curatedAndImages]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // startTransition(async () => {
+  //   const { failed, success } = await getImages();
+  //   const curatedPhotos = await getPexelCuratedPhotosByPage_PerPage();
+
+  //   const images = success?.data;
+  //   if (images && curatedPhotos) {
+  //     setPexelCuratedPhotos([...images, ...curatedPhotos]);
+  //   }
+  // });
+
   return (
     <AdjustPadding>
       {/* image mansonry */}
       {mediaType === "Image" && (
         <MasonryClient>
           {globalImages?.map((image) => (
-            <UniqueImage
-              key={image.id}
-              image={image}
-            />
+            <UniqueImage key={image.id} image={image} />
           ))}
         </MasonryClient>
       )}
-      <div className="h-14 overflow-x-clip relative">
+      <div className="relative h-14 overflow-x-clip">
         <PropagateLoader
           size={30}
           className={cn(
-            "scale-[2.0] text-center block bottom-0",
-            initialLoading && "animate-pulse"
+            "bottom-0 block scale-[2.0] text-center",
+            initialLoading && "animate-pulse",
           )}
           color="rgb(197 129 50)"
           loading={isPending || initialLoading}
         />
       </div>
-      <div
-        ref={ref}
-        className="h-1"></div>
+      <div ref={ref} className="h-1"></div>
     </AdjustPadding>
   );
 }

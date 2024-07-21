@@ -107,9 +107,9 @@ export function NavbarAvatarLoggedIn(props: NavbarAvatarLoggedInProps) {
           {/* social icons */}
           <div className="flex items-center justify-center gap-x-3 px-6">
             {SocialLogosLinks.map((logo) => (
-              <div className="cursor-pointer" key={logo.socialLogoName}>
+              <Link href={logo.href} className="cursor-pointer" key={logo.href}>
                 <logo.socialLogo size={SocialLogosSize} />
-              </div>
+              </Link>
             ))}
           </div>
         </div>

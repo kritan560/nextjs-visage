@@ -108,7 +108,6 @@ export type EditProfileFormSchemaType = z.infer<typeof EditProfileFormSchema>;
  */
 export const UploadImageFormSchema = z.object({
   title: z.string().optional(),
-  tags: z.string().optional(),
   location: z.string().optional(),
 });
 export type UploadImageFormSchemaType = z.infer<typeof UploadImageFormSchema>;

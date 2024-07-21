@@ -25,6 +25,7 @@ import UploadIcon from "../icons/upload-icon";
 import AdjustPadding from "../shared/adjust-padding";
 import { ScrollArea } from "../ui/scroll-area";
 import UploadedImageData from "./uploaded-image-data";
+import nProgress from "nprogress";
 
 let uploadedDataArray: ReturnType<typeof AugmentImagesImageField> = [];
 
@@ -37,14 +38,6 @@ export default function UploadImageContent() {
   const [isPending, startTransition] = useTransition();
   const [dailyUploadCountLeft, setDailyUploadCountLeft] =
     useState(DailyUploadCount);
-  const [isDataUploaded, setIsDataUploaded] = useState(uploadedData.length > 0);
-
-  useEffect(() => {
-    if (uploadedData.length > 0) {
-      setIsDataUploaded(true);
-    }
-    window.scrollTo({ top: 0 });
-  }, [uploadedData.length]);
 
   useEffect(() => {
     startTransition(async () => {
@@ -82,7 +75,7 @@ export default function UploadImageContent() {
       updatedAt: new Date(),
       imageId: randomHex,
       location: "",
-      tags: "",
+      tags: [],
       title: "",
       userId: userId,
       views: 0,
@@ -129,6 +122,8 @@ export default function UploadImageContent() {
     if (success) {
       toast.success(success.message);
       router.push(LinkProfile);
+      nProgress.start();
+
       setUploadedData([]);
     }
     if (failed) {
@@ -136,14 +131,14 @@ export default function UploadImageContent() {
     }
   }
 
-  if (isDataUploaded) {
+  if (uploadedData.length > 0) {
     return (
-      <AdjustPadding className="mt-16 relative">
-        <div className="w-[75%] mx-auto">
-          <h1 className="text-center font-semibold text-3xl text-stone-600">
+      <AdjustPadding className="relative mt-16">
+        <div className="mx-auto w-[75%]">
+          <h1 className="text-center text-3xl font-semibold text-stone-600 dark:text-stone-400">
             Make your photos easy to find and be seen.
           </h1>
-          <p className="mt-5 text-lg font-medium text-center w-[82%] mx-auto text-stone-500">
+          <p className="mx-auto mt-5 w-[82%] text-center text-lg font-medium text-stone-500 dark:text-stone-400">
             The way hashtags make your content discoverable in social media,
             tags will make it easier to find on ImageHive.{" "}
             <span className="font-bold">
@@ -164,7 +159,7 @@ export default function UploadImageContent() {
         </div>
 
         {/* left side image thumbnails */}
-        <div className="fixed left-0 translate-x-[40%] top-1/2 -translate-y-1/2 w-28">
+        <div className="fixed left-0 top-1/2 w-28 -translate-y-1/2 translate-x-[40%]">
           <div className="h-96">
             <CldUploadWidget
               uploadPreset={"scmoywbv"}
@@ -174,16 +169,18 @@ export default function UploadImageContent() {
                 multiple: true,
                 maxFiles: 5,
                 clientAllowedFormats: ["jpg", "png", "jpeg"],
-              }}>
+              }}
+            >
               {({ open }) => {
                 return (
                   <div
                     onClick={() => open()}
-                    className="flex justify-center items-center rounded-lg bg-stone-100 h-20 aspect-square cursor-pointer mx-auto">
+                    className="mx-auto flex aspect-square h-20 cursor-pointer items-center justify-center rounded-lg bg-stone-100 dark:bg-stone-800"
+                  >
                     <Plus
                       size={25}
                       strokeWidth={4}
-                      className="text-stone-600"
+                      className="text-stone-600 dark:text-stone-400"
                     />
                   </div>
                 );
@@ -191,9 +188,7 @@ export default function UploadImageContent() {
             </CldUploadWidget>
 
             {/* loop the image thumbnail here */}
-            <ScrollArea
-              type="hover"
-              className="h-[298px]">
+            <ScrollArea type="hover" className="h-[298px]">
               {/* this div is for scrollbar padding */}
               {uploadedData.map((data) => (
                 <div
@@ -206,11 +201,12 @@ export default function UploadImageContent() {
                     });
                   }}
                   className={cn(
-                    "aspect-square h-[72px] cursor-pointer mx-auto rounded-lg relative border-white my-2",
+                    "relative mx-auto my-2 aspect-square h-[72px] cursor-pointer rounded-lg border-white",
                     activeImage === data.imageId
-                      ? "outline-[3px] outline-visage-600 outline border-[3px]"
-                      : "outline-none"
-                  )}>
+                      ? "border-[3px] outline outline-[3px] outline-visage-600"
+                      : "outline-none",
+                  )}
+                >
                   <Image
                     src={data.image.src.original}
                     alt=""
@@ -228,16 +224,13 @@ export default function UploadImageContent() {
         {/* footer content */}
         {/* this is to componsate the fixed div height so the the content won't go beyond the fixed div*/}
         <div className="h-32"></div>
-        <div className="fixed bottom-0 bg-white left-0 right-0">
+        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-stone-900">
           <AdjustPadding>
-            <div className="flex justify-between py-8 h-full">
-              <div className="flex gap-x-4 items-start text-visage-600">
-                <FaRegCircleDot
-                  size={30}
-                  className="m-[6px]"
-                />
+            <div className="flex h-full justify-between py-8">
+              <div className="flex items-start gap-x-4 text-visage-600">
+                <FaRegCircleDot size={30} className="m-[6px]" />
                 <div>
-                  <h2 className="font-semibold text-lg">Content uploaded</h2>
+                  <h2 className="text-lg font-semibold">Content uploaded</h2>
                   <p className="font-medium">
                     {uploadedData.length} photos or videos have been uploaded
                   </p>
@@ -247,7 +240,8 @@ export default function UploadImageContent() {
                 onClick={handleSubmitClick}
                 type="button"
                 className="h-14 px-6"
-                variant={"visage"}>
+                variant={"visage"}
+              >
                 {" "}
                 Submit Your Content
               </Button>
@@ -260,27 +254,25 @@ export default function UploadImageContent() {
 
   return (
     <AdjustPadding className="mt-20">
-      <div className="w-[60%] mx-auto">
-        <h1 className="text-4xl font-semibold text-center text-stone-700">
+      <div className="mx-auto w-[60%]">
+        <h1 className="text-center text-4xl font-semibold text-stone-700 dark:text-stone-400">
           Share your photos and videos, and let the world love them.
         </h1>
-        <p className="mt-5 text-lg w-[70%] text-center mx-auto font-medium text-stone-500">
+        <p className="mx-auto mt-5 w-[70%] text-center text-lg font-medium text-stone-500 dark:text-stone-300">
           Share your first {DailyUploadCount} photos or videos to introduce
           yourself to millions of ImageHive users.
         </p>
       </div>
 
       <AdjustPadding className="relative mt-8">
-
-        <div className="h-[700px] w-full border-2 border-dashed border-stone-300 rounded-[2rem] flex flex-col justify-center items-center gap-y-11 p-6 relative">
-
-          <span className="absolute top-4 right-8 text-stone-400 text-sm font-medium">
+        <div className="relative flex h-[700px] w-full flex-col items-center justify-center gap-y-11 rounded-[2rem] border-2 border-dashed border-stone-300 p-6">
+          <span className="absolute right-8 top-4 text-sm font-medium text-stone-400">
             ({DailyUploadCount - dailyUploadCountLeft}/{DailyUploadCount})
           </span>
-
           <UploadIcon />{" "}
-
-          <h1 className="text-4xl font-bold text-stone-700">Click to upload</h1>
+          <h1 className="text-4xl font-bold text-stone-700 dark:text-stone-400">
+            Click to upload
+          </h1>
           <CldUploadWidget
             uploadPreset={"scmoywbv"}
             onSuccess={handleSuccess}
@@ -289,7 +281,8 @@ export default function UploadImageContent() {
               multiple: true,
               maxFiles: 5,
               clientAllowedFormats: ["jpg", "png", "jpeg"],
-            }}>
+            }}
+          >
             {({ open }) => {
               return (
                 <Button
@@ -297,7 +290,8 @@ export default function UploadImageContent() {
                   className="h-14 px-8"
                   variant={"visage"}
                   type="button"
-                  disabled={dailyUploadCountLeft <= 0}>
+                  disabled={dailyUploadCountLeft <= 0}
+                >
                   Upload
                 </Button>
               );
@@ -308,7 +302,7 @@ export default function UploadImageContent() {
               (You have{" "}
               <span className="text-visage-600">
                 {isPending ? (
-                  <span className="font-bold animate-pulse h-4 w-4">🟤</span>
+                  <span className="h-4 w-4 animate-pulse font-bold">🟤</span>
                 ) : (
                   `${dailyUploadCountLeft}`
                 )}
@@ -317,14 +311,12 @@ export default function UploadImageContent() {
             </p>
           </div>
           <Link href={LinkHomepage}>
-            <Button
-              className="h-12 px-8 text-base"
-              variant={"outline"}>
+            <Button className="h-12 px-8 text-base" variant={"outline"}>
               Skip Upload
             </Button>
           </Link>
           {/* blur part */}
-          <div className="h-28 w-full blur-md absolute -bottom-2 left-0 right-0 bg-white scale-x-105 scale-y-110"></div>
+          <div className="absolute -bottom-2 left-0 right-0 h-28 w-full scale-x-105 scale-y-110 bg-white blur-md dark:bg-black"></div>
         </div>
       </AdjustPadding>
     </AdjustPadding>

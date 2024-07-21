@@ -3,13 +3,14 @@
 import { AugmentImagesImageField } from "@/augment/augment";
 import { Form, FormField } from "@/components/ui/form";
 import {
-    UploadImageFormSchema,
-    UploadImageFormSchemaType,
+  UploadImageFormSchema,
+  UploadImageFormSchemaType,
 } from "@/schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TagsInput } from "@mantine/core";
 import { Images } from "@prisma/client";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdDelete } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
@@ -24,13 +25,13 @@ type UploadedDataProps = {
 export default function UploadedImageData(props: UploadedDataProps) {
   const { data, handleRemoveImageClick, setActive } = props;
   const { inView, ref, entry } = useInView({ threshold: 0.95 });
+  const [value, setValue] = useState<string[]>([]);
 
   // 1. Define your form.
   const form = useForm<UploadImageFormSchemaType>({
     resolver: zodResolver(UploadImageFormSchema),
     defaultValues: {
       location: "",
-      tags: "",
       title: "",
     },
   });
@@ -54,21 +55,21 @@ export default function UploadedImageData(props: UploadedDataProps) {
 
   const title = form.watch("title") ?? "";
   const location = form.watch("location") ?? "";
-  const tags = form.watch("tags") ?? "";
 
   useEffect(() => {
     data.title = title;
     data.location = location;
-    data.tags = tags;
-  }, [title, tags, location, data]);
+    data.tags = value.map((val) => val.toLowerCase());
+  }, [title, value, location, data]);
 
   return (
     <div
       ref={ref}
       key={data.id}
       id={data.imageId}
-      className="mt-14 bg-stone-100 w-full h-fit rounded-3xl px-10 py-8 relative">
-      <div className="flex gap-x-4 items-center">
+      className="relative mt-14 h-fit w-full rounded-3xl bg-stone-100 px-10 py-8 dark:bg-stone-800"
+    >
+      <div className="flex items-center gap-x-4">
         <div className="relative w-1/2">
           {/* you can use image.height and width here when you iterate through uploadedData state. */}
           <Image
@@ -85,9 +86,7 @@ export default function UploadedImageData(props: UploadedDataProps) {
         <div className="w-1/2">
           {/* <UploadImageForm /> */}
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
                 name="title"
@@ -114,19 +113,24 @@ export default function UploadedImageData(props: UploadedDataProps) {
                   />
                 )}
               />
-              <FormField
-                control={form.control}
-                name="tags"
-                render={({ field }) => (
-                  <VisageFormItem
-                    field={field}
-                    inputPlaceholder="Enter tags"
-                    inputType="text"
-                    labelName="Tags (Optional)"
-                    showLabel
-                  />
-                )}
-              />
+              <div className="">
+                <TagsInput
+                  classNames={{
+                    input:
+                      "h-12 bg-white dark:bg-background text-white text-base border-yellow-500 focus-within:border-slate-500",
+                    label: "text-base text-stone-300",
+                    pill: "bg-white dark:bg-stone-800 dark:text-white",
+                  }}
+                  label="Tag (Optional)"
+                  description="Add up to 3 tags. Press Enter to add Tag"
+                  placeholder="Enter tag"
+                  maxTags={3}
+                  data={[]}
+                  value={value}
+                  onChange={setValue}
+                  clearable
+                />
+              </div>
             </form>
           </Form>
         </div>
@@ -135,9 +139,10 @@ export default function UploadedImageData(props: UploadedDataProps) {
       {/* delete icon */}
       <div
         onClick={() => handleRemoveImageClick(data.id)}
-        className="absolute -translate-y-1/2 -right-28 top-1/2 bg-stone-100 rounded-full p-4">
+        className="absolute -right-28 top-1/2 -translate-y-1/2 rounded-full bg-stone-100 p-4 dark:bg-stone-800"
+      >
         <MdDelete
-          className="text-stone-400 hover:text-stone-500 active:text-stone-400 transition cursor-pointer"
+          className="cursor-pointer text-stone-400 transition hover:text-stone-500 active:text-stone-400"
           size={45}
         />
       </div>

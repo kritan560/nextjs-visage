@@ -63,32 +63,30 @@ export default function TrendingNewComboBox() {
         setTitle("New Stock Videos");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVideos, value]);
 
   return (
-    <AdjustPadding className="flex justify-between items-center">
+    <AdjustPadding className="flex items-center justify-between">
       {/* title */}
       <p className="text-2xl font-semibold">{title}</p>
 
       {/* combobox */}
-      <Popover
-        open={open}
-        onOpenChange={setOpen}>
-        <PopoverTrigger
-          asChild
-          className="font-semibold text-base w-[200px]">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild className="w-[200px] text-base font-semibold">
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="justify-between h-12 px-9">
+            className="h-12 justify-between px-9"
+          >
             {value
               ? frameworks.find((framework) => framework.value === value)?.label
               : "Select framework..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0 ">
+        <PopoverContent className="w-[200px] p-0">
           <Command>
             <CommandList>
               <CommandEmpty>No list found.</CommandEmpty>
@@ -101,11 +99,12 @@ export default function TrendingNewComboBox() {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
                     }}
-                    className="font-semibold text-base h-12">
+                    className="h-12 text-base font-semibold"
+                  >
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === framework.value ? "opacity-100" : "opacity-0"
+                        value === framework.value ? "opacity-100" : "opacity-0",
                       )}
                     />
                     {framework.label}

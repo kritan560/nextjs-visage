@@ -42,7 +42,7 @@ export function VisageFormItem(props: VisageFormItemProps) {
         <Input
           disabled={disabled}
           className={cn(
-            "h-12 w-full rounded-md border px-4 font-medium placeholder:text-stone-400/80 focus-visible:border-slate-500 focus-visible:ring-0 focus-visible:ring-offset-0",
+            "h-12 w-full rounded-md border border-yellow-500 px-4 font-medium placeholder:text-stone-400/80 focus-visible:border-slate-500 focus-visible:ring-0 focus-visible:ring-offset-0",
             inputTextSize === "sm" && "text-sm",
             inputTextSize === "base" && "text-base",
             inputTextSize === "large" && "text-lg",

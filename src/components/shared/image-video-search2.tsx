@@ -6,11 +6,13 @@ import {
   ImageOrVideoSearchKeywordSchema,
   ImageOrVideoSearchKeywordSchemaType,
 } from "@/schemas/schemas";
+import { getCurrentUserId } from "@/servers/authentication/authentication-server";
 import { UniversalImagesType } from "@/types/visage-type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, Image as LucideImage, Search, Video } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import nProgress from "nprogress";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CollectionImageResizable } from "../profile/collections/collection-resizable";
@@ -24,6 +26,12 @@ import {
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 const searchedKeyword = "searchedKeyword";
 
@@ -70,10 +78,11 @@ type ImageOrVideoSearchType = {
   border?: boolean;
   mediaType?: MediaType;
   userId: string | undefined;
+  grid?: 3 | 4;
 };
 
 const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
-  const { border, mediaType, userId } = props;
+  const { border, mediaType, userId, grid = 4 } = props;
 
   const router = useRouter();
   const [openPopOver, setOpenPopOver] = useState(false);
@@ -134,16 +143,32 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   async function onSubmit(values: ImageOrVideoSearchKeywordSchemaType) {
     router.push(`/search/images/${values.searchedKeyword}`);
 
-    // the logic is to add array to localstorage.
+    nProgress.start();
+
+    const { isUserAuthenticated } = await getCurrentUserId();
+    if (!isUserAuthenticated) {
+      return;
+    }
+    // the logic is: to add array to localstorage.
     const getItem = localStorage.getItem(searchedKeyword);
 
     if (getItem) {
       const lsSearchedKeyword = JSON.parse(getItem) as string[];
-      lsSearchedKeyword.push(values.searchedKeyword);
+      const lsSearchedKeywordLowerCase = lsSearchedKeyword.map((keyword) =>
+        keyword.toLowerCase(),
+      );
 
-      const stringifyLsSearchedKeyword = JSON.stringify(lsSearchedKeyword);
-      localStorage.setItem(searchedKeyword, stringifyLsSearchedKeyword);
-      setKeywords(lsSearchedKeyword);
+      if (
+        !lsSearchedKeywordLowerCase.includes(
+          values.searchedKeyword.toLowerCase(),
+        )
+      ) {
+        lsSearchedKeyword.push(values.searchedKeyword);
+
+        const stringifyLsSearchedKeyword = JSON.stringify(lsSearchedKeyword);
+        localStorage.setItem(searchedKeyword, stringifyLsSearchedKeyword);
+        setKeywords(lsSearchedKeyword);
+      }
     }
 
     if (!getItem) {
@@ -279,15 +304,36 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               Clear
             </Button>
           </div>
-          <div className="grid grid-cols-3 gap-3 min-[750px]:grid-cols-4">
+          <div
+            className={cn(
+              "grid gap-3",
+              grid === 3 && "grid-cols-3",
+              grid === 4 && "grid-cols-4",
+            )}
+          >
             {keywords?.map((keyword, index) => (
               <Link
                 href={`/search/images/${keyword}`}
                 key={index}
-                className="flex h-12 w-full items-center gap-x-2 truncate rounded-md border bg-white px-4 text-base font-medium transition hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-600"
+                className="rounded-md border bg-white text-base font-medium transition hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-600"
               >
-                {keyword}
-                <Search type="submit" strokeWidth={2.4} size={20} />
+                <TooltipProvider delayDuration={150}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex h-12 items-center justify-center px-2">
+                        <div className="w-[90%] truncate">{keyword}</div>
+                        <Search
+                          className="m-0 h-5 w-5 flex-1 p-0"
+                          type="submit"
+                          strokeWidth={2.4}
+                        />{" "}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{keyword}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </Link>
             ))}
           </div>

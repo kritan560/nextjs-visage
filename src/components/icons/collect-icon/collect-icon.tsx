@@ -29,6 +29,7 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { CollectIconForm } from "./collect-icon-form";
+import nProgress from "nprogress";
 
 type CollectIconProps = {
   image: UniversalImageType;
@@ -87,6 +88,7 @@ export default function CollectIcon(props: CollectIconProps) {
       toast.error(failed.message);
       if (failed.message === AuthFailedEnum.USER_NOT_LOGGED_IN) {
         router.push(LinkLoginPage);
+        nProgress.start();
       }
     }
   }
@@ -157,7 +159,7 @@ export default function CollectIcon(props: CollectIconProps) {
                         collectionName.id,
                       )
                     }
-                    className="relative flex aspect-square w-40 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 active:scale-100"
+                    className="relative flex aspect-square w-40 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 active:scale-100 dark:bg-stone-400"
                   >
                     {(
                       collectionName.collectionImages as UniversalImagesType

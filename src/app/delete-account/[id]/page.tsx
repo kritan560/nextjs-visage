@@ -2,17 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { LinkEditProfile, LinkHomepage, LinkLoginPage } from "@/links/links";
 import { deleteAccountByUserId } from "@/servers/visage/visage-server";
-import { deleteAccountByUserIdEnum } from "@/servers/visage/visage-server-enum";
+import { DeleteAccountByUserIdEnum } from "@/servers/visage/visage-server-enum";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import nProgress from "nprogress";
 import toast from "react-hot-toast";
 
 type DeleteAcccountPageProps = {
@@ -37,12 +38,14 @@ export default function DeleteAcccountPage(props: DeleteAcccountPageProps) {
       await signOut({ redirect: true, callbackUrl: LinkLoginPage });
       toast.success(success.message);
       router.push(LinkLoginPage);
+      nProgress.start();
     }
 
     if (failed) {
       toast.error(failed.message);
-      if (failed.message === deleteAccountByUserIdEnum.TOKEN_EXPIRED) {
+      if (failed.message === DeleteAccountByUserIdEnum.TOKEN_EXPIRED) {
         router.push(LinkEditProfile);
+        nProgress.start();
       }
     }
   }
@@ -56,22 +59,24 @@ export default function DeleteAcccountPage(props: DeleteAcccountPageProps) {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="text-center mt-6 text-lg font-medium">
+        <div className="mt-6 text-center text-lg font-medium">
           <p>This is the last chance to prevent account deletion.</p>
           <p>Are you Sure?</p>
         </div>
 
-        <div className="flex justify-between items-center mt-6 ">
+        <div className="mt-6 flex items-center justify-between">
           <Button
             onClick={handleAccountDelete}
-            className="capitalize px-6 h-12 text-lg"
-            variant={"destructive"}>
+            className="h-12 px-6 text-lg capitalize"
+            variant={"destructive"}
+          >
             Delete my Account
           </Button>
           <Link href={LinkHomepage}>
             <Button
-              className="capitalize px-6 h-12 text-lg"
-              variant={"outline"}>
+              className="h-12 px-6 text-lg capitalize"
+              variant={"outline"}
+            >
               Cancel
             </Button>
           </Link>

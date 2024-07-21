@@ -16,27 +16,28 @@ import { Images } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import prisma from "../../../prisma/prisma.db";
 import { getCurrentUserId } from "../authentication/authentication-server";
-import {
-  GetCollectionNamesEnum,
-  GetLikedImagesEnum,
-  LikeImageEnum,
-  changeCollectionNameEnum,
-  collectImageEnum,
-  createImagesEnum,
-  createTokenForUserAccountDeletionEnum,
-  deleteAccountByUserIdEnum,
-  deleteCollectionNameEnum,
-  getCollectionImagesIdsEnum,
-  getCollectionNameByIdEnum,
-  getDailyUploadCountEnum,
-  getImageByIdEnum,
-  getImagesEnum,
-  getTotalViewsCountEnum,
-  getUserProfilePictureEnum,
-  updateUserDetailEnum,
-  updateUserProfilePictureEnum,
-} from "./visage-server-enum";
 import { AuthFailedEnum } from "../authentication/authentication-server-enums";
+import {
+  ChangeCollectionNameEnum,
+  CollectImageEnum,
+  CreateImagesEnum,
+  CreateTokenForUserAccountDeletionEnum,
+  DeleteAccountByUserIdEnum,
+  DeleteCollectionNameEnum,
+  GetCollectionImagesIdsEnum,
+  GetCollectionNameByIdEnum,
+  GetCollectionNamesEnum,
+  GetDailyUploadCountEnum,
+  GetImageByIdEnum,
+  GetImagesByTagsEnum,
+  GetImagesEnum,
+  GetLikedImagesEnum,
+  GetTotalViewsCountEnum,
+  GetUserProfilePictureEnum,
+  LikeImageEnum,
+  UpdateUserDetailEnum,
+  UpdateUserProfilePictureEnum,
+} from "./visage-server-enum";
 
 /**
  * This server action will only return the profile picture image link.
@@ -63,7 +64,7 @@ export async function getUserProfilePicture(userId?: string) {
     return {
       success: {
         data: profilePicture,
-        message: getUserProfilePictureEnum.GOT_PROFILE_PICTURE,
+        message: GetUserProfilePictureEnum.GOT_PROFILE_PICTURE,
       },
     };
   } catch (error) {
@@ -71,7 +72,7 @@ export async function getUserProfilePicture(userId?: string) {
     return {
       failed: {
         data: null,
-        message: getUserProfilePictureEnum.FAILED_TO_GET_PROFILE_PICTURE,
+        message: GetUserProfilePictureEnum.FAILED_TO_GET_PROFILE_PICTURE,
       },
     };
   }
@@ -89,7 +90,7 @@ export async function getUserProfilePicture(userId?: string) {
 export async function collectImage(
   collectionName: string,
   image: UniversalImageType,
-  collectionNameId?: string
+  collectionNameId?: string,
 ) {
   try {
     const { userId } = await getCurrentUserId();
@@ -112,7 +113,7 @@ export async function collectImage(
       return {
         success: {
           data: newCollectionName,
-          message: collectImageEnum.NEW_COLLECTION_CREATED,
+          message: CollectImageEnum.NEW_COLLECTION_CREATED,
         },
       };
     }
@@ -125,11 +126,11 @@ export async function collectImage(
     const previousCollectionData = value as UniversalImagesType;
 
     const containImage = previousCollectionData.find(
-      (img) => img.imageId == image.imageId
+      (img) => img.imageId == image.imageId,
     );
 
     const updateData = previousCollectionData.filter(
-      (data) => data.imageId != image.imageId
+      (data) => data.imageId != image.imageId,
     );
 
     if (previousCollection && containImage) {
@@ -146,7 +147,7 @@ export async function collectImage(
       return {
         success: {
           data: updateCollection,
-          message: collectImageEnum.COLLECTION_REMOVED,
+          message: CollectImageEnum.COLLECTION_REMOVED,
         },
       };
     }
@@ -162,13 +163,13 @@ export async function collectImage(
     return {
       success: {
         data: updateCollection,
-        message: collectImageEnum.COLLECTION_UPDATED,
+        message: CollectImageEnum.COLLECTION_UPDATED,
       },
     };
   } catch (error) {
     console.error(error);
     return {
-      failed: { data: null, message: collectImageEnum.COLLECTION_IMAGE_FAILED },
+      failed: { data: null, message: CollectImageEnum.COLLECTION_IMAGE_FAILED },
     };
   }
 }
@@ -317,7 +318,7 @@ export async function getCollectionNames() {
     });
 
     const collectionNamesSorted = collectionName.sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
     );
 
     return {
@@ -362,14 +363,14 @@ export async function getCollectionImagesIds() {
     const ids = await prisma.collectionNames.findMany({ where: { userId } });
     ids.map((id) =>
       (id.collectionImages as UniversalImagesType).map((id) =>
-        collectionNamesIds.push(id.imageId)
-      )
+        collectionNamesIds.push(id.imageId),
+      ),
     );
 
     return {
       success: {
         data: collectionNamesIds,
-        message: getCollectionImagesIdsEnum.COLLECTION_NAMES_IDS,
+        message: GetCollectionImagesIdsEnum.COLLECTION_NAMES_IDS,
       },
     };
   } catch (error) {
@@ -378,7 +379,7 @@ export async function getCollectionImagesIds() {
       failed: {
         data: null,
         message:
-          getCollectionImagesIdsEnum.FAILED_TO_RETRIVE_COLLECTION_NAME_IDS,
+          GetCollectionImagesIdsEnum.FAILED_TO_RETRIVE_COLLECTION_NAME_IDS,
       },
     };
   }
@@ -413,17 +414,17 @@ export async function getImageById(id: string) {
       return {
         success: {
           data: augmentImageIntoUniversalImage,
-          message: getImageByIdEnum.USER_IMAGE,
+          message: GetImageByIdEnum.USER_IMAGE,
         },
       };
     }
     return {
-      failed: { data: null, message: getImageByIdEnum.FAILED_TO_GET_IMAGE },
+      failed: { data: null, message: GetImageByIdEnum.FAILED_TO_GET_IMAGE },
     };
   } catch (error) {
     console.error(error);
     return {
-      failed: { data: null, message: getImageByIdEnum.FAILED_TO_GET_IMAGE },
+      failed: { data: null, message: GetImageByIdEnum.FAILED_TO_GET_IMAGE },
     };
   }
 }
@@ -456,7 +457,7 @@ export async function getImages() {
     return {
       success: {
         data: augmentedImages,
-        message: getImagesEnum.USER_IMAGES,
+        message: GetImagesEnum.USER_IMAGES,
       },
     };
   } catch (error) {
@@ -464,7 +465,7 @@ export async function getImages() {
     return {
       failed: {
         data: null,
-        message: getImagesEnum.FAILED_TO_GET_IMAGES,
+        message: GetImagesEnum.FAILED_TO_GET_IMAGES,
       },
     };
   }
@@ -499,14 +500,14 @@ export async function getCollectionNameById(collectionNameId: string) {
       return {
         success: {
           data: collectionName,
-          message: getCollectionNameByIdEnum.COLLECTION_NAMES_RETRIVED,
+          message: GetCollectionNameByIdEnum.COLLECTION_NAMES_RETRIVED,
         },
       };
     }
     return {
       success: {
         data: null,
-        message: getCollectionNameByIdEnum.COLLECTION_NOT_FOUND,
+        message: GetCollectionNameByIdEnum.COLLECTION_NOT_FOUND,
       },
     };
   } catch (error) {
@@ -515,7 +516,7 @@ export async function getCollectionNameById(collectionNameId: string) {
       failed: {
         data: null,
         message:
-          getCollectionNameByIdEnum.FAILED_TO_RETRIVE_COLLECTION_NAME_BY_ID,
+          GetCollectionNameByIdEnum.FAILED_TO_RETRIVE_COLLECTION_NAME_BY_ID,
       },
     };
   }
@@ -532,7 +533,7 @@ export async function getCollectionNameById(collectionNameId: string) {
  */
 export async function changeCollectionName(
   collectionId: string,
-  newCollectionName: string
+  newCollectionName: string,
 ) {
   try {
     const { userId } = await getCurrentUserId();
@@ -555,7 +556,7 @@ export async function changeCollectionName(
     return {
       success: {
         data: updateCollectionName,
-        message: changeCollectionNameEnum.COLLECTION_NAME_CHANGED,
+        message: ChangeCollectionNameEnum.COLLECTION_NAME_CHANGED,
       },
     };
   } catch (error) {
@@ -563,7 +564,7 @@ export async function changeCollectionName(
     return {
       failed: {
         data: null,
-        message: changeCollectionNameEnum.FAILED_TO_CHANGE_COLLECTION_NAME,
+        message: ChangeCollectionNameEnum.FAILED_TO_CHANGE_COLLECTION_NAME,
       },
     };
   }
@@ -597,7 +598,7 @@ export async function deleteCollectionName(collectionId: string) {
     return {
       success: {
         data: updateCollectionName,
-        message: deleteCollectionNameEnum.COLLECTION_NAME_DELETED,
+        message: DeleteCollectionNameEnum.COLLECTION_NAME_DELETED,
       },
     };
   } catch (error) {
@@ -605,7 +606,7 @@ export async function deleteCollectionName(collectionId: string) {
     return {
       failed: {
         data: null,
-        message: deleteCollectionNameEnum.FAILED_TO_DELETE_COLLECTION_NAME,
+        message: DeleteCollectionNameEnum.FAILED_TO_DELETE_COLLECTION_NAME,
       },
     };
   }
@@ -656,7 +657,7 @@ export async function createTokenForUserAccountDeletion(userId: string) {
     return {
       success: {
         data: updatedUserWithToken,
-        message: createTokenForUserAccountDeletionEnum.TOKEN_CREATED,
+        message: CreateTokenForUserAccountDeletionEnum.TOKEN_CREATED,
       },
     };
   } catch (error) {
@@ -664,7 +665,7 @@ export async function createTokenForUserAccountDeletion(userId: string) {
     return {
       failed: {
         data: null,
-        message: createTokenForUserAccountDeletionEnum.FAILED_TO_CREATE_TOKEN,
+        message: CreateTokenForUserAccountDeletionEnum.FAILED_TO_CREATE_TOKEN,
       },
     };
   }
@@ -712,7 +713,7 @@ export async function updateUserDetail({
     return {
       success: {
         data: updatedUser,
-        message: updateUserDetailEnum.USER_UPDATED,
+        message: UpdateUserDetailEnum.USER_UPDATED,
       },
     };
   } catch (error) {
@@ -720,7 +721,7 @@ export async function updateUserDetail({
     return {
       failed: {
         data: null,
-        message: updateUserDetailEnum.FAILED_TO_UPDATE_USER,
+        message: UpdateUserDetailEnum.FAILED_TO_UPDATE_USER,
       },
     };
   }
@@ -739,7 +740,7 @@ export async function updateUserDetail({
  */
 export async function updateUserProfilePicture(
   userId: string,
-  profilePicture: string
+  profilePicture: string,
 ) {
   try {
     const { isUserAuthenticated } = await getCurrentUserId();
@@ -761,7 +762,7 @@ export async function updateUserProfilePicture(
     return {
       success: {
         data: updatedProfilePicture,
-        message: updateUserProfilePictureEnum.PROFILE_PICTURE_UPDATED,
+        message: UpdateUserProfilePictureEnum.PROFILE_PICTURE_UPDATED,
       },
     };
   } catch (error) {
@@ -769,7 +770,7 @@ export async function updateUserProfilePicture(
     return {
       failed: {
         data: null,
-        message: updateUserProfilePictureEnum.FAILED_TO_UPDATE_PROFILE_PICTURE,
+        message: UpdateUserProfilePictureEnum.FAILED_TO_UPDATE_PROFILE_PICTURE,
       },
     };
   }
@@ -800,7 +801,7 @@ export async function deleteAccountByUserId(token: string) {
       return {
         failed: {
           data: null,
-          message: deleteAccountByUserIdEnum.TOKEN_NOT_FOUND,
+          message: DeleteAccountByUserIdEnum.TOKEN_NOT_FOUND,
         },
       };
     }
@@ -817,7 +818,7 @@ export async function deleteAccountByUserId(token: string) {
       return {
         failed: {
           data: null,
-          message: deleteAccountByUserIdEnum.TOKEN_EXPIRED,
+          message: DeleteAccountByUserIdEnum.TOKEN_EXPIRED,
         },
       };
     }
@@ -828,7 +829,7 @@ export async function deleteAccountByUserId(token: string) {
       return {
         success: {
           data: deletedAccount,
-          message: deleteAccountByUserIdEnum.ACCOUNT_DELETED,
+          message: DeleteAccountByUserIdEnum.ACCOUNT_DELETED,
         },
       };
     }
@@ -836,7 +837,7 @@ export async function deleteAccountByUserId(token: string) {
     return {
       failed: {
         data: null,
-        message: deleteAccountByUserIdEnum.FAILED_TO_DELETE_ACCOUNT,
+        message: DeleteAccountByUserIdEnum.FAILED_TO_DELETE_ACCOUNT,
       },
     };
   } catch (error) {
@@ -845,7 +846,7 @@ export async function deleteAccountByUserId(token: string) {
     return {
       failed: {
         data: null,
-        message: deleteAccountByUserIdEnum.FAILED_TO_DELETE_ACCOUNT,
+        message: DeleteAccountByUserIdEnum.FAILED_TO_DELETE_ACCOUNT,
       },
     };
   }
@@ -897,7 +898,7 @@ export async function createImages(images: Images[]) {
           failed: {
             data: null,
             message: `${
-              createImagesEnum.DAILY_COUNT_EXCEDDED
+              CreateImagesEnum.DAILY_COUNT_EXCEDDED
             } Upload Limit Left : ${dailyUploadCountLimit - dailyUploadCount}`,
           },
         };
@@ -908,14 +909,14 @@ export async function createImages(images: Images[]) {
       data: augmentedImages,
     });
     return {
-      success: { data: newImages, message: createImagesEnum.IMAGE_CREATED },
+      success: { data: newImages, message: CreateImagesEnum.IMAGE_CREATED },
     };
   } catch (error) {
     console.error(error);
     return {
       failed: {
         data: null,
-        message: createImagesEnum.FAILED_TO_CREATE_IMAGES,
+        message: CreateImagesEnum.FAILED_TO_CREATE_IMAGES,
       },
     };
   }
@@ -951,7 +952,7 @@ export async function getDailyUploadCount() {
     return {
       success: {
         data: dailyUploadCount.length,
-        message: getDailyUploadCountEnum.UPLOAD_COUNT,
+        message: GetDailyUploadCountEnum.UPLOAD_COUNT,
       },
     };
   } catch (error) {
@@ -959,7 +960,7 @@ export async function getDailyUploadCount() {
     return {
       failed: {
         data: null,
-        message: getDailyUploadCountEnum.FAILED_TO_GET_UPLOAD_COUNT,
+        message: GetDailyUploadCountEnum.FAILED_TO_GET_UPLOAD_COUNT,
       },
     };
   }
@@ -1004,18 +1005,56 @@ export async function getTotalViewsCount() {
     const totalContent = totalViews.length;
     const views: number = totalViews.reduce(
       (prev, current) => prev + current.views,
-      0
+      0,
     );
 
     return {
       success: {
         data: { views, totalContent },
-        message: getTotalViewsCountEnum.FOUND_VIEWS,
+        message: GetTotalViewsCountEnum.FOUND_VIEWS,
       },
     };
   } catch (error) {
     return {
-      failed: { data: null, message: getTotalViewsCountEnum.FOUND_VIEWS },
+      failed: { data: null, message: GetTotalViewsCountEnum.FOUND_VIEWS },
+    };
+  }
+}
+
+/**
+ * This server action will get all the images by given tag
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param tags - The keyword to search in image
+ * @returns
+ */
+export async function getImagesByTags(tags: string) {
+  try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    const images = await prisma.images.findMany({
+      where: { tags: { has: tags } },
+      select: { image: true },
+    });
+    return {
+      success: { data: images, message: GetImagesByTagsEnum.IMAGE_FOUND },
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      failed: { data: null, message: GetImagesByTagsEnum.FAILED_TO_GET_IMAGES },
     };
   }
 }

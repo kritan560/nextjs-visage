@@ -5,6 +5,7 @@ import { likeImage } from "@/servers/visage/visage-server";
 import { UniversalImageType } from "@/types/visage-type";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
+import nProgress from "nprogress";
 import toast from "react-hot-toast";
 
 type HeartIconProps = {
@@ -36,6 +37,7 @@ export default function HeartIcon(props: HeartIconProps) {
     if (failed) {
       if (failed.redirect) {
         router.push(LinkLoginPage);
+        nProgress.start();
       }
       // if the collectImage action failed the revert the state too
       if (globalLikedImagesIds) {

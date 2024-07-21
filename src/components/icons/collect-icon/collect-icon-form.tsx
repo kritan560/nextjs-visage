@@ -11,15 +11,16 @@ import {
   NewCollectionNameFormSchema,
   NewCollectionNameFormSchemaType,
 } from "@/schemas/schemas";
+import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
 import { collectImage } from "@/servers/visage/visage-server";
-import { collectImageEnum } from "@/servers/visage/visage-server-enum";
+import { CollectImageEnum } from "@/servers/visage/visage-server-enum";
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import nProgress from "nprogress";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { VisageFormItem } from "../../visage/visage-form-item";
-import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
 
 type CollectIconForm = {
   image: UniversalImageType;
@@ -49,16 +50,16 @@ export function CollectIconForm(props: CollectIconForm) {
     // ✅ This will be type-safe and validated.
     const { failed, success } = await collectImage(
       values.collectionName,
-      image
+      image,
     );
 
     if (success) {
       toast.success(success.message);
 
-      if (success.message === collectImageEnum.NEW_COLLECTION_CREATED) {
+      if (success.message === CollectImageEnum.NEW_COLLECTION_CREATED) {
         if (globalCollectionNames && globalCollectImagesIds) {
           const collectionNames = [success.data, ...globalCollectionNames].sort(
-            (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+            (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
           );
 
           setGlobalCollectionNames(collectionNames);
@@ -76,15 +77,14 @@ export function CollectIconForm(props: CollectIconForm) {
       toast.error(failed.message);
       if (failed.message === AuthFailedEnum.USER_NOT_LOGGED_IN) {
         router.push(LinkLoginPage);
+        nProgress.start();
       }
     }
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="collectionName"
@@ -99,18 +99,16 @@ export function CollectIconForm(props: CollectIconForm) {
             />
           )}
         />
-        <div className="flex gap-x-4 items-center w-[80%] mx-auto">
+        <div className="mx-auto flex w-[80%] items-center gap-x-4">
           <Button
             onClick={() => onOpenChange(false)}
-            className="w-full h-14"
+            className="h-14 w-full"
             type="button"
-            variant={"outline"}>
+            variant={"outline"}
+          >
             Back
           </Button>
-          <Button
-            className="w-[150%] h-14"
-            type="submit"
-            variant={"visage"}>
+          <Button className="h-14 w-[150%]" type="submit" variant={"visage"}>
             Create New Collection
           </Button>
         </div>

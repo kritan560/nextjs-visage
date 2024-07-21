@@ -7,7 +7,7 @@ import { UniqueImage } from "@/components/shared/unique-image";
 import { LinkCollections, LinkProfile } from "@/links/links";
 import { getCurrentUser } from "@/servers/authentication/authentication-server";
 import { getCollectionNameById } from "@/servers/visage/visage-server";
-import { getCollectionNameByIdEnum } from "@/servers/visage/visage-server-enum";
+import { GetCollectionNameByIdEnum } from "@/servers/visage/visage-server-enum";
 import { UniversalImagesType } from "@/types/visage-type";
 import { Images } from "lucide-react";
 import Image from "next/image";
@@ -27,7 +27,7 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
 
   if (
     collectionNameByIdSuccess?.message ===
-    getCollectionNameByIdEnum.COLLECTION_NOT_FOUND
+    GetCollectionNameByIdEnum.COLLECTION_NOT_FOUND
   ) {
     redirect(LinkCollections);
   }
@@ -39,14 +39,14 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
       <NavbarWithSearch />
 
       {/* editicon */}
-      <div className="flex flex-col space-y-8 mt-12 justify-center items-center">
+      <div className="mt-12 flex flex-col items-center justify-center space-y-8">
         <EditCollectionDialog
           collectionId={collection_id}
           collectionName={collectionNameByIdSuccess?.data?.collectionName}
         />
 
         {/* collection name */}
-        <h1 className="font-semibold text-5xl">
+        <h1 className="text-5xl font-semibold">
           {collectionNameByIdSuccess?.data?.collectionName}
         </h1>
       </div>
@@ -55,10 +55,10 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
         <NavbarWithSearch />
       </NavbarWhenScrolled>
 
-      <AdjustPadding className="space-y-8 mt-8">
+      <AdjustPadding className="mt-8 space-y-8">
         {/* userimage ---- photos/videos */}
-        <div className="flex justify-between items-center">
-          <div className="flex gap-x-4 items-center">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-x-4">
             <Image
               src={profilePicture ?? ""}
               className="rounded-full"
@@ -68,12 +68,13 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
             />
             <Link
               href={LinkProfile}
-              className="font-semibold text-2xl text-visage-600 border-b-2 border-dashed border-visage-600">
+              className="border-b-2 border-dashed border-visage-600 text-2xl font-semibold text-visage-600"
+            >
               {userName}
             </Link>
           </div>
 
-          <div className="text-stone-400 font-medium text-xl flex gap-x-2 items-center">
+          <div className="flex items-center gap-x-2 text-xl font-medium text-stone-400">
             <Images size={25} />
             {collectionNameByIdSuccess?.data?.collectionImages.length}
             <span>Contents</span>
@@ -85,10 +86,7 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
             collectionNameByIdSuccess?.data
               ?.collectionImages as UniversalImagesType
           ).map((data) => (
-            <UniqueImage
-              key={data.id}
-              image={data}
-            />
+            <UniqueImage key={data.id} image={data} />
           ))}
         </MasonryClient>
       </AdjustPadding>

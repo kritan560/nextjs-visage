@@ -21,7 +21,7 @@ const NavbarWithSearchBox = async () => {
         <LogoVisage />
 
         <div className="flex-grow">
-          <ImageSearchVideo2 userId={userId} />
+          <ImageSearchVideo2 userId={userId} grid={3} />
         </div>
 
         <div className="flex items-center gap-x-6">
@@ -44,7 +44,7 @@ const NavbarWithSearchBox = async () => {
       <LogoVisage />
 
       <div className="flex-grow">
-        <ImageSearchVideo2 userId={userId} />
+        <ImageSearchVideo2 userId={userId} grid={3} />
       </div>
 
       <div className="flex items-center gap-x-8">

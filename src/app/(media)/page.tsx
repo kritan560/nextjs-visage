@@ -6,15 +6,24 @@ import ImageSearchVideo2 from "@/components/shared/image-video-search2";
 import InfiniteScroll from "@/components/shared/infinite-scroll";
 import MainImage from "@/images/pexels-alexmoliski-26341034.jpg";
 import { getCurrentUserId } from "@/servers/authentication/authentication-server";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
+import { getImages } from "@/servers/visage/visage-server";
+import { UniversalImagesType } from "@/types/visage-type";
 import Image from "next/image";
 
 const Page = async () => {
   const { userId } = await getCurrentUserId();
+  const { failed, success } = await getImages();
+  const curatedPhotos = (await getPexelCuratedPhotosByPage_PerPage()) ?? [];
+
+  const images = success?.data ?? [];
+
+  let curatedAndImages: UniversalImagesType = [...images, ...curatedPhotos];
 
   return (
     <div>
       {/* inside main image */}
-      <div className="h-[500px] relative">
+      <div className="relative h-[500px]">
         <Image
           style={{ objectFit: "cover" }}
           src={MainImage}
@@ -32,18 +41,15 @@ const Page = async () => {
           <NavbarWithSearchBox />
         </NavbarWhenScrolled>
 
-        <div className="absolute z-[50] left-0 right-0 top-1/2 -translate-y-1/2 mx-auto w-[55%] flex gap-y-8 flex-col">
-          <h1 className="font-medium text-4xl text-white">
+        <div className="absolute left-0 right-0 top-1/2 z-[50] mx-auto flex w-[55%] -translate-y-1/2 flex-col gap-y-8">
+          <h1 className="text-4xl font-medium text-white">
             The best free stock photos, royalty free images & videos shared by
             creators.
           </h1>
-          <ImageSearchVideo2
-            userId={userId}
-            border
-          />
+          <ImageSearchVideo2 userId={userId} border />
         </div>
 
-        <div className="font-semibold text-sm absolute bottom-4 right-6 text-white">
+        <div className="absolute bottom-4 right-6 text-sm font-semibold text-white">
           Photo By <span className="">Kritan Shrestha</span>
         </div>
       </div>
@@ -54,7 +60,10 @@ const Page = async () => {
 
       {/* image : mansonry */}
       <div className="mt-6">
-        <InfiniteScroll mediaType={"Image"} />
+        <InfiniteScroll
+          curatedAndImages={curatedAndImages}
+          mediaType={"Image"}
+        />
       </div>
     </div>
   );

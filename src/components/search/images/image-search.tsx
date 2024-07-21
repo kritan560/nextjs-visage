@@ -10,6 +10,12 @@ import { generate } from "random-words";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type ImageSearchProps = {
   keyword: string;
@@ -77,13 +83,22 @@ export default function ImageSearch(props: ImageSearchProps) {
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <h1 className="my-8 text-6xl font-medium text-stone-600 dark:text-stone-400">
-        Free{" "}
-        <span className="mr-2 capitalize text-stone-800 dark:text-stone-600">
-          {keyword}{" "}
-        </span>
-        Images
-      </h1>
+      <TooltipProvider delayDuration={150}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <h1 className="my-8 h-[70px] w-[700px] truncate text-6xl font-medium text-stone-600 dark:text-stone-400">
+              Free{" "}
+              <span className="mr-2 capitalize text-stone-800 dark:text-stone-600">
+                {decodeURI(keyword)}{" "}
+              </span>
+              Images
+            </h1>
+          </TooltipTrigger>
+          <TooltipContent align="start">
+            <p className="text-lg">Free {decodeURI(keyword)} Images</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <div className="my-8 flex w-fit items-center gap-x-2 rounded-full bg-black px-6 py-3 text-white hover:bg-black/80 dark:bg-stone-400 dark:text-stone-800 hover:dark:bg-stone-500">
         <span className="font-medium text-stone-50 dark:text-stone-800">
           Photos
