@@ -24,6 +24,7 @@ import {
   CreateTokenForUserAccountDeletionEnum,
   DeleteAccountByUserIdEnum,
   DeleteCollectionNameEnum,
+  DeleteUserUploadedImageEnum,
   GetCollectionImagesIdsEnum,
   GetCollectionNameByIdEnum,
   GetCollectionNamesEnum,
@@ -34,6 +35,7 @@ import {
   GetLikedImagesEnum,
   GetTotalViewsCountEnum,
   GetUserProfilePictureEnum,
+  GetUserUploadedImageIdEnum,
   LikeImageEnum,
   UpdateUserDetailEnum,
   UpdateUserProfilePictureEnum,
@@ -451,7 +453,10 @@ export async function getImages() {
       };
     }
 
-    const images = await prisma.images.findMany({ where: { userId } });
+    const images = await prisma.images.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
 
     const augmentedImages = AugmentImagesIntoUniversalImages(images);
     return {
@@ -1055,6 +1060,93 @@ export async function getImagesByTags(tags: string) {
 
     return {
       failed: { data: null, message: GetImagesByTagsEnum.FAILED_TO_GET_IMAGES },
+    };
+  }
+}
+
+/**
+ * This server action will get all the ImageIds of a currently authenticated user
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @returns
+ */
+export async function getAuthUserUploadedImageId() {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    const imageId = await prisma.images.findMany({
+      where: { userId },
+      select: { imageId: true },
+    });
+
+    return {
+      success: {
+        data: imageId,
+        message: GetUserUploadedImageIdEnum.IMAGE_ID_FOUND,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      failed: {
+        data: null,
+        message: GetUserUploadedImageIdEnum.FAILED_TO_GET_IMAGE_IDS,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will delete the user Uploaded image from the server
+ *
+ * it will only delete the image. if image is liked or in collection it won't be delete from there.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param imageId - The Image Id
+ * @returns
+ */
+export async function deleteUserUploadedImage(imageId: string) {
+  try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    const deletedImage = await prisma.images.delete({ where: { imageId } });
+
+    return {
+      success: {
+        data: deletedImage,
+        message: DeleteUserUploadedImageEnum.IMAGE_DELETED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: DeleteUserUploadedImageEnum.FAILED_TO_DELETE_IMAGE,
+      },
     };
   }
 }

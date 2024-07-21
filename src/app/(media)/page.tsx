@@ -8,7 +8,6 @@ import MainImage from "@/images/pexels-alexmoliski-26341034.jpg";
 import { getCurrentUserId } from "@/servers/authentication/authentication-server";
 import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
 import { getImages } from "@/servers/visage/visage-server";
-import { UniversalImagesType } from "@/types/visage-type";
 import Image from "next/image";
 
 const Page = async () => {
@@ -18,7 +17,7 @@ const Page = async () => {
 
   const images = success?.data ?? [];
 
-  let curatedAndImages: UniversalImagesType = [...images, ...curatedPhotos];
+  const curatedAndImages = [...images, ...curatedPhotos];
 
   return (
     <div>

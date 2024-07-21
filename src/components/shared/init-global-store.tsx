@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useGlobalAuthUserImagesIdstore,
   useGlobalCollectImageIdsStore,
   useGlobalCollectionNameStore,
   useGlobalImagesStore,
@@ -16,6 +17,7 @@ type InitGlobalStoreProps = {
   universalImagesType: UniversalImagesType | null;
   collectionNames: CollectionNames[] | undefined;
   collectImagesIds: string[] | undefined;
+  authUserImagesIds: string[] | undefined;
 };
 
 export default function InitGlobalStore(props: InitGlobalStoreProps) {
@@ -25,16 +27,22 @@ export default function InitGlobalStore(props: InitGlobalStoreProps) {
     likedImagesIds,
     universalImagesType,
     collectImagesIds,
+    authUserImagesIds,
   } = props;
 
   const { setGlobalCollectionNames } = useGlobalCollectionNameStore();
   const { setGlobalLikedImageId } = useGlobalLikeImageStore();
   const { setGlobalImages: setPexelCuratedPhotos } = useGlobalImagesStore();
   const { setGlobalCollectImageId } = useGlobalCollectImageIdsStore();
+  const { setAuthUserImagesIds } = useGlobalAuthUserImagesIdstore();
 
   useEffect(() => {
     setGlobalCollectImageId(collectImagesIds);
   }, [collectImagesIds, setGlobalCollectImageId]);
+
+  useEffect(() => {
+    setAuthUserImagesIds(authUserImagesIds);
+  }, [authUserImagesIds, setAuthUserImagesIds]);
 
   useEffect(() => {
     setGlobalLikedImageId(likedImagesIds);

@@ -1,6 +1,7 @@
 import InitGlobalStore from "@/components/shared/init-global-store";
 import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
 import {
+  getAuthUserUploadedImageId,
   getCollectionImagesIds,
   getCollectionNames,
   getLikedImages,
@@ -20,19 +21,26 @@ export default async function ImageLayout(props: ImageLayoutProps) {
   const { success: collectionNameSuccess } = await getCollectionNames();
   const { success: collectionImagesIdsSuccess } =
     await getCollectionImagesIds();
+  const { success: authUserUploadedImagesIds } =
+    await getAuthUserUploadedImageId();
 
   const likedImages = likedImagesSuccess?.data;
   const likedImagesIds = likedImages?.map((likedImage) => likedImage.imageId);
 
   const collectionNames = collectionNameSuccess?.data;
   const collectionImagesIds = collectionImagesIdsSuccess?.data;
+  const authUserImagesIds = authUserUploadedImagesIds?.data.map(
+    (id) => id.imageId,
+  );
 
   return (
     <InitGlobalStore
       collectImagesIds={collectionImagesIds}
       collectionNames={collectionNames}
       likedImagesIds={likedImagesIds}
-      universalImagesType={universalImagesType}>
+      universalImagesType={universalImagesType}
+      authUserImagesIds={authUserImagesIds}
+    >
       {children}
       {image}
     </InitGlobalStore>

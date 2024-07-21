@@ -19,6 +19,7 @@ import CollectIcon from "../icons/collect-icon/collect-icon";
 import HeartIcon from "../icons/heart-icon/heart-icon";
 import { Button } from "../ui/button";
 import DownloadButtonDialog from "./download-button-dialog";
+import DeleteIcon from "../icons/delete-icon/delete-icon";
 
 const blurDataURL =
   "data:image/webp;base64,UklGRowCAABXRUJQVlA4WAoAAAAgAAAAwwAAwwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggngAAADANAJ0BKsQAxAA+7Xa4VqmnJSOgSAEwHYlpbuCUBHjw8ALS4DeirhBlWYEvZMkE5w17ZOaVcLXVUoWusMkERNByxvpivvEAiJe/GT61Ti22jEhGCC0fLzI8LXVUnD7GTi1JuLgJvRCWwnsGxIwXQiKW4AD+pGXVOVryFj61/69G/5A1h4oQ6ARrjeCTcz7Ml3AOK7BnHqXIJQCAAAAA";
@@ -36,12 +37,11 @@ export function UniqueImage(props: UniqueImageProps) {
   const { globalLikedImagesIds } = useGlobalLikeImageStore();
 
   return (
-    <div
-      key={image.id}
-      className="relative group">
+    <div key={image.id} className="group relative">
       <Link
         scroll={false}
-        href={`/image/${StructureTheImageParam(image.imageId, image.alt)}`}>
+        href={`/image/${StructureTheImageParam(image.imageId, image.alt)}`}
+      >
         <Image
           className={cn("rounded-md", loading && "animate-pulse")}
           src={image.src.large}
@@ -55,24 +55,26 @@ export function UniqueImage(props: UniqueImageProps) {
       </Link>
 
       {/* download button, bookmark, favorite */}
-      <div className="group-hover:opacity-100 opacity-0 transition ">
+      <div className="opacity-0 transition group-hover:opacity-100">
         {/* photographer name and image */}
         <Link
           target="_blank"
           href={image.photographer_url}
-          className="absolute bottom-4 left-4 flex gap-x-2 items-center">
+          className="absolute bottom-4 left-4 flex items-center gap-x-2"
+        >
           {image.photographer_url.includes("pexels") ? (
             //  photographer image : pexels doesn't provide the user DP so adjusting the DP manually
             <div
-              className="w-12 aspect-square rounded-full items-center flex justify-center text-stone-50 font-bold uppercase text-2xl"
+              className="flex aspect-square w-12 items-center justify-center rounded-full text-2xl font-bold uppercase text-stone-50"
               style={{
                 backgroundColor: image.avg_color ?? "blueviolet",
-              }}>
+              }}
+            >
               {image.photographer[0]}
             </div>
           ) : (
             <Image
-              className="rounded-full w-12 h-12"
+              className="h-12 w-12 rounded-full"
               src={image.src.medium}
               alt=""
               width={48}
@@ -81,7 +83,7 @@ export function UniqueImage(props: UniqueImageProps) {
           )}
 
           {/* photographer name */}
-          <p className=" font-medium text-xl text-stone-50">
+          <p className="text-xl font-medium text-stone-50">
             {TruncatePhotgrapherName(image.photographer)}
           </p>
         </Link>
@@ -92,44 +94,48 @@ export function UniqueImage(props: UniqueImageProps) {
             onClick={() =>
               handleDownloadImageClick(
                 image.src.original,
-                image.alt ?? image.imageId
+                image.alt ?? image.imageId,
               )
             }
-            className="flex gap-x-2 items-center absolute bottom-4 right-4 rounded-full h-12"
+            className="absolute bottom-4 right-4 flex h-12 items-center gap-x-2 rounded-full"
             variant={"visage"}
-            size={"default"}>
-            <Download
-              size={18}
-              className=""
-            />
+            size={"default"}
+          >
+            <Download size={18} className="" />
             Download
           </Button>
         </DownloadButtonDialog>
 
-        <div className="absolute top-4 right-4 flex gap-x-2 items-center">
+        <div className="absolute right-4 top-4 flex items-center gap-x-2">
           {/* collect */}
           <CollectIcon image={image} />
 
           {/* liked icon */}
           <HeartIcon image={image} />
         </div>
+        <div className="absolute left-4 top-4">
+          <DeleteIcon imageSrc={image.src.medium} imageId={image.imageId} />
+        </div>
       </div>
 
-      <div className="absolute top-4 right-4 flex gap-x-2 items-center ">
+      {/* this div is here to show bookmark and heart icon when it is bookmarked and loved */}
+      <div className="absolute right-4 top-4 flex items-center gap-x-2">
         <div
           className={cn(
             globalCollectImagesIds?.includes(image.imageId)
               ? "opacity-100"
-              : "opacity-0 absolute"
-          )}>
+              : "absolute opacity-0",
+          )}
+        >
           <CollectIcon image={image} />
         </div>
         <div
           className={cn(
             globalLikedImagesIds?.includes(image.imageId)
               ? "opacity-100"
-              : "opacity-0 absolute"
-          )}>
+              : "absolute opacity-0",
+          )}
+        >
           <HeartIcon image={image} />
         </div>
       </div>

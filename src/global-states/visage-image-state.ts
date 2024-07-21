@@ -10,7 +10,7 @@ export const useGlobalCollectImageIdsStore = create<CollectImageIdsType>()(
   (set) => ({
     globalCollectImagesIds: [],
     setGlobalCollectImageId: (ids) => set({ globalCollectImagesIds: ids }),
-  })
+  }),
 );
 
 /**
@@ -43,7 +43,7 @@ export const useGlobalImagesStore = create<globalImagesType>()((set) => ({
 type globalCollectionNameType = {
   globalCollectionNames: CollectionNames[] | undefined;
   setGlobalCollectionNames: (
-    globalCollectionNames: CollectionNames[] | undefined
+    globalCollectionNames: CollectionNames[] | undefined,
   ) => void;
 };
 export const useGlobalCollectionNameStore = create<globalCollectionNameType>()(
@@ -51,7 +51,7 @@ export const useGlobalCollectionNameStore = create<globalCollectionNameType>()(
     globalCollectionNames: undefined,
     setGlobalCollectionNames: (collectionNames) =>
       set({ globalCollectionNames: collectionNames }),
-  })
+  }),
 );
 
 /**
@@ -60,7 +60,7 @@ export const useGlobalCollectionNameStore = create<globalCollectionNameType>()(
 type UploadImageDataType = {
   globalUploadImageDatas: Images[] | undefined;
   setglobalUploadImageDatas: (
-    globalUploadImageDatas: Images[] | undefined
+    globalUploadImageDatas: Images[] | undefined,
   ) => void;
 };
 export const useGlobalUploadImageDataStore = create<UploadImageDataType>()(
@@ -68,5 +68,20 @@ export const useGlobalUploadImageDataStore = create<UploadImageDataType>()(
     globalUploadImageDatas: undefined,
     setglobalUploadImageDatas: (collectionNames) =>
       set({ globalUploadImageDatas: collectionNames }),
-  })
+  }),
+);
+
+/**
+ *
+ */
+type AuthUserImagesIdsType = {
+  authUserImagesIds: string[] | undefined;
+  setAuthUserImagesIds: (authUserImagesIds: string[] | undefined) => void;
+};
+export const useGlobalAuthUserImagesIdstore = create<AuthUserImagesIdsType>()(
+  (set) => ({
+    authUserImagesIds: [],
+    setAuthUserImagesIds: (authUserImagesIds) =>
+      set({ authUserImagesIds: authUserImagesIds }),
+  }),
 );

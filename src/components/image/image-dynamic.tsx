@@ -21,6 +21,7 @@ import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import ImageDimensionLists from "./image-dimensions-lists";
+import DeleteIcon from "../icons/delete-icon/delete-icon";
 
 type ImageDynamicProps = {
   image: UniversalImageType;
@@ -57,32 +58,34 @@ export default function ImageDynamic(props: ImageDynamicProps) {
 
   function handleCustomImageDownload() {
     const customDownloadUrl = image.src.original.concat(
-      `?&h=${customHeight}&w=${customWidth}`
+      `?&h=${customHeight}&w=${customWidth}`,
     );
 
     handleDownloadImageClick(
       customDownloadUrl,
-      image.alt ?? image.photographer
+      image.alt ?? image.photographer,
     );
   }
 
   return (
     <div>
-      <AdjustPadding className="flex items-center justify-between ">
-        <div className="flex items-center gap-x-2 mt-4">
+      <AdjustPadding className="flex items-center justify-between">
+        <div className="mt-4 flex items-center gap-x-2">
           <div
-            className="w-14 h-14 aspect-square rounded-full text-xl font-bold flex justify-center items-center text-stone-50"
-            style={{ backgroundColor: image?.avg_color ?? "blueviolet" }}>
+            className="flex aspect-square h-14 w-14 items-center justify-center rounded-full text-xl font-bold text-stone-50"
+            style={{ backgroundColor: image?.avg_color ?? "blueviolet" }}
+          >
             {image?.photographer[0]}
           </div>
           <div className="flex flex-col gap-y-2">
             {/* name */}
-            <h2 className="font-semibold text-lg">{image?.photographer}</h2>
+            <h2 className="text-lg font-semibold">{image?.photographer}</h2>
 
             {/* follow */}
             <Link
               href={image?.photographer_url ?? ""}
-              className="font-semibold text-base cursor-pointer">
+              className="cursor-pointer text-base font-semibold"
+            >
               Follow
             </Link>
           </div>
@@ -91,72 +94,66 @@ export default function ImageDynamic(props: ImageDynamicProps) {
         {/* download */}
         <div className="flex items-center gap-x-2">
           <div>
-            <CollectIcon
-              image={image}
+            <DeleteIcon
+              imageId={image.imageId}
+              imageSrc={image.src.medium}
               nameIncluded
             />
           </div>
           <div>
-            <HeartIcon
-              image={image}
-              nameIncluded
-            />
+            <CollectIcon image={image} nameIncluded />
           </div>
-          <div className="flex items-center gap-x-1 bg-visage-400 hover:bg-visage-500 rounded-md">
+          <div>
+            <HeartIcon image={image} nameIncluded />
+          </div>
+          <div className="flex items-center gap-x-1 rounded-md bg-visage-400 hover:bg-visage-500">
             <DownloadButtonDialog image={image}>
               <Button
                 onClick={() =>
                   handleDownloadImageClick(
                     image.src.original,
-                    image.alt ?? image.imageId
+                    image.alt ?? image.imageId,
                   )
                 }
                 variant={"visage"}
-                className="h-14">
+                className="h-14"
+              >
                 Free Download
               </Button>
             </DownloadButtonDialog>
 
-            <Separator
-              className="p-0 m-0 h-10"
-              orientation="vertical"
-            />
+            <Separator className="m-0 h-10 p-0" orientation="vertical" />
 
             <DropdownMenu>
               <DropdownMenuTrigger
                 className={cn(
-                  "p-4 h-14 bg-inherit hover:bg-inherit active:bg-inherit text-stone-50 font-medium flex items-center justify-center focus:border-none rounded-md",
-                  "group"
-                )}>
+                  "flex h-14 items-center justify-center rounded-md bg-inherit p-4 font-medium text-stone-50 hover:bg-inherit focus:border-none active:bg-inherit",
+                  "group",
+                )}
+              >
                 <ChevronDown
                   size={20}
-                  className={cn("group-hover:rotate-180 rotate-0 transition")}
+                  className={cn("rotate-0 transition group-hover:rotate-180")}
                 />
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className={"max-w-72 w-72"}>
+              <DropdownMenuContent align="end" className={"w-72 max-w-72"}>
                 <ScrollArea className="h-96">
-                  <p className="text-lg p-4 font-semibold text-stone-400">
+                  <p className="p-4 text-lg font-semibold text-stone-400">
                     Choose a size:
                   </p>
 
                   {/* lists */}
                   {Object.entries(image?.src ?? {}).map((obj, index) => (
-                    <ImageDimensionLists
-                      image={image}
-                      key={index}
-                      obj={obj}
-                    />
+                    <ImageDimensionLists image={image} key={index} obj={obj} />
                   ))}
 
-                  <div className="flex gap-x-2 py-2 px-4 items-center">
+                  <div className="flex items-center gap-x-2 px-4 py-2">
                     {/* width input */}
                     <Input
                       value={Math.ceil(customWidth)}
                       className={cn(
-                        "h-12 font-semibold text-stone-400 text-lg",
-                        "focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-stone-400"
+                        "h-12 text-lg font-semibold text-stone-400",
+                        "focus-visible:border-stone-400 focus-visible:ring-0 focus-visible:ring-offset-0",
                       )}
                       onChange={(e) => calcCustomWidth(e.target.value)}
                     />
@@ -164,8 +161,8 @@ export default function ImageDynamic(props: ImageDynamicProps) {
                     <Input
                       value={Math.ceil(customHeight)}
                       className={cn(
-                        "h-12 font-semibold text-stone-400 text-lg",
-                        "focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-stone-400"
+                        "h-12 text-lg font-semibold text-stone-400",
+                        "focus-visible:border-stone-400 focus-visible:ring-0 focus-visible:ring-offset-0",
                       )}
                       onChange={(e) => calcCustomHeight(e.target.value)}
                     />
@@ -176,7 +173,8 @@ export default function ImageDynamic(props: ImageDynamicProps) {
                       className="mt-4 w-full px-4"
                       size={"visage"}
                       variant={"visage"}
-                      onClick={handleCustomImageDownload}>
+                      onClick={handleCustomImageDownload}
+                    >
                       Download Custom Size
                     </Button>
                   </DownloadButtonDialog>
@@ -188,13 +186,12 @@ export default function ImageDynamic(props: ImageDynamicProps) {
       </AdjustPadding>
 
       {/* image */}
-      <div className="h-[30rem] mt-8 relative">
+      <div className="relative mt-8 h-[30rem]">
         <Image
           src={image.src.large}
           alt={image.alt ?? ""}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-
           style={{ objectFit: "contain", borderRadius: 20 }}
         />
       </div>

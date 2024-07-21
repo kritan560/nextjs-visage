@@ -98,3 +98,13 @@ export enum GetImagesByTagsEnum {
   IMAGE_FOUND = "IMAGE_FOUND",
   FAILED_TO_GET_IMAGES = "FAILED_TO_GET_IMAGES",
 }
+
+export enum GetUserUploadedImageIdEnum {
+  IMAGE_ID_FOUND = "IMAGE_ID_FOUND",
+  FAILED_TO_GET_IMAGE_IDS = "FAILED_TO_GET_IMAGE_IDS",
+}
+
+export enum DeleteUserUploadedImageEnum {
+  IMAGE_DELETED = "IMAGE_DELETED",
+  FAILED_TO_DELETE_IMAGE = "FAILED_TO_DELETE_IMAGE",
+}
