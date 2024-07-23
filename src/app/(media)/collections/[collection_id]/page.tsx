@@ -32,7 +32,7 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
     redirect(LinkCollections);
   }
 
-  const { userName, profilePicture } = await getCurrentUser();
+  const { userName, profilePic } = await getCurrentUser();
 
   return (
     <div className="">
@@ -60,7 +60,7 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-4">
             <Image
-              src={profilePicture ?? ""}
+              src={profilePic ?? ""}
               className="rounded-full"
               alt=""
               height={49}

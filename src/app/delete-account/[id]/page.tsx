@@ -1,5 +1,7 @@
 "use client";
 
+import VisageDialogContent from "@/components/shared/visage-dialog-content";
+import { VisageToast } from "@/components/shared/visage-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -36,13 +38,13 @@ export default function DeleteAcccountPage(props: DeleteAcccountPageProps) {
 
     if (success) {
       await signOut({ redirect: true, callbackUrl: LinkLoginPage });
-      toast.success(success.message);
+      VisageToast.success(success.message);
       router.push(LinkLoginPage);
       nProgress.start();
     }
 
     if (failed) {
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
       if (failed.message === DeleteAccountByUserIdEnum.TOKEN_EXPIRED) {
         router.push(LinkEditProfile);
         nProgress.start();
@@ -52,7 +54,7 @@ export default function DeleteAcccountPage(props: DeleteAcccountPageProps) {
 
   return (
     <Dialog open={true}>
-      <DialogContent>
+      <VisageDialogContent>
         <DialogHeader>
           <DialogTitle className="text-center text-3xl font-semibold text-rose-600">
             ⚠️ Account Deletion
@@ -81,7 +83,7 @@ export default function DeleteAcccountPage(props: DeleteAcccountPageProps) {
             </Button>
           </Link>
         </div>
-      </DialogContent>
+      </VisageDialogContent>
     </Dialog>
   );
 }

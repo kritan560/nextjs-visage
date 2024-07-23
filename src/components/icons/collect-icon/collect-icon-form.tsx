@@ -21,6 +21,7 @@ import nProgress from "nprogress";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { VisageFormItem } from "../../visage/visage-form-item";
+import { VisageToast } from "@/components/shared/visage-toast";
 
 type CollectIconForm = {
   image: UniversalImageType;
@@ -54,7 +55,7 @@ export function CollectIconForm(props: CollectIconForm) {
     );
 
     if (success) {
-      toast.success(success.message);
+      VisageToast.success(success.message);
 
       if (success.message === CollectImageEnum.NEW_COLLECTION_CREATED) {
         if (globalCollectionNames && globalCollectImagesIds) {
@@ -74,7 +75,7 @@ export function CollectIconForm(props: CollectIconForm) {
       }
     }
     if (failed) {
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
       if (failed.message === AuthFailedEnum.USER_NOT_LOGGED_IN) {
         router.push(LinkLoginPage);
         nProgress.start();

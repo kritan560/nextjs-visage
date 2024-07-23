@@ -25,6 +25,7 @@ import {
   DeleteAccountByUserIdEnum,
   DeleteCollectionNameEnum,
   DeleteUserUploadedImageEnum,
+  GetAllImagesEnum,
   GetCollectionImagesIdsEnum,
   GetCollectionNameByIdEnum,
   GetCollectionNamesEnum,
@@ -934,9 +935,9 @@ export async function createImages(images: Images[]) {
  */
 export async function getDailyUploadCount() {
   try {
-    const { isUserAuthenticated } = await getCurrentUserId();
+    const { userId } = await getCurrentUserId();
 
-    if (!isUserAuthenticated) {
+    if (!userId) {
       return {
         failed: {
           data: null,
@@ -952,7 +953,7 @@ export async function getDailyUploadCount() {
 
     // find all uploaded images between 24 hr interval.
     const dailyUploadCount = await prisma.images.findMany({
-      where: { createdAt: { gte: aDayBefore, lte: today } },
+      where: { createdAt: { gte: aDayBefore, lte: today }, userId },
     });
     return {
       success: {
@@ -1029,25 +1030,11 @@ export async function getTotalViewsCount() {
 /**
  * This server action will get all the images by given tag
  *
- * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
- *
  * @param tags - The keyword to search in image
  * @returns
  */
 export async function getImagesByTags(tags: string) {
   try {
-    const { isUserAuthenticated } = await getCurrentUserId();
-
-    if (!isUserAuthenticated) {
-      return {
-        failed: {
-          data: null,
-          redirect: true,
-          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
-        },
-      };
-    }
-
     const images = await prisma.images.findMany({
       where: { tags: { has: tags } },
       select: { image: true },
@@ -1146,6 +1133,63 @@ export async function deleteUserUploadedImage(imageId: string) {
       failed: {
         data: null,
         message: DeleteUserUploadedImageEnum.FAILED_TO_DELETE_IMAGE,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will get all the images that user uploads.
+ *
+ * augment the images into UniversalImagesType
+ *
+ * @returns
+ */
+export async function getAllImages() {
+  try {
+    const allImages = await prisma.images.findMany();
+
+    const augmentedAllImages = AugmentImagesIntoUniversalImages(allImages);
+    return {
+      success: {
+        data: augmentedAllImages,
+        message: GetAllImagesEnum.IMAGE_FOUND,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: GetAllImagesEnum.FAILED_TO_GET_ALL_IMAGES,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will only return the profile picture image link and userId.
+ *
+ * @returns
+ */
+export async function getPublicProfilePictures() {
+  try {
+    const profilePicture = await prisma.user.findMany({
+      select: { image: true, id: true },
+    });
+
+    return {
+      success: {
+        data: profilePicture,
+        message: GetUserProfilePictureEnum.GOT_PROFILE_PICTURE,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: GetUserProfilePictureEnum.FAILED_TO_GET_PROFILE_PICTURE,
       },
     };
   }

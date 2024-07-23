@@ -1,10 +1,16 @@
 "use client";
 
+import VisageDialogContent from "@/components/shared/visage-dialog-content";
+import { VisageToast } from "@/components/shared/visage-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useGlobalAuthUserImagesIdstore } from "@/global-states/visage-image-state";
+import {
+  useGlobalAuthUserImagesIdstore,
+  useGlobalImagesStore,
+} from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { deleteUserUploadedImage } from "@/servers/visage/visage-server";
+import { UniversalImageType } from "@/types/visage-type";
 import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -21,17 +27,29 @@ const DeleteIcon = (props: DeleteIconType) => {
   const [open, setOpen] = useState(false);
 
   const { authUserImagesIds } = useGlobalAuthUserImagesIdstore();
+  const { setGlobalImages, globalImages } = useGlobalImagesStore();
 
   async function handleDeleteClick() {
     const { failed, success } = await deleteUserUploadedImage(imageId);
 
     if (success) {
-      toast.success(success.message);
+      VisageToast.success(success.message);
+
+      const deletedData = success.data.image as UniversalImageType;
+
+      const filteredImages = globalImages?.filter(
+        (image) => image.imageId !== deletedData.imageId,
+      );
+
+      if (filteredImages) {
+        setGlobalImages(filteredImages);
+      }
+
       setOpen(false);
     }
 
     if (failed) {
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
     }
   }
 
@@ -48,14 +66,14 @@ const DeleteIcon = (props: DeleteIconType) => {
             )}
           >
             <MdDeleteForever
-              fill="rgb(225 29 72)"
+              fill="rgb(219 39 119)"
               size={24}
               className="m-0 h-fit w-fit p-0"
             />
             <p>{nameIncluded && "Delete"}</p>
           </div>
         </DialogTrigger>
-        <DialogContent>
+        <VisageDialogContent>
           <div className="flex flex-col items-center justify-center gap-y-6 p-8">
             <h1 className="text-2xl font-semibold dark:text-stone-400">
               Are You Sure You Want To Delete?
@@ -91,7 +109,7 @@ const DeleteIcon = (props: DeleteIconType) => {
               Cancel
             </Button>
           </div>
-        </DialogContent>
+        </VisageDialogContent>
       </Dialog>
     );
   }

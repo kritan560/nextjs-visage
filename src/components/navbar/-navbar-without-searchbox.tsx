@@ -12,8 +12,7 @@ import Upload from "./components/upload";
 import { ModeToggle } from "../mode-toggle";
 
 const NavbarWithoutSearchBox = async () => {
-  const { isUserAuthenticated, profilePicture, userName } =
-    await getCurrentUser();
+  const { isUserAuthenticated, profilePic, userName } = await getCurrentUser();
 
   const userAuthenticated = (
     <div className="text-white">
@@ -26,7 +25,7 @@ const NavbarWithoutSearchBox = async () => {
           <NavbarNotificationLoggedInOnly />
           <NavbarAvatarLoggedIn
             userName={userName}
-            profilePicture={profilePicture}
+            profilePicture={profilePic}
           />
           <ModeToggle />
           <NavbarButton buttonName="upload" href={LinkUploadPage} />

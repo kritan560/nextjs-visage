@@ -29,6 +29,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import ImageDimensionLists from "./image-dimensions-lists";
 import DeleteIcon from "../icons/delete-icon/delete-icon";
+import VisageDialogContent from "../shared/visage-dialog-content";
 
 type ImageDynamicInterceptionProps = {
   image: UniversalImageType;
@@ -87,7 +88,7 @@ export default function ImageDynamicInterception(
         router.back();
       }}
     >
-      <DialogContent className="fixed w-[80%] max-w-full">
+      <VisageDialogContent className="fixed w-[80%] max-w-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-2">
             <DialogHeader>
@@ -222,7 +223,7 @@ export default function ImageDynamicInterception(
             style={{ objectFit: "contain", borderRadius: 20 }}
           />
         </div>
-      </DialogContent>
+      </VisageDialogContent>
     </Dialog>
   );
 }

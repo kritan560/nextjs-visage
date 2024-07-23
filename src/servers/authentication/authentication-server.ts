@@ -36,7 +36,7 @@ export async function getCurrentUser() {
 
     return {
       isUserAuthenticated,
-      profilePicture,
+      profilePic: profilePicture,
       userName,
       userId,
       userEmail,

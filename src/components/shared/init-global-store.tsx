@@ -6,6 +6,7 @@ import {
   useGlobalCollectionNameStore,
   useGlobalImagesStore,
   useGlobalLikeImageStore,
+  useGlobalPublicProfileDetailStore,
 } from "@/global-states/visage-image-state";
 import { UniversalImagesType } from "@/types/visage-type";
 import { CollectionNames } from "@prisma/client";
@@ -18,6 +19,12 @@ type InitGlobalStoreProps = {
   collectionNames: CollectionNames[] | undefined;
   collectImagesIds: string[] | undefined;
   authUserImagesIds: string[] | undefined;
+  publicProfilePictures:
+    | {
+        id: string;
+        image: string | null;
+      }[]
+    | undefined;
 };
 
 export default function InitGlobalStore(props: InitGlobalStoreProps) {
@@ -28,6 +35,7 @@ export default function InitGlobalStore(props: InitGlobalStoreProps) {
     universalImagesType,
     collectImagesIds,
     authUserImagesIds,
+    publicProfilePictures,
   } = props;
 
   const { setGlobalCollectionNames } = useGlobalCollectionNameStore();
@@ -35,6 +43,13 @@ export default function InitGlobalStore(props: InitGlobalStoreProps) {
   const { setGlobalImages: setPexelCuratedPhotos } = useGlobalImagesStore();
   const { setGlobalCollectImageId } = useGlobalCollectImageIdsStore();
   const { setAuthUserImagesIds } = useGlobalAuthUserImagesIdstore();
+  const { setPublicProfileDetail } = useGlobalPublicProfileDetailStore();
+
+  useEffect(() => {
+    if (publicProfilePictures) {
+      setPublicProfileDetail(publicProfilePictures);
+    }
+  }, [publicProfilePictures, setPublicProfileDetail]);
 
   useEffect(() => {
     setGlobalCollectImageId(collectImagesIds);

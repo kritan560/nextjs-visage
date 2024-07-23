@@ -1,21 +1,18 @@
 "use client";
 
-import React, { memo, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
+import { UniversalImageType } from "@/types/visage-type";
+import { handleDownloadImageClick } from "@/utility/utils";
 import { Copy, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { SiPexels } from "react-icons/si";
+import React, { memo, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { UniversalImageType } from "@/types/visage-type";
-import { handleDownloadImageClick } from "@/utility/utils";
 import toast from "react-hot-toast";
+import { SiPexels } from "react-icons/si";
+import { Button } from "../ui/button";
+import { Dialog, DialogTitle, DialogTrigger } from "../ui/dialog";
+import VisageDialogContent from "./visage-dialog-content";
+import { VisageToast } from "./visage-toast";
 
 type DownloadButtonDialogProps = {
   children: React.ReactNode;
@@ -30,7 +27,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="z-[60] m-0 flex h-80 gap-0 p-0 sm:max-w-[625px]">
+      <VisageDialogContent className="z-[60] m-0 flex h-80 gap-0 p-0 sm:max-w-[625px]">
         <DialogTitle></DialogTitle>
         <div className="relative h-full w-[30%]">
           <Image
@@ -93,7 +90,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
             text={`photo by ${image.photographer}`}
             onCopy={() => {
               setCopy(true);
-              toast.success("copied to clipboard");
+              VisageToast.success("copied to clipboard");
               setTimeout(() => {
                 setCopy(false);
               }, 2800);
@@ -107,7 +104,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
             </div>
           </CopyToClipboard>
         </div>
-      </DialogContent>
+      </VisageDialogContent>
     </Dialog>
   );
 }

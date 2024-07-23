@@ -1,7 +1,11 @@
+import { getCurrentUser } from "@/servers/authentication/authentication-server";
 import { UniversalImagesType } from "@/types/visage-type";
 import { CollectionNames, Images } from "@prisma/client";
 import { create } from "zustand";
 
+/**
+ *
+ */
 type CollectImageIdsType = {
   globalCollectImagesIds: string[] | undefined;
   setGlobalCollectImageId: (id: string[] | undefined) => void;
@@ -85,3 +89,24 @@ export const useGlobalAuthUserImagesIdstore = create<AuthUserImagesIdsType>()(
       set({ authUserImagesIds: authUserImagesIds }),
   }),
 );
+
+/**
+ *
+ */
+type publicProfilePictureType = {
+  publicProfileDetail: {
+    id: string;
+    image: string | null;
+  }[];
+  setPublicProfileDetail: ([{ id, image }]: {
+    id: string;
+    image: string | null;
+  }[]) => void;
+};
+export const useGlobalPublicProfileDetailStore =
+  create<publicProfilePictureType>()((set) => ({
+    publicProfileDetail: [],
+    setPublicProfileDetail(detail) {
+      set({ publicProfileDetail: detail });
+    },
+  }));

@@ -3,6 +3,7 @@
 import {
   useGlobalCollectImageIdsStore,
   useGlobalLikeImageStore,
+  useGlobalPublicProfileDetailStore,
 } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { UniversalImageType } from "@/types/visage-type";
@@ -16,10 +17,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import CollectIcon from "../icons/collect-icon/collect-icon";
+import DeleteIcon from "../icons/delete-icon/delete-icon";
 import HeartIcon from "../icons/heart-icon/heart-icon";
 import { Button } from "../ui/button";
 import DownloadButtonDialog from "./download-button-dialog";
-import DeleteIcon from "../icons/delete-icon/delete-icon";
 
 const blurDataURL =
   "data:image/webp;base64,UklGRowCAABXRUJQVlA4WAoAAAAgAAAAwwAAwwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggngAAADANAJ0BKsQAxAA+7Xa4VqmnJSOgSAEwHYlpbuCUBHjw8ALS4DeirhBlWYEvZMkE5w17ZOaVcLXVUoWusMkERNByxvpivvEAiJe/GT61Ti22jEhGCC0fLzI8LXVUnD7GTi1JuLgJvRCWwnsGxIwXQiKW4AD+pGXVOVryFj61/69G/5A1h4oQ6ARrjeCTcz7Ml3AOK7BnHqXIJQCAAAAA";
@@ -35,6 +36,11 @@ export function UniqueImage(props: UniqueImageProps) {
 
   const { globalCollectImagesIds } = useGlobalCollectImageIdsStore();
   const { globalLikedImagesIds } = useGlobalLikeImageStore();
+  const { publicProfileDetail } = useGlobalPublicProfileDetailStore();
+
+  const publicProfile = publicProfileDetail.find(
+    (detail) => detail.id === image.userId,
+  );
 
   return (
     <div key={image.id} className="group relative">
@@ -75,7 +81,7 @@ export function UniqueImage(props: UniqueImageProps) {
           ) : (
             <Image
               className="h-12 w-12 rounded-full"
-              src={image.src.medium}
+              src={publicProfile?.image ?? ""}
               alt=""
               width={48}
               height={48}
@@ -83,7 +89,7 @@ export function UniqueImage(props: UniqueImageProps) {
           )}
 
           {/* photographer name */}
-          <p className="text-xl font-medium text-stone-50">
+          <p className="text-xl font-medium capitalize text-stone-50">
             {TruncatePhotgrapherName(image.photographer)}
           </p>
         </Link>

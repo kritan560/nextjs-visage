@@ -18,6 +18,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import nProgress from "nprogress";
 import { useEffect, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { FaRegCircleDot } from "react-icons/fa6";
@@ -25,7 +26,7 @@ import UploadIcon from "../icons/upload-icon";
 import AdjustPadding from "../shared/adjust-padding";
 import { ScrollArea } from "../ui/scroll-area";
 import UploadedImageData from "./uploaded-image-data";
-import nProgress from "nprogress";
+import { VisageToast } from "../shared/visage-toast";
 
 let uploadedDataArray: ReturnType<typeof AugmentImagesImageField> = [];
 
@@ -38,6 +39,7 @@ export default function UploadImageContent() {
   const [isPending, startTransition] = useTransition();
   const [dailyUploadCountLeft, setDailyUploadCountLeft] =
     useState(DailyUploadCount);
+  const [dataUploaded, setDataUploaded] = useState(false);
 
   useEffect(() => {
     startTransition(async () => {
@@ -47,10 +49,18 @@ export default function UploadImageContent() {
         setDailyUploadCountLeft(DailyUploadCount - success.data);
       }
       if (failed) {
-        toast.error(failed.message);
+        VisageToast.error(failed.message);
       }
     });
   }, [router]);
+
+  useEffect(() => {
+    if (uploadedData.length > 0) {
+      setDataUploaded(true);
+    } else {
+      setDataUploaded(false);
+    }
+  }, [uploadedData.length]);
 
   async function handleSuccess(data: any) {
     const { userId, userName } = await getCurrentUserId();
@@ -120,18 +130,18 @@ export default function UploadImageContent() {
   async function handleSubmitClick() {
     const { failed, success } = await createImages(uploadedData);
     if (success) {
-      toast.success(success.message);
+      VisageToast.success(success.message);
       router.push(LinkProfile);
       nProgress.start();
 
       setUploadedData([]);
     }
     if (failed) {
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
     }
   }
 
-  if (uploadedData.length > 0) {
+  if (dataUploaded) {
     return (
       <AdjustPadding className="relative mt-16">
         <div className="mx-auto w-[75%]">
@@ -252,73 +262,74 @@ export default function UploadImageContent() {
     );
   }
 
-  return (
-    <AdjustPadding className="mt-20">
-      <div className="mx-auto w-[60%]">
-        <h1 className="text-center text-4xl font-semibold text-stone-700 dark:text-stone-400">
-          Share your photos and videos, and let the world love them.
-        </h1>
-        <p className="mx-auto mt-5 w-[70%] text-center text-lg font-medium text-stone-500 dark:text-stone-300">
-          Share your first {DailyUploadCount} photos or videos to introduce
-          yourself to millions of ImageHive users.
-        </p>
-      </div>
-
-      <AdjustPadding className="relative mt-8">
-        <div className="relative flex h-[700px] w-full flex-col items-center justify-center gap-y-11 rounded-[2rem] border-2 border-dashed border-stone-300 p-6">
-          <span className="absolute right-8 top-4 text-sm font-medium text-stone-400">
-            ({DailyUploadCount - dailyUploadCountLeft}/{DailyUploadCount})
-          </span>
-          <UploadIcon />{" "}
-          <h1 className="text-4xl font-bold text-stone-700 dark:text-stone-400">
-            Click to upload
+  if (!dataUploaded)
+    return (
+      <AdjustPadding className="mt-20">
+        <div className="mx-auto w-[60%]">
+          <h1 className="text-center text-4xl font-semibold text-stone-700 dark:text-stone-400">
+            Share your photos and videos, and let the world love them.
           </h1>
-          <CldUploadWidget
-            uploadPreset={"scmoywbv"}
-            onSuccess={handleSuccess}
-            onClose={handleClose}
-            options={{
-              multiple: true,
-              maxFiles: 5,
-              clientAllowedFormats: ["jpg", "png", "jpeg"],
-            }}
-          >
-            {({ open }) => {
-              return (
-                <Button
-                  onClick={() => open()}
-                  className="h-14 px-8"
-                  variant={"visage"}
-                  type="button"
-                  disabled={dailyUploadCountLeft <= 0}
-                >
-                  Upload
-                </Button>
-              );
-            }}
-          </CldUploadWidget>
-          <div className="text-base font-medium text-stone-400">
-            <p>
-              (You have{" "}
-              <span className="text-visage-600">
-                {isPending ? (
-                  <span className="h-4 w-4 animate-pulse font-bold">🟤</span>
-                ) : (
-                  `${dailyUploadCountLeft}`
-                )}
-              </span>{" "}
-              upload left for the day)
-            </p>
-          </div>
-          <Link href={LinkHomepage}>
-            <Button className="h-12 px-8 text-base" variant={"outline"}>
-              Skip Upload
-            </Button>
-          </Link>
-          {/* blur part */}
-          <div className="absolute -bottom-2 left-0 right-0 h-28 w-full scale-x-105 scale-y-110 bg-white blur-md dark:bg-black"></div>
+          <p className="mx-auto mt-5 w-[70%] text-center text-lg font-medium text-stone-500 dark:text-stone-300">
+            Share your first {DailyUploadCount} photos or videos to introduce
+            yourself to millions of ImageHive users.
+          </p>
         </div>
+
+        <AdjustPadding className="relative mt-8">
+          <div className="relative flex h-[700px] w-full flex-col items-center justify-center gap-y-11 rounded-[2rem] border-2 border-dashed border-stone-300 p-6">
+            <span className="absolute right-8 top-4 text-sm font-medium text-stone-400">
+              ({DailyUploadCount - dailyUploadCountLeft}/{DailyUploadCount})
+            </span>
+            <UploadIcon />{" "}
+            <h1 className="text-4xl font-bold text-stone-700 dark:text-stone-400">
+              Click to upload
+            </h1>
+            <CldUploadWidget
+              uploadPreset={"scmoywbv"}
+              onSuccess={handleSuccess}
+              onClose={handleClose}
+              options={{
+                multiple: true,
+                maxFiles: 5,
+                clientAllowedFormats: ["jpg", "png", "jpeg"],
+              }}
+            >
+              {({ open }) => {
+                return (
+                  <Button
+                    onClick={() => open()}
+                    className="h-14 px-8"
+                    variant={"visage"}
+                    type="button"
+                    disabled={dailyUploadCountLeft <= 0}
+                  >
+                    Upload
+                  </Button>
+                );
+              }}
+            </CldUploadWidget>
+            <div className="text-base font-medium text-stone-400">
+              <p>
+                (You have{" "}
+                <span className="text-visage-600">
+                  {isPending ? (
+                    <span className="h-4 w-4 animate-pulse font-bold">🟤</span>
+                  ) : (
+                    `${dailyUploadCountLeft}`
+                  )}
+                </span>{" "}
+                upload left for the day)
+              </p>
+            </div>
+            <Link href={LinkHomepage}>
+              <Button className="h-12 px-8 text-base" variant={"outline"}>
+                Skip Upload
+              </Button>
+            </Link>
+            {/* blur part */}
+            <div className="absolute -bottom-2 left-0 right-0 h-28 w-full scale-x-105 scale-y-110 bg-white blur-md dark:bg-black"></div>
+          </div>
+        </AdjustPadding>
       </AdjustPadding>
-    </AdjustPadding>
-  );
+    );
 }

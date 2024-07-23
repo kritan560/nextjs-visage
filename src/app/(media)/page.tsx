@@ -6,18 +6,10 @@ import ImageSearchVideo2 from "@/components/shared/image-video-search2";
 import InfiniteScroll from "@/components/shared/infinite-scroll";
 import MainImage from "@/images/pexels-alexmoliski-26341034.jpg";
 import { getCurrentUserId } from "@/servers/authentication/authentication-server";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
-import { getImages } from "@/servers/visage/visage-server";
 import Image from "next/image";
 
 const Page = async () => {
   const { userId } = await getCurrentUserId();
-  const { failed, success } = await getImages();
-  const curatedPhotos = (await getPexelCuratedPhotosByPage_PerPage()) ?? [];
-
-  const images = success?.data ?? [];
-
-  const curatedAndImages = [...images, ...curatedPhotos];
 
   return (
     <div>
@@ -59,10 +51,7 @@ const Page = async () => {
 
       {/* image : mansonry */}
       <div className="mt-6">
-        <InfiniteScroll
-          curatedAndImages={curatedAndImages}
-          mediaType={"Image"}
-        />
+        <InfiniteScroll mediaType={"Image"} />
       </div>
     </div>
   );

@@ -117,9 +117,9 @@ export default function UploadedImageData(props: UploadedDataProps) {
                 <TagsInput
                   classNames={{
                     input:
-                      "h-12 bg-white dark:bg-background text-white text-base border-yellow-500 focus-within:border-slate-500",
-                    label: "text-base text-stone-300",
-                    pill: "bg-white dark:bg-stone-800 dark:text-white",
+                      "min-h-12 bg-white dark:bg-background text-black dark:text-white text-base border-yellow-500 focus-within:border-slate-500",
+                    label: "text-base dark:text-stone-300 text-stone-500",
+                    pill: "bg-stone-500 text-white dark:bg-stone-800 dark:text-white",
                   }}
                   label="Tag (Optional)"
                   description="Add up to 3 tags. Press Enter to add Tag"

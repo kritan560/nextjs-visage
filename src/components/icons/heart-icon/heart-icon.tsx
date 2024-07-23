@@ -1,3 +1,4 @@
+import { VisageToast } from "@/components/shared/visage-toast";
 import { useGlobalLikeImageStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { LinkLoginPage } from "@/links/links";
@@ -46,10 +47,10 @@ export default function HeartIcon(props: HeartIconProps) {
         );
       }
 
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
     }
     if (success) {
-      toast.success(success.message);
+      VisageToast.success(success.message);
     }
   }
 

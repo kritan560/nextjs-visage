@@ -1,5 +1,3 @@
-// !!! make UniversalImages , UniversalImage Type
-
 import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
 import { Images, LikedImages } from "@prisma/client";
 import { Photo, Photos, PhotosWithTotalResults } from "pexels";
@@ -10,7 +8,7 @@ import { Photo, Photos, PhotosWithTotalResults } from "pexels";
  * @returns
  */
 export async function AugmentPexelCuratedPhotosIntoUniversalImages(
-  photo: Photos
+  photo: Photos,
 ): Promise<UniversalImagesType> {
   // removing the "liked" property from photo.photos and converting the photographer_id to string..
   // Photo type has photographer_id as string but returns as number so converting it. here in augment
@@ -33,7 +31,7 @@ export async function AugmentPexelCuratedPhotosIntoUniversalImages(
  * @returns
  */
 export function AugmentLikedImageIntoUniversalImage(
-  likedImage: LikedImages
+  likedImage: LikedImages,
 ): UniversalImageType {
   const img = likedImage.likedImage as UniversalImageType;
 
@@ -47,7 +45,7 @@ export function AugmentLikedImageIntoUniversalImage(
  *
  */
 export function AugmentLikedImagesIntoUniversalImages(
-  likedImages: LikedImages[]
+  likedImages: LikedImages[],
 ): UniversalImagesType {
   const augmentedLikeImages = likedImages.map((likedImage) => {
     return likedImage.likedImage as UniversalImageType;
@@ -77,7 +75,7 @@ export function AugmentImageIntoUniversalImage(image: Images) {
  * @returns
  */
 export function AugmentPexelCuratedPhotoIntoUniversalImage(
-  photo: Photo
+  photo: Photo,
 ): UniversalImageType {
   // removing the "liked" property by destructuring and
   // converting the photographer_id to string because it is what in type Photo
@@ -98,14 +96,14 @@ export function AugmentImagesIntoUniversalImages(images: Images[]) {
       return {
         ...univeralImageType,
       };
-    }
+    },
   );
 
   return augmentedImages;
 }
 
 export async function AugmentPixelSearchedPhotoIntoUniversalImage(
-  photo: PhotosWithTotalResults
+  photo: PhotosWithTotalResults,
 ): Promise<UniversalImagesType> {
   const universalPhotos: UniversalImagesType = photo.photos.map((p) => {
     const { liked, ...withoutLiked } = {

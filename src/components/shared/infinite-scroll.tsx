@@ -3,8 +3,8 @@
 import { useGlobalImagesStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
-import { MediaType, UniversalImagesType } from "@/types/visage-type";
-import { useEffect, useLayoutEffect, useState, useTransition } from "react";
+import { MediaType } from "@/types/visage-type";
+import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
 import { MasonryClient } from "../masonry/masonry-client";
@@ -13,11 +13,10 @@ import { UniqueImage } from "./unique-image";
 
 type InfiniteScrollProps = {
   mediaType: MediaType | undefined;
-  curatedAndImages: UniversalImagesType;
 };
 
 export default function InfiniteScroll(props: InfiniteScrollProps) {
-  const { mediaType, curatedAndImages } = props;
+  const { mediaType } = props;
 
   const { ref, inView } = useInView();
   const [isPending, startTransition] = useTransition();
@@ -27,23 +26,20 @@ export default function InfiniteScroll(props: InfiniteScrollProps) {
   const { globalImages, setGlobalImages: setPexelCuratedPhotos } =
     useGlobalImagesStore();
 
-  // useEffect(() => {
-  //   if (inView) {
-  //     startTransition(async () => {
-  //       const curatedPhotos = await getPexelCuratedPhotosByPage_PerPage(page);
+  useEffect(() => {
+    if (inView) {
+      startTransition(async () => {
+        const curatedPhotos = await getPexelCuratedPhotosByPage_PerPage(page);
 
-  //       if (globalImages && globalImages?.length <= 0) {
-  //         setPexelCuratedPhotos(curatedAndImages);
-  //       }
-  //       // else if (globalImages && curatedPhotos) {
-  //       //   setPexelCuratedPhotos([...globalImages, ...curatedPhotos]);
-  //       // }
-  //     });
-  //     setPage((prev) => prev + 1);
-  //   }
-  //   setInitialLoading(false);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [inView]);
+        if (globalImages && curatedPhotos) {
+          setPexelCuratedPhotos([...globalImages, ...curatedPhotos]);
+        }
+      });
+      setPage((prev) => prev + 1);
+    }
+    setInitialLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   return (
     <AdjustPadding>

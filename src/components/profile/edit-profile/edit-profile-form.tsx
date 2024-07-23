@@ -19,13 +19,14 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import {
   Dialog,
-  DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { VisageFormItem } from "@/components/visage/visage-form-item";
+import VisageDialogContent from "@/components/shared/visage-dialog-content";
+import { VisageToast } from "@/components/shared/visage-toast";
 
 type EditProfileFormProps = {
   profileId: string;
@@ -88,10 +89,10 @@ export function EditProfileForm(props: EditProfileFormProps) {
       });
 
       if (success) {
-        toast.success(success.message);
+        VisageToast.success(success.message);
       }
       if (failed) {
-        toast.error(failed.message);
+        VisageToast.error(failed.message);
       }
     }
   }
@@ -285,7 +286,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
                 Remove Account
               </span>
             </DialogTrigger>
-            <DialogContent className="min-w-[600px] p-12">
+            <VisageDialogContent className="min-w-[600px] p-12">
               <DialogHeader>
                 <DialogTitle className="text-center text-2xl font-semibold">
                   Request to Close Your Visage Account
@@ -308,7 +309,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
                       Delete My Account
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="min-w-[600px] p-12">
+                  <VisageDialogContent className="min-w-[600px] p-12">
                     <DialogHeader>
                       <DialogTitle className="text-center text-2xl">
                         Request to close your Visage Account
@@ -337,7 +338,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
                       </span>{" "}
                       to receive it again.
                     </p>
-                  </DialogContent>
+                  </VisageDialogContent>
                 </Dialog>
                 <Button
                   variant={"outline"}
@@ -347,7 +348,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
                   Cancel
                 </Button>
               </div>
-            </DialogContent>
+            </VisageDialogContent>
           </Dialog>
         </div>
 

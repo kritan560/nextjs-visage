@@ -1,7 +1,13 @@
-able to delete user Own uploaded image
+✅ able to delete user Own uploaded image
 
-when entering tags more than 3 the height did not match
+✅ when entering tags more than 3 the height did not match
 
-♻️ get the latest user uploaded images in homepage
+✅ get the latest user uploaded images in homepage
 
-♻️ user uploaded image not appearing in homepage
+✅ user uploaded image not appearing in homepage
+
+✅ make uploaded image accessable for unauth users too...
+
+✅ if user1 uploaded the pic and webapp is used by user2 then user1 profilepic should be visible to user2 in image hover.
+
+✅ collecect all profile images and userid in global object. then based on user id show the profile image

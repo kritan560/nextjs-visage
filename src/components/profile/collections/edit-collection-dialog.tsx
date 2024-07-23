@@ -1,9 +1,10 @@
 "use client";
 
+import VisageDialogContent from "@/components/shared/visage-dialog-content";
+import { VisageToast } from "@/components/shared/visage-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -52,16 +53,16 @@ export default function EditCollectionDialog(props: EditCollectionDialogProps) {
     // ✅ This will be type-safe and validated.
     const { failed, success } = await changeCollectionName(
       collectionId,
-      values.collectionName
+      values.collectionName,
     );
 
     if (success) {
-      toast.success(success.message);
+      VisageToast.success(success.message);
       router.refresh();
       setDialogOpen(false);
     }
     if (failed) {
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
     }
   }
 
@@ -69,36 +70,32 @@ export default function EditCollectionDialog(props: EditCollectionDialogProps) {
     const { failed, success } = await deleteCollectionName(collectionNameId);
 
     if (success) {
-      toast.success(success.message);
+      VisageToast.success(success.message);
       setDialogOpen(false);
       router.refresh();
     }
     if (failed) {
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
     }
   }
 
   return (
-    <Dialog
-      open={dialogOpen}
-      onOpenChange={setDialogOpen}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>
         <AiOutlineEdit
-          className="h-fit w-fit p-2 border-stone-300 border-2 rounded-full"
+          className="h-fit w-fit rounded-full border-2 border-stone-300 p-2"
           size={25}
         />
       </DialogTrigger>
-      <DialogContent className="p-12 min-w-[600px]">
+      <VisageDialogContent className="min-w-[600px] p-12">
         <DialogHeader>
-          <DialogTitle className="text-4xl font-medium text-center mt-4 mb-6">
+          <DialogTitle className="mb-6 mt-4 text-center text-4xl font-medium">
             Edit Collection
           </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="collectionName"
@@ -116,47 +113,49 @@ export default function EditCollectionDialog(props: EditCollectionDialogProps) {
             <div className="flex items-center gap-x-5">
               <Button
                 variant={"visage"}
-                className="h-14 px-6  font-medium text-base"
-                type="submit">
+                className="h-14 px-6 text-base font-medium"
+                type="submit"
+              >
                 Change Collection Name
               </Button>
-              <Dialog
-                open={dialog2Open}
-                onOpenChange={setDialog2Open}>
+              <Dialog open={dialog2Open} onOpenChange={setDialog2Open}>
                 <DialogTrigger>
                   <Button
                     variant={"destructive"}
-                    className="h-14 px-6  font-medium text-base"
-                    type="button">
+                    className="h-14 px-6 text-base font-medium"
+                    type="button"
+                  >
                     Delete
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="p-6">
+                <VisageDialogContent className="p-6">
                   <DialogHeader>
-                    <DialogHeader className="text-4xl font-semibold mx-auto mb-6 mt-4">
+                    <DialogHeader className="mx-auto mb-6 mt-4 text-4xl font-semibold">
                       Are You Sure?
                     </DialogHeader>
                   </DialogHeader>
-                  <div className="flex gap-x-5 items-center mx-auto">
+                  <div className="mx-auto flex items-center gap-x-5">
                     <Button
                       onClick={() => handleCollectionNameDelete(collectionId)}
-                      className="h-14 px-6 font-semibold text-base"
-                      variant={"destructive"}>
+                      className="h-14 px-6 text-base font-semibold"
+                      variant={"destructive"}
+                    >
                       Delete Collection
                     </Button>
                     <Button
                       onClick={() => setDialog2Open(false)}
-                      className="h-14 px-6 font-semibold text-base"
-                      variant={"outline"}>
+                      className="h-14 px-6 text-base font-semibold"
+                      variant={"outline"}
+                    >
                       Back
                     </Button>
                   </div>
-                </DialogContent>
+                </VisageDialogContent>
               </Dialog>
             </div>
           </form>
         </Form>
-      </DialogContent>
+      </VisageDialogContent>
     </Dialog>
   );
 }

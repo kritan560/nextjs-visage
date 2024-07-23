@@ -7,6 +7,7 @@ import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { VisageToast } from "@/components/shared/visage-toast";
 
 type EditProfileChangeImageProps = {
   profilePicture: string | null | undefined;
@@ -30,13 +31,13 @@ export default function EditProfileChangeImage(
         secure_url,
       );
       if (success) {
-        toast.success(success.message);
+        VisageToast.success(success.message);
         setUserProfilePicture(success.data.image);
         router.refresh();
       }
 
       if (failed) {
-        toast.error(failed.message);
+        VisageToast.error(failed.message);
       }
     });
   }

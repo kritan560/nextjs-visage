@@ -30,6 +30,8 @@ import {
 } from "../../ui/dialog";
 import { CollectIconForm } from "./collect-icon-form";
 import nProgress from "nprogress";
+import VisageDialogContent from "@/components/shared/visage-dialog-content";
+import { VisageToast } from "@/components/shared/visage-toast";
 
 type CollectIconProps = {
   image: UniversalImageType;
@@ -57,7 +59,7 @@ export default function CollectIcon(props: CollectIconProps) {
     );
 
     if (success) {
-      toast.success(success.message);
+      VisageToast.success(success.message);
 
       const successDataCollectionNameId = success.data.id;
 
@@ -85,7 +87,7 @@ export default function CollectIcon(props: CollectIconProps) {
     }
 
     if (failed) {
-      toast.error(failed.message);
+      VisageToast.error(failed.message);
       if (failed.message === AuthFailedEnum.USER_NOT_LOGGED_IN) {
         router.push(LinkLoginPage);
         nProgress.start();
@@ -118,7 +120,7 @@ export default function CollectIcon(props: CollectIconProps) {
           )}
         </div>
       </DialogTrigger>
-      <DialogContent className="h-[500px] min-w-[650px] p-8">
+      <VisageDialogContent className="h-[500px] min-w-[650px] p-8">
         <ScrollArea type="auto" className="h-[434px] w-full">
           <DialogHeader>
             <DialogTitle className="flex flex-col gap-y-4 text-center text-3xl font-semibold">
@@ -205,7 +207,7 @@ export default function CollectIcon(props: CollectIconProps) {
               ))}
             </div>
 
-            <DialogContent className="min-w-[600px] p-12">
+            <VisageDialogContent className="min-w-[600px] p-12">
               <DialogHeader>
                 <DialogTitle className="text-center text-3xl font-semibold">
                   Save To New Collection
@@ -215,10 +217,10 @@ export default function CollectIcon(props: CollectIconProps) {
               <DialogDescription></DialogDescription>
 
               <CollectIconForm onOpenChange={setOpen2ndDialog} image={image} />
-            </DialogContent>
+            </VisageDialogContent>
           </Dialog>
         </ScrollArea>
-      </DialogContent>
+      </VisageDialogContent>
     </Dialog>
   );
 }

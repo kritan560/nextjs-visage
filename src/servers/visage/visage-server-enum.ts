@@ -108,3 +108,8 @@ export enum DeleteUserUploadedImageEnum {
   IMAGE_DELETED = "IMAGE_DELETED",
   FAILED_TO_DELETE_IMAGE = "FAILED_TO_DELETE_IMAGE",
 }
+
+export enum GetAllImagesEnum {
+  IMAGE_FOUND = "IMAGE_FOUND",
+  FAILED_TO_GET_ALL_IMAGES = "FAILED_TO_GET_ALL_IMAGES",
+}

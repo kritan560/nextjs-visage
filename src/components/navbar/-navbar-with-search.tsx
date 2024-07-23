@@ -13,7 +13,7 @@ import { LinkJoinPage, LinkUploadPage } from "@/links/links";
 import { ModeToggle } from "../mode-toggle";
 
 const NavbarWithSearchBox = async () => {
-  const { userId, profilePicture, userName } = await getCurrentUser();
+  const { userId, profilePic, userName } = await getCurrentUser();
 
   const userAuthenticated = (
     <div className="">
@@ -30,7 +30,7 @@ const NavbarWithSearchBox = async () => {
           <NavbarNotificationLoggedInOnly />
           <NavbarAvatarLoggedIn
             userName={userName}
-            profilePicture={profilePicture}
+            profilePicture={profilePic}
           />
           <ModeToggle />
           <NavbarButton buttonName="Upload" href={LinkUploadPage} />
