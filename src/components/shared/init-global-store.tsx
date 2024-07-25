@@ -8,7 +8,12 @@ import {
   useGlobalLikeImageStore,
   useGlobalPublicProfileDetailStore,
 } from "@/global-states/visage-image-state";
-import { UniversalImagesType } from "@/types/visage-type";
+import {
+  useGlobalCollectVideosIds,
+  useGlobalLikeVideosIds,
+  useGlobalVideos,
+} from "@/global-states/visage-video-state";
+import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
 import { CollectionNames } from "@prisma/client";
 import React, { useEffect } from "react";
 
@@ -25,6 +30,9 @@ type InitGlobalStoreProps = {
         image: string | null;
       }[]
     | undefined;
+  collectVideosIds: string[] | undefined;
+  likedVideosIds: string[] | undefined;
+  globalVideos: UniversalVideosType["videos"] | undefined;
 };
 
 export default function InitGlobalStore(props: InitGlobalStoreProps) {
@@ -36,6 +44,9 @@ export default function InitGlobalStore(props: InitGlobalStoreProps) {
     collectImagesIds,
     authUserImagesIds,
     publicProfilePictures,
+    collectVideosIds,
+    likedVideosIds,
+    globalVideos,
   } = props;
 
   const { setGlobalCollectionNames } = useGlobalCollectionNameStore();
@@ -44,6 +55,21 @@ export default function InitGlobalStore(props: InitGlobalStoreProps) {
   const { setGlobalCollectImageId } = useGlobalCollectImageIdsStore();
   const { setAuthUserImagesIds } = useGlobalAuthUserImagesIdstore();
   const { setPublicProfileDetail } = useGlobalPublicProfileDetailStore();
+  const { setVideosIds } = useGlobalCollectVideosIds();
+  const { setVideosIds: setGlobalLikedVideosIds } = useGlobalLikeVideosIds();
+  const { setVideos: setGlobalVideos } = useGlobalVideos();
+
+  useEffect(() => {
+    setGlobalVideos(globalVideos);
+  }, [globalVideos, setGlobalVideos]);
+
+  useEffect(() => {
+    setGlobalLikedVideosIds(likedVideosIds);
+  }, [likedVideosIds, setGlobalLikedVideosIds]);
+
+  useEffect(() => {
+    setVideosIds(collectVideosIds);
+  }, [collectVideosIds, setVideosIds]);
 
   useEffect(() => {
     if (publicProfilePictures) {

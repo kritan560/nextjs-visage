@@ -1,21 +1,21 @@
 "use client";
 
-import { useGlobalImagesStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
-import { MediaType } from "@/types/visage-type";
+import { getVideos } from "@/servers/pexel/pexel-server";
+import { MediaType, UniversalVideosType } from "@/types/visage-type";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
 import { MasonryClient } from "../masonry/masonry-client";
 import AdjustPadding from "./adjust-padding";
-import { UniqueImage } from "./unique-image";
+import { UniqueVideo } from "./unique-video";
+import { useGlobalVideos } from "@/global-states/visage-video-state";
 
-type InfiniteScrollProps = {
+type InfiniteScrollVideoProps = {
   mediaType: MediaType | undefined;
 };
 
-export default function InfiniteScroll(props: InfiniteScrollProps) {
+export default function InfiniteScrollVideo(props: InfiniteScrollVideoProps) {
   const { mediaType } = props;
 
   const { ref, inView } = useInView();
@@ -23,18 +23,19 @@ export default function InfiniteScroll(props: InfiniteScrollProps) {
   const [page, setPage] = useState(2);
   const [initialLoading, setInitialLoading] = useState(true);
 
-  const { globalImages, setGlobalImages: setPexelCuratedPhotos } =
-    useGlobalImagesStore();
+  const { setVideos, videos } = useGlobalVideos();
 
   useEffect(() => {
     if (inView) {
       startTransition(async () => {
-        const curatedPhotos = await getPexelCuratedPhotosByPage_PerPage(page);
+        const { failed, success } = await getVideos(page);
+        const pexelVideos = success?.data.videos;
 
-        if (globalImages && curatedPhotos) {
-          setPexelCuratedPhotos([...globalImages, ...curatedPhotos]);
+        if (videos && pexelVideos) {
+          setVideos([...videos, ...pexelVideos]);
         }
       });
+
       setPage((prev) => prev + 1);
     }
 
@@ -45,13 +46,12 @@ export default function InfiniteScroll(props: InfiniteScrollProps) {
   return (
     <AdjustPadding>
       {/* image mansonry */}
-      {mediaType === "Image" && (
+      {mediaType === "Video" && (
         <MasonryClient>
-          {globalImages?.map((image) => (
-            <UniqueImage key={image.id} image={image} />
-          ))}
+          {videos?.map((video) => <UniqueVideo key={video.id} video={video} />)}
         </MasonryClient>
       )}
+
       <div className="relative h-14 overflow-x-clip">
         <PropagateLoader
           size={30}

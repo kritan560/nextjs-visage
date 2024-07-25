@@ -34,9 +34,11 @@ model User {
 
   accounts                 Account[]
   likeImages               LikedImages[]
+  likeVideos               LikedVideos[]
   CollectionNames          CollectionNames[]
   userAccountDeletionToken UserAccountDeletionToken?
   images                   Images[]
+  videos                   Videos[]
 }
 
 model UserAccountDeletionToken {
@@ -76,6 +78,7 @@ model CollectionNames {
   updatedAt        DateTime @updatedAt
   collectionName   String
   collectionImages Json[] // Json should be type of UniversalImagesType
+  collectionVideos Json[] // Json should be type of UniversalVideosType
 
   userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -89,10 +92,35 @@ model LikedImages {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model LikedVideos {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  likedVideo Json   @unique // Json is type of UniversalImageType
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Images {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   imageId String @unique
   image   Json   @unique // Json is type of UniversalImageType
+
+  title    String?
+  location String?
+  tags     String[]
+  views    Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Videos {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  videoId String @unique
+  video   Json   @unique // Json is type of UniversalVideoType
 
   title    String?
   location String?

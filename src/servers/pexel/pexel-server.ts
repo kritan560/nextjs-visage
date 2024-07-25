@@ -4,9 +4,16 @@ import {
   AugmentPexelCuratedPhotoIntoUniversalImage,
   AugmentPexelCuratedPhotosIntoUniversalImages,
   AugmentPixelSearchedPhotoIntoUniversalImage,
+  AugmentVideoIntoUniversalvideoType,
+  AugmentVideosIntoUniversalVideosType,
 } from "@/augment/augment";
 import { pexel } from "./pexel-client";
-import { getPexelPhotoByIdEnum } from "./pexel-server-enums";
+import {
+  GetVideosByKeywordEnum,
+  GetVideosEnum,
+  getPexelPhotoByIdEnum,
+  getPexelVideoByIdEnum,
+} from "./pexel-server-enums";
 
 /**
  * This server action will get the curated photos.
@@ -17,7 +24,7 @@ import { getPexelPhotoByIdEnum } from "./pexel-server-enums";
  */
 export async function getPexelCuratedPhotosByPage_PerPage(
   page = 1,
-  per_page = 15
+  per_page = 15,
 ) {
   try {
     const curatedPexelPhotos = await pexel.photos.curated({ page, per_page });
@@ -72,6 +79,47 @@ export async function getPexelPhotoById(photoId: string) {
 }
 
 /**
+ * This server action will get the Pexel Video by Id
+ *
+ * @param videoId - The Video Id
+ * @returns
+ */
+export async function getPexelVideoById(videoId: string) {
+  try {
+    const video = await pexel.videos.show({ id: videoId });
+
+    const typeChecker = pexel.typeCheckers.isError(video);
+    if (!typeChecker) {
+      const augmentedPexelVideo = AugmentVideoIntoUniversalvideoType(video);
+
+      if (augmentedPexelVideo) {
+        return {
+          success: {
+            data: augmentedPexelVideo,
+            message: getPexelVideoByIdEnum.FOUND_VIDEOS,
+          },
+        };
+      }
+    }
+    if (typeChecker) {
+      return {
+        failed: {
+          data: null,
+          message: getPexelVideoByIdEnum.NULL,
+        },
+      };
+    }
+
+    return {
+      failed: { data: null, message: getPexelVideoByIdEnum.NULL },
+    };
+  } catch (error) {
+    console.error(error);
+    return { failed: { data: null, message: getPexelVideoByIdEnum.NULL } };
+  }
+}
+
+/**
  * This server action will get the Pexel photo by keyword
  *
  * @param keyword - The keyword for photos
@@ -82,7 +130,7 @@ export async function getPexelPhotoById(photoId: string) {
 export async function getPexelPhotoByKeyword(
   keyword: string,
   page = 1,
-  per_page = 15
+  per_page = 15,
 ) {
   try {
     const searchedPhoto = await pexel.photos.search({
@@ -100,5 +148,91 @@ export async function getPexelPhotoByKeyword(
   } catch (error) {
     console.error(error);
     throw new Error("failed to get pexel photo by keyword");
+  }
+}
+
+/**
+ * This server action will return the popular videos from pexels API.
+ *
+ * @returns
+ */
+export async function getVideos(page = 1, per_page = 15) {
+  try {
+    const videos = await pexel.videos.popular({
+      page: page,
+      per_page: per_page,
+    });
+    const typeCheckerIsVideos = pexel.typeCheckers.isVideos(videos);
+    const typeCheckerIsError = pexel.typeCheckers.isError(videos);
+
+    if (typeCheckerIsVideos) {
+      const augmentedVideos = AugmentVideosIntoUniversalVideosType(videos);
+      return {
+        success: { data: augmentedVideos, message: GetVideosEnum.VIDEOS_FOUND },
+      };
+    }
+    if (typeCheckerIsError) {
+      return {
+        failed: { data: null, message: GetVideosEnum.FAILED_TO_GET_ALL_VIDEOS },
+      };
+    }
+    return {
+      failed: { data: null, message: GetVideosEnum.FAILED_TO_GET_ALL_VIDEOS },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: { data: null, message: GetVideosEnum.FAILED_TO_GET_ALL_VIDEOS },
+    };
+  }
+}
+
+/**
+ * This server action will return the universalVideosType by searched keyword
+ *
+ * @param keyword - The searched keyword
+ * @param page - The page to searched for
+ * @param per_page - The number of result per page
+ * @returns
+ */
+export async function getVideosByKeyword(
+  keyword: string,
+  page = 1,
+  per_page = 15,
+) {
+  try {
+    const videos = await pexel.videos.search({
+      query: keyword,
+      page: page,
+      per_page: per_page,
+    });
+    const typeChecker = pexel.typeCheckers.isVideos(videos);
+    const typeCheckerIsError = pexel.typeCheckers.isError(videos);
+
+    if (typeChecker) {
+      const augmentedVideos = AugmentVideosIntoUniversalVideosType(videos);
+      return {
+        success: {
+          data: augmentedVideos,
+          message: GetVideosByKeywordEnum.VIDEOS_FOUND,
+        },
+      };
+    }
+    if (typeCheckerIsError) {
+      return {
+        failed: { data: null, message: GetVideosEnum.FAILED_TO_GET_ALL_VIDEOS },
+      };
+    }
+    return {
+      failed: { data: null, message: GetVideosEnum.FAILED_TO_GET_ALL_VIDEOS },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: GetVideosByKeywordEnum.FAILED_TO_GET_VIDEOS,
+      },
+    };
   }
 }

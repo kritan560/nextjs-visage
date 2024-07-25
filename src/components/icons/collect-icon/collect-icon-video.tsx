@@ -3,15 +3,13 @@
 import VisageDialogContent from "@/components/shared/visage-dialog-content";
 import { VisageToast } from "@/components/shared/visage-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  useGlobalCollectImageIdsStore,
-  useGlobalCollectionNameStore,
-} from "@/global-states/visage-image-state";
+import { useGlobalCollectionNameStore } from "@/global-states/visage-image-state";
+import { useGlobalCollectVideosIds } from "@/global-states/visage-video-state";
 import { cn } from "@/lib/utils";
 import { LinkCollections, LinkLoginPage } from "@/links/links";
 import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
-import { collectImage } from "@/servers/visage/visage-server";
-import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
+import { collectVideo } from "@/servers/visage/visage-server";
+import { UniversalVideoType, UniversalVideosType } from "@/types/visage-type";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CirclePlus } from "lucide-react";
 import Image from "next/image";
@@ -29,19 +27,24 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "../../ui/dialog";
-import { CollectIconForm } from "./collect-icon-form";
+import { CollectIconFormVideo } from "./collect-icon-form-video";
 
-type CollectIconProps = {
-  image: UniversalImageType;
+type CollectIconVideoProps = {
+  video: UniversalVideoType;
   nameIncluded?: boolean;
 };
 
-export default function CollectIcon(props: CollectIconProps) {
-  const { image, nameIncluded = false } = props;
+export default function CollectIconVideo(props: CollectIconVideoProps) {
+  const { video, nameIncluded = false } = props;
 
   const [open2ndDialog, setOpen2ndDialog] = useState(false);
-  const { globalCollectImagesIds, setGlobalCollectImageId } =
-    useGlobalCollectImageIdsStore();
+  // const { globalCollectImagesIds, setGlobalCollectImageId } =
+  //   useGlobalCollectImageIdsStore();
+  const {
+    setVideosIds: setGlobalCollectVideosIds,
+    videosIds: globalCollectVideosIds,
+  } = useGlobalCollectVideosIds();
+
   const { globalCollectionNames, setGlobalCollectionNames } =
     useGlobalCollectionNameStore();
   const router = useRouter();
@@ -50,9 +53,9 @@ export default function CollectIcon(props: CollectIconProps) {
     collectionName: string,
     collectionNameId?: string,
   ) {
-    const { failed, success } = await collectImage(
+    const { failed, success } = await collectVideo(
       collectionName,
-      image,
+      video,
       collectionNameId,
     );
 
@@ -73,14 +76,14 @@ export default function CollectIcon(props: CollectIconProps) {
 
         setGlobalCollectionNames(collectionNames);
 
-        const updatedCollectionImageIds: string[] = [];
+        const updatedCollectionVideosIds: string[] = [];
         collectionNames.map((data) =>
-          (data.collectionImages as UniversalImagesType).map((data) =>
-            updatedCollectionImageIds.push(data.imageId),
+          (data.collectionVideos as UniversalVideosType["videos"]).map((data) =>
+            updatedCollectionVideosIds.push(data.videoId),
           ),
         );
 
-        setGlobalCollectImageId(updatedCollectionImageIds);
+        setGlobalCollectVideosIds(updatedCollectionVideosIds);
       }
     }
 
@@ -105,7 +108,7 @@ export default function CollectIcon(props: CollectIconProps) {
             "",
           )}
         >
-          {globalCollectImagesIds?.includes(image.imageId) ? (
+          {globalCollectVideosIds?.includes(video.videoId) ? (
             <>
               <IoBookmarksSharp fill="rgb(197 129 50)" />
               <p>{nameIncluded && "Collect"}</p>
@@ -162,11 +165,11 @@ export default function CollectIcon(props: CollectIconProps) {
                     className="relative flex aspect-square w-40 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 active:scale-100 dark:bg-stone-400"
                   >
                     {(
-                      collectionName.collectionImages as UniversalImagesType
-                    )?.find((img) => img.imageId == image.imageId) ? (
+                      collectionName.collectionVideos as UniversalVideosType["videos"]
+                    )?.find((vid) => vid.videoId == video.videoId) ? (
                       <>
                         <Image
-                          src={image.src.medium}
+                          src={video.image}
                           alt=""
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -214,7 +217,10 @@ export default function CollectIcon(props: CollectIconProps) {
 
               <DialogDescription></DialogDescription>
 
-              <CollectIconForm onOpenChange={setOpen2ndDialog} image={image} />
+              <CollectIconFormVideo
+                onOpenChange={setOpen2ndDialog}
+                video={video}
+              />
             </VisageDialogContent>
           </Dialog>
         </ScrollArea>

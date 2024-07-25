@@ -1,4 +1,3 @@
-import { getCurrentUser } from "@/servers/authentication/authentication-server";
 import { UniversalImagesType } from "@/types/visage-type";
 import { CollectionNames, Images } from "@prisma/client";
 import { create } from "zustand";

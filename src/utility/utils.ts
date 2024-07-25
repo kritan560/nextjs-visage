@@ -1,4 +1,5 @@
 import { TruncatePhotgrapherNameCharacterLimit } from "@/constants/constants";
+import { MediaType } from "@/types/visage-type";
 
 /**
  * Truncate the name of photographer that has length greater than 15
@@ -21,7 +22,7 @@ export function TruncatePhotgrapherName(photographerName: string) {
 
 export function StructureTheImageParam(
   imageId: number | string,
-  imageAlt: string | null
+  imageAlt: string | null,
 ) {
   const whatIsAnImage = [
     "captures the soul of a moment",
@@ -76,13 +77,22 @@ export function destructureTheIdFromStructuredParams(structuredParam: string) {
   return destructuredId;
 }
 
-export function handleDownloadImageClick(link: string, contentName: string) {
+export function handleDownloadMediaClick(
+  link: string,
+  contentId: string,
+  contentType: MediaType,
+) {
   fetch(link)
     .then((response) => response.blob()) // using the fetch API to get image as blob.
     .then((blob) => {
       const anchorElement = document.createElement("a");
       anchorElement.href = URL.createObjectURL(blob); // converting the blob (binary large object) to a URL link which can then be used as downloadable link
-      anchorElement.download = contentName; // You can set the default download name here
+      if (contentType === "Image") {
+        anchorElement.download = contentId.toString(); // You can set the default download name here
+      }
+      if (contentType === "Video") {
+        anchorElement.download = contentId.toString().concat(".mp4"); // You can set the default download name here
+      }
       document.body.appendChild(anchorElement);
       anchorElement.click();
       document.body.removeChild(anchorElement);

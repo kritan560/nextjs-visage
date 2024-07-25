@@ -1,6 +1,6 @@
 "use client";
 
-import { UniversalImageType } from "@/types/visage-type";
+import { UniversalVideoType } from "@/types/visage-type";
 import { handleDownloadMediaClick } from "@/utility/utils";
 import { Copy, Download } from "lucide-react";
 import Image from "next/image";
@@ -13,14 +13,17 @@ import { Dialog, DialogTitle, DialogTrigger } from "../ui/dialog";
 import VisageDialogContent from "./visage-dialog-content";
 import { VisageToast } from "./visage-toast";
 
-type DownloadButtonDialogProps = {
+type DownloadButtonDialogVideoProps = {
   children: React.ReactNode;
-  image: UniversalImageType;
+  image: string;
+  link: string;
+  userName: string;
+  userURL: string;
 };
 
-export default memo(DownloadButtonDialog);
-function DownloadButtonDialog(props: DownloadButtonDialogProps) {
-  const { children, image } = props;
+export default memo(DownloadButtonDialogVideo);
+function DownloadButtonDialogVideo(props: DownloadButtonDialogVideoProps) {
+  const { children, link, image, userName, userURL } = props;
   const [copy, setCopy] = useState(false);
 
   return (
@@ -30,7 +33,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
         <DialogTitle></DialogTitle>
         <div className="relative h-full w-[30%]">
           <Image
-            src={image.src.large}
+            src={image}
             fill
             alt=""
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -45,17 +48,17 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
           <p className="pt-4 font-semibold text-stone-500">
             Show some love to{" "}
             <Link
-              href={image.photographer_url}
+              href={userURL}
               className="mr-1 text-stone-900 dark:text-stone-400"
             >
-              {image.photographer}
+              {userName}
             </Link>
             by giving them follow
           </p>
 
           {/* follow button */}
           <div className="mt-5 flex items-center gap-x-4">
-            <Link target="_blank" href={image.photographer_url}>
+            <Link target="_blank" href={userURL}>
               <Button
                 variant={"visage"}
                 size={"visage"}
@@ -64,7 +67,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
                 View Profile
               </Button>
             </Link>
-            <Link target="_blank" href={image.photographer_url}>
+            <Link target="_blank" href={userURL}>
               <SiPexels
                 size={48}
                 className="rounded-md text-emerald-600 hover:text-emerald-600/90 active:text-emerald-600 dark:bg-white"
@@ -72,11 +75,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
             </Link>
             <Button
               onClick={() =>
-                handleDownloadMediaClick(
-                  image.src.original,
-                  image.alt ?? image.imageId,
-                  "Image",
-                )
+                handleDownloadMediaClick(link ?? "", userName, "Video")
               }
               variant={"default"}
               className="h-12"
@@ -87,7 +86,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
 
           {/* attribution copy */}
           <CopyToClipboard
-            text={`photo by ${image.photographer}`}
+            text={`photo by ${userName}`}
             onCopy={() => {
               setCopy(true);
               VisageToast.success("copied to clipboard");
@@ -98,7 +97,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
           >
             <div className="mt-6 flex h-14 w-full cursor-pointer items-center justify-between rounded-md border px-4">
               <p className="font-medium text-stone-500">
-                {copy ? "copied" : `photo by ${image.photographer}`}
+                {copy ? "copied" : `photo by ${userName}`}
               </p>
               <Copy className="text-stone-700 transition hover:text-stone-500 active:text-stone-600" />
             </div>

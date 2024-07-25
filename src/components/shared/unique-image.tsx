@@ -10,7 +10,7 @@ import { UniversalImageType } from "@/types/visage-type";
 import {
   StructureTheImageParam,
   TruncatePhotgrapherName,
-  handleDownloadImageClick,
+  handleDownloadMediaClick,
 } from "@/utility/utils";
 import { Download } from "lucide-react";
 import Image from "next/image";
@@ -98,9 +98,10 @@ export function UniqueImage(props: UniqueImageProps) {
         <DownloadButtonDialog image={image}>
           <Button
             onClick={() =>
-              handleDownloadImageClick(
+              handleDownloadMediaClick(
                 image.src.original,
                 image.alt ?? image.imageId,
+                "Image",
               )
             }
             className="absolute bottom-4 right-4 flex h-12 items-center gap-x-2 rounded-full"

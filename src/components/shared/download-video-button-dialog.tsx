@@ -1,6 +1,6 @@
 "use client";
 
-import { UniversalImageType } from "@/types/visage-type";
+import { UniversalVideoType } from "@/types/visage-type";
 import { handleDownloadMediaClick } from "@/utility/utils";
 import { Copy, Download } from "lucide-react";
 import Image from "next/image";
@@ -13,15 +13,17 @@ import { Dialog, DialogTitle, DialogTrigger } from "../ui/dialog";
 import VisageDialogContent from "./visage-dialog-content";
 import { VisageToast } from "./visage-toast";
 
-type DownloadButtonDialogProps = {
+type DownloadVideoButtonDialogProps = {
   children: React.ReactNode;
-  image: UniversalImageType;
+  video: UniversalVideoType;
 };
 
-export default memo(DownloadButtonDialog);
-function DownloadButtonDialog(props: DownloadButtonDialogProps) {
-  const { children, image } = props;
+export default memo(DownloadVideoButtonDialog);
+function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
+  const { children, video } = props;
   const [copy, setCopy] = useState(false);
+
+  const HD_Image = video.video_files.find((video) => video.quality === "hd");
 
   return (
     <Dialog>
@@ -30,7 +32,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
         <DialogTitle></DialogTitle>
         <div className="relative h-full w-[30%]">
           <Image
-            src={image.src.large}
+            src={video.image}
             fill
             alt=""
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -45,17 +47,17 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
           <p className="pt-4 font-semibold text-stone-500">
             Show some love to{" "}
             <Link
-              href={image.photographer_url}
+              href={video.user.url}
               className="mr-1 text-stone-900 dark:text-stone-400"
             >
-              {image.photographer}
+              {video.user.name}
             </Link>
             by giving them follow
           </p>
 
           {/* follow button */}
           <div className="mt-5 flex items-center gap-x-4">
-            <Link target="_blank" href={image.photographer_url}>
+            <Link target="_blank" href={video.user.url}>
               <Button
                 variant={"visage"}
                 size={"visage"}
@@ -64,7 +66,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
                 View Profile
               </Button>
             </Link>
-            <Link target="_blank" href={image.photographer_url}>
+            <Link target="_blank" href={video.user.url}>
               <SiPexels
                 size={48}
                 className="rounded-md text-emerald-600 hover:text-emerald-600/90 active:text-emerald-600 dark:bg-white"
@@ -73,9 +75,9 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
             <Button
               onClick={() =>
                 handleDownloadMediaClick(
-                  image.src.original,
-                  image.alt ?? image.imageId,
-                  "Image",
+                  HD_Image?.link ?? "",
+                  video.videoId,
+                  "Video",
                 )
               }
               variant={"default"}
@@ -87,7 +89,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
 
           {/* attribution copy */}
           <CopyToClipboard
-            text={`photo by ${image.photographer}`}
+            text={`video by ${video.user.name}`}
             onCopy={() => {
               setCopy(true);
               VisageToast.success("copied to clipboard");
@@ -98,7 +100,7 @@ function DownloadButtonDialog(props: DownloadButtonDialogProps) {
           >
             <div className="mt-6 flex h-14 w-full cursor-pointer items-center justify-between rounded-md border px-4">
               <p className="font-medium text-stone-500">
-                {copy ? "copied" : `photo by ${image.photographer}`}
+                {copy ? "copied" : `video by ${video.user.name}`}
               </p>
               <Copy className="text-stone-700 transition hover:text-stone-500 active:text-stone-600" />
             </div>

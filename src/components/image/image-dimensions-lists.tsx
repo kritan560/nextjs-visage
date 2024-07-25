@@ -1,7 +1,7 @@
 "use client";
 
 import { UniversalImageType } from "@/types/visage-type";
-import { handleDownloadImageClick } from "@/utility/utils";
+import { handleDownloadMediaClick } from "@/utility/utils";
 import { useEffect, useState, useTransition } from "react";
 import DownloadButtonDialog from "../shared/download-button-dialog";
 
@@ -57,9 +57,10 @@ export default function ImageDimensionLists(props: ImageDimensionListProps) {
             <div
               className="cursor-pointer p-4 text-lg hover:bg-stone-100 active:bg-stone-200/80 dark:hover:bg-stone-800"
               onClick={(e) => {
-                handleDownloadImageClick(
+                handleDownloadMediaClick(
                   obj[1],
                   image.alt ?? image.photographer,
+                  "Image",
                 );
               }}
             >

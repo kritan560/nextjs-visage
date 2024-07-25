@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useGlobalImagesStore } from "@/global-states/visage-image-state";
+import { useGlobalVideos } from "@/global-states/visage-video-state";
 import { cn } from "@/lib/utils";
 import { LinkVideoPage } from "@/links/links";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -39,6 +40,7 @@ export default function TrendingNewComboBox() {
   const pathname = usePathname();
   const isVideos = pathname.startsWith(LinkVideoPage);
   const { globalImages, setGlobalImages } = useGlobalImagesStore();
+  const { setVideos, videos } = useGlobalVideos();
 
   useEffect(() => {
     if (!isVideos) {
@@ -58,9 +60,15 @@ export default function TrendingNewComboBox() {
     if (isVideos) {
       if (value === "trending") {
         setTitle("Trending Stock Videos");
+        if (videos) {
+          setVideos(videos.reverse());
+        }
       }
       if (value === "new") {
         setTitle("New Stock Videos");
+        if (videos) {
+          setVideos(videos.reverse());
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

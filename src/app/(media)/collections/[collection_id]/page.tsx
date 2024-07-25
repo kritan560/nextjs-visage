@@ -4,11 +4,12 @@ import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
 import EditCollectionDialog from "@/components/profile/collections/edit-collection-dialog";
 import AdjustPadding from "@/components/shared/adjust-padding";
 import { UniqueImage } from "@/components/shared/unique-image";
+import { UniqueVideo } from "@/components/shared/unique-video";
 import { LinkCollections, LinkProfile } from "@/links/links";
 import { getCurrentUser } from "@/servers/authentication/authentication-server";
 import { getCollectionNameById } from "@/servers/visage/visage-server";
 import { GetCollectionNameByIdEnum } from "@/servers/visage/visage-server-enum";
-import { UniversalImagesType } from "@/types/visage-type";
+import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
 import { Images } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +34,13 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
   }
 
   const { userName, profilePic } = await getCurrentUser();
+
+  const totalCollectedImages =
+    collectionNameByIdSuccess?.data?.collectionImages.length ?? 0;
+  const totalCollectedVideos =
+    collectionNameByIdSuccess?.data?.collectionVideos.length ?? 0;
+
+  const totalContents = totalCollectedImages + totalCollectedVideos;
 
   return (
     <div className="">
@@ -76,7 +84,7 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
 
           <div className="flex items-center gap-x-2 text-xl font-medium text-stone-400">
             <Images size={25} />
-            {collectionNameByIdSuccess?.data?.collectionImages.length}
+            {totalContents}
             <span>Contents</span>
           </div>
         </div>
@@ -87,6 +95,12 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
               ?.collectionImages as UniversalImagesType
           ).map((data) => (
             <UniqueImage key={data.id} image={data} />
+          ))}
+          {(
+            collectionNameByIdSuccess?.data
+              ?.collectionVideos as UniversalVideosType["videos"]
+          ).map((data) => (
+            <UniqueVideo key={data.id} video={data} />
           ))}
         </MasonryClient>
       </AdjustPadding>

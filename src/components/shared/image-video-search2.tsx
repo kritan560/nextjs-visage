@@ -7,11 +7,11 @@ import {
   ImageOrVideoSearchKeywordSchemaType,
 } from "@/schemas/schemas";
 import { getCurrentUserId } from "@/servers/authentication/authentication-server";
-import { UniversalImagesType } from "@/types/visage-type";
+import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, Image as LucideImage, Search, Video } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import nProgress from "nprogress";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,6 +32,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { CollectionVideoResizable } from "../profile/collections/collection-resizable-video";
 
 const searchedKeyword = "searchedKeyword";
 
@@ -76,15 +77,15 @@ type onHoverDisplayElementsType = {
 
 type ImageOrVideoSearchType = {
   border?: boolean;
-  mediaType?: MediaType;
   userId: string | undefined;
   grid?: 3 | 4;
 };
 
 const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
-  const { border, mediaType, userId, grid = 4 } = props;
+  const { border, userId, grid = 4 } = props;
 
   const router = useRouter();
+  const pathname = usePathname();
   const [openPopOver, setOpenPopOver] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
   const [keywords, setKeywords] = useState<string[] | null>([]);
@@ -124,6 +125,17 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
     return document.removeEventListener("keydown", (e) => handleKeyDown(e));
   }, []);
 
+  useEffect(() => {
+    if (pathname.includes("/video")) {
+      const videoElement = onHoverDisplayElement.find(
+        (ele) => ele.elementName === "Video",
+      );
+      if (videoElement) {
+        setHoverElement(videoElement);
+      }
+    }
+  }, [pathname]);
+
   function handleClearClick() {
     localStorage.removeItem(searchedKeyword);
     setKeywords([]);
@@ -141,7 +153,13 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   });
 
   async function onSubmit(values: ImageOrVideoSearchKeywordSchemaType) {
-    router.push(`/search/images/${values.searchedKeyword}`);
+    if (hoverElement.elementName === "Video") {
+      router.push(`/search/videos/${values.searchedKeyword}`);
+    }
+
+    if (hoverElement.elementName == "Image") {
+      router.push(`/search/images/${values.searchedKeyword}`);
+    }
 
     nProgress.start();
 
@@ -354,6 +372,8 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                   .map((collection) => {
                     const collectionImages =
                       collection.collectionImages as unknown as UniversalImagesType;
+                    const collectionVideos =
+                      collection.collectionVideos as unknown as UniversalVideosType["videos"];
 
                     return (
                       <Link
@@ -366,13 +386,19 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                             gapSize="sm"
                             images={collectionImages}
                           />
+                          <CollectionVideoResizable
+                            gapSize="sm"
+                            videos={collectionVideos}
+                          />
                         </div>
                         <div className="flex flex-col gap-y-2">
                           <p className="text-base font-medium capitalize text-stone-800 dark:text-stone-400">
                             {collection.collectionName}
                           </p>
                           <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
-                            {collection.collectionImages.length} Content
+                            {collection.collectionImages.length +
+                              collection.collectionVideos.length}{" "}
+                            Content
                           </p>
                         </div>
                       </Link>

@@ -6,11 +6,19 @@ import {
   AugmentImagesIntoUniversalImages,
   AugmentLikedImageIntoUniversalImage,
   AugmentLikedImagesIntoUniversalImages,
+  AugmentLikedVideoIntoUniversalVideo,
+  AugmentLikedVideosIntoUniversalVideos,
+  AugmentVideoIntoUniversalvideoType,
 } from "@/augment/augment";
 import { DailyUploadCount } from "@/constants/constants";
 import { LinkLikePage } from "@/links/links";
 import { EditProfileFormSchemaType } from "@/schemas/schemas";
-import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
+import {
+  UniversalImageType,
+  UniversalImagesType,
+  UniversalVideoType,
+  UniversalVideosType,
+} from "@/types/visage-type";
 import { capitalize } from "@/utility/utils";
 import { Images } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -20,11 +28,14 @@ import { AuthFailedEnum } from "../authentication/authentication-server-enums";
 import {
   ChangeCollectionNameEnum,
   CollectImageEnum,
+  CollectVideoEnum,
+  CollectVideosIdsEnum,
   CreateImagesEnum,
   CreateTokenForUserAccountDeletionEnum,
   DeleteAccountByUserIdEnum,
   DeleteCollectionNameEnum,
   DeleteUserUploadedImageEnum,
+  DeleteUserUploadedVideoEnum,
   GetAllImagesEnum,
   GetCollectionImagesIdsEnum,
   GetCollectionNameByIdEnum,
@@ -34,10 +45,12 @@ import {
   GetImagesByTagsEnum,
   GetImagesEnum,
   GetLikedImagesEnum,
+  GetLikedVideosEnum,
   GetTotalViewsCountEnum,
   GetUserProfilePictureEnum,
   GetUserUploadedImageIdEnum,
   LikeImageEnum,
+  LikeVideoEnum,
   UpdateUserDetailEnum,
   UpdateUserProfilePictureEnum,
 } from "./visage-server-enum";
@@ -291,6 +304,45 @@ export async function getLikedImages() {
       failed: {
         data: null,
         message: GetLikedImagesEnum.FAILED_TO_GET_LIKED_PHOTO,
+      },
+    };
+  }
+}
+
+/**
+ * This server action gets all the liked images of authenticated user.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ * @returns
+ */
+export async function getLikedVideos() {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: { data: null, message: AuthFailedEnum.USER_NOT_LOGGED_IN },
+      };
+    }
+
+    const collectVideos = await prisma.likedVideos.findMany({
+      where: { userId },
+    });
+
+    const augmentedLikeImage =
+      AugmentLikedVideosIntoUniversalVideos(collectVideos);
+    return {
+      success: {
+        data: augmentedLikeImage,
+        message: GetLikedVideosEnum.GOT_LIKED_VIDEO,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: GetLikedVideosEnum.FAILED_TO_GET_LIKED_VIDEO,
       },
     };
   }
@@ -1139,6 +1191,49 @@ export async function deleteUserUploadedImage(imageId: string) {
 }
 
 /**
+ * This server action will delete the user Uploaded video from the server
+ *
+ * it will only delete the video. if video is liked or in collection it won't be delete from there.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param videoId - The Video Id
+ * @returns
+ */
+export async function deleteUserUploadedVideo(videoId: string) {
+  try {
+    const { isUserAuthenticated } = await getCurrentUserId();
+
+    if (!isUserAuthenticated) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    const deletedImage = await prisma.videos.delete({ where: { videoId } });
+
+    return {
+      success: {
+        data: deletedImage,
+        message: DeleteUserUploadedVideoEnum.VIDEO_DELETED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: DeleteUserUploadedVideoEnum.FAILED_TO_DELETE_VIDEO,
+      },
+    };
+  }
+}
+
+/**
  * This server action will get all the images that user uploads.
  *
  * augment the images into UniversalImagesType
@@ -1190,6 +1285,261 @@ export async function getPublicProfilePictures() {
       failed: {
         data: null,
         message: GetUserProfilePictureEnum.FAILED_TO_GET_PROFILE_PICTURE,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will get the videosIds that are saved in collection
+ */
+export async function getCollectVideosIds() {
+  try {
+    const { userId } = await getCurrentUserId();
+    if (!userId) {
+      return {
+        failed: { data: null, message: AuthFailedEnum.USER_NOT_LOGGED_IN },
+      };
+    }
+
+    const collectionNames = await prisma.collectionNames.findMany({
+      where: { userId },
+      select: { collectionVideos: true },
+    });
+
+    let collectionVideoIds: string[] = [];
+    const collectionVideos = collectionNames.map(
+      (collection) =>
+        collection.collectionVideos as UniversalVideosType["videos"],
+    );
+    collectionVideos.map((cv) =>
+      cv.map((data) => collectionVideoIds.push(data.videoId)),
+    );
+
+    return {
+      success: {
+        data: collectionVideoIds,
+        message: CollectVideosIdsEnum.VIDEO_IDS_COLLECTED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: CollectVideosIdsEnum.FAILED_TO_COLLECT_VIDEOS_IDS,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will collect the videos and saved it into the collection.
+ *
+ * @param collectionName - The collection name
+ * @param video - The video to save
+ * @param collectionNameId - The collection id
+ * @returns
+ */
+export async function collectVideo(
+  collectionName: string,
+  video: UniversalVideoType,
+  collectionNameId?: string,
+) {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: { data: null, message: AuthFailedEnum.USER_NOT_LOGGED_IN },
+      };
+    }
+
+    if (!collectionNameId) {
+      const newCollectionName = await prisma.collectionNames.create({
+        data: {
+          collectionName,
+          collectionVideos: { set: [video] },
+          userId,
+        },
+      });
+
+      return {
+        success: {
+          data: newCollectionName,
+          message: CollectVideoEnum.NEW_COLLECTION_CREATED,
+        },
+      };
+    }
+
+    const previousCollection = await prisma.collectionNames.findUnique({
+      where: { id: collectionNameId },
+    });
+
+    const value = previousCollection?.collectionVideos as unknown;
+    const previousCollectionData = value as UniversalVideosType["videos"];
+
+    const containVideo = previousCollectionData.find(
+      (vid) => vid.videoId == video.videoId,
+    );
+
+    const updateData = previousCollectionData.filter(
+      (data) => data.videoId != video.videoId,
+    );
+
+    if (previousCollection && containVideo) {
+      const updateCollection = await prisma.collectionNames.update({
+        where: { id: collectionNameId },
+        data: {
+          collectionName,
+          userId,
+          collectionVideos: {
+            set: updateData,
+          },
+        },
+      });
+      return {
+        success: {
+          data: updateCollection,
+          message: CollectVideoEnum.COLLECTION_REMOVED,
+        },
+      };
+    }
+
+    const updateCollection = await prisma.collectionNames.update({
+      where: { id: collectionNameId },
+      data: {
+        collectionName,
+        userId,
+        collectionVideos: { push: [video] },
+      },
+    });
+    return {
+      success: {
+        data: updateCollection,
+        message: CollectVideoEnum.COLLECTION_UPDATED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: { data: null, message: CollectVideoEnum.COLLECTION_VIDEO_FAILED },
+    };
+  }
+}
+
+/**
+ * This server action takes the video of UniveraslVideoType
+ *
+ * add video to the liked image for the logged in user.
+ *
+ * when clicked and removes when clicked again.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ *
+ * @param image - The UniversalVideoType
+ * @returns
+ */
+export async function likeVideo(video: UniversalVideoType) {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: {
+          data: null,
+          redirect: true,
+          message: AuthFailedEnum.USER_NOT_LOGGED_IN,
+        },
+      };
+    }
+
+    // check if the image is collected previously if collected uncollect else collect the image
+    const isPreviousCollectPhoto = await prisma.likedVideos.findUnique({
+      where: { likedVideo: video },
+    });
+
+    if (isPreviousCollectPhoto) {
+      const deletedPhoto = await prisma.likedVideos.delete({
+        where: { likedVideo: video },
+      });
+
+      const augmentedLikeImage =
+        AugmentLikedVideoIntoUniversalVideo(deletedPhoto);
+
+      return {
+        success: {
+          data: augmentedLikeImage,
+          redirect: false,
+          message: LikeVideoEnum.VIDEO_UNLIKED,
+        },
+      };
+    }
+
+    const collectedPhoto = await prisma.likedVideos.create({
+      data: { likedVideo: video, userId: userId },
+    });
+
+    const augmentedLikeImage =
+      AugmentLikedVideoIntoUniversalVideo(collectedPhoto);
+
+    revalidatePath(LinkLikePage);
+
+    return {
+      success: {
+        data: augmentedLikeImage,
+        redirect: false,
+        message: LikeVideoEnum.VIDEO_LIKED,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        redirect: false,
+        message: LikeVideoEnum.FAILED_TO_LIKE_VIDEO,
+      },
+    };
+  }
+}
+
+/**
+ * This server action gets all the liked videos ids of authenticated user.
+ *
+ * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
+ * @returns
+ */
+export async function getLikedVideosIds() {
+  try {
+    const { userId } = await getCurrentUserId();
+
+    if (!userId) {
+      return {
+        failed: { data: null, message: AuthFailedEnum.USER_NOT_LOGGED_IN },
+      };
+    }
+
+    const videos = await prisma.likedVideos.findMany({
+      where: { userId },
+    });
+
+    const likedVideosIds = videos
+      .map((data) => data.likedVideo as UniversalVideoType)
+      .map((id) => id.videoId);
+
+    return {
+      success: {
+        data: likedVideosIds,
+        message: GetLikedVideosEnum.GOT_LIKED_VIDEO,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: GetLikedVideosEnum.FAILED_TO_GET_LIKED_VIDEO,
       },
     };
   }

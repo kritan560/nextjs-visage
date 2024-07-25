@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { UniversalImageType } from "@/types/visage-type";
-import { handleDownloadImageClick } from "@/utility/utils";
+import { handleDownloadMediaClick } from "@/utility/utils";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +30,7 @@ import { Separator } from "../ui/separator";
 import ImageDimensionLists from "./image-dimensions-lists";
 import DeleteIcon from "../icons/delete-icon/delete-icon";
 import VisageDialogContent from "../shared/visage-dialog-content";
+import { useGlobalPublicProfileDetailStore } from "@/global-states/visage-image-state";
 
 type ImageDynamicInterceptionProps = {
   image: UniversalImageType;
@@ -44,6 +45,11 @@ export default function ImageDynamicInterception(
   const [customHeight, setCustomHeight] = useState(image?.height);
   const [open, setOpen] = useState(true);
   const router = useRouter();
+  const { publicProfileDetail } = useGlobalPublicProfileDetailStore();
+
+  const publicProfile = publicProfileDetail.find(
+    (detail) => detail.id === image.userId,
+  );
 
   const imageRatio = image.width / image.height;
 
@@ -74,9 +80,10 @@ export default function ImageDynamicInterception(
       `?&h=${customHeight}&w=${customWidth}`,
     );
 
-    handleDownloadImageClick(
+    handleDownloadMediaClick(
       customDownloadUrl,
       image.alt ?? image.photographer,
+      "Image",
     );
   }
 
@@ -95,12 +102,22 @@ export default function ImageDynamicInterception(
               <DialogTitle></DialogTitle>
               <DialogDescription></DialogDescription>
             </DialogHeader>{" "}
-            <div
-              className="flex aspect-square h-14 w-14 items-center justify-center rounded-full text-xl font-bold text-stone-50"
-              style={{ backgroundColor: image?.avg_color ?? "blueviolet" }}
-            >
-              {image?.photographer[0]}
-            </div>
+            {!publicProfile ? (
+              <div
+                className="flex aspect-square h-14 w-14 items-center justify-center rounded-full text-xl font-bold text-stone-50"
+                style={{ backgroundColor: image?.avg_color ?? "blueviolet" }}
+              >
+                {image?.photographer[0]}
+              </div>
+            ) : (
+              <Image
+                className="h-12 w-12 rounded-full"
+                src={publicProfile?.image ?? ""}
+                alt=""
+                width={48}
+                height={48}
+              />
+            )}
             <div className="flex flex-col gap-y-2">
               {/* name */}
               <h2 className="text-lg font-semibold">{image?.photographer}</h2>
@@ -134,9 +151,10 @@ export default function ImageDynamicInterception(
               <DownloadButtonDialog image={image}>
                 <Button
                   onClick={() =>
-                    handleDownloadImageClick(
+                    handleDownloadMediaClick(
                       image.src.original,
                       image.alt ?? image.imageId,
+                      "Image",
                     )
                   }
                   variant={"visage"}
