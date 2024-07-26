@@ -35,6 +35,7 @@ export default auth((req) => {
     LinkProfile,
     LinkLikePage,
     LinkEditProfile,
+    "/collections",
   ];
   const UNAUTHORIZED = UNAUTHORIZED_ROUTES.includes(currentRoute);
 

@@ -3,12 +3,7 @@
 import VisageDialogContent from "@/components/shared/visage-dialog-content";
 import { VisageToast } from "@/components/shared/visage-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { LinkEditProfile, LinkHomepage, LinkLoginPage } from "@/links/links";
 import { deleteAccountByUserId } from "@/servers/visage/visage-server";
 import { DeleteAccountByUserIdEnum } from "@/servers/visage/visage-server-enum";
@@ -16,7 +11,6 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import nProgress from "nprogress";
-import toast from "react-hot-toast";
 
 type DeleteAcccountPageProps = {
   params: { id: string };
@@ -45,6 +39,7 @@ export default function DeleteAcccountPage(props: DeleteAcccountPageProps) {
 
     if (failed) {
       VisageToast.error(failed.message);
+
       if (failed.message === DeleteAccountByUserIdEnum.TOKEN_EXPIRED) {
         router.push(LinkEditProfile);
         nProgress.start();

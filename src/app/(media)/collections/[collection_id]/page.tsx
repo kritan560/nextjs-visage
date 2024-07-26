@@ -5,8 +5,9 @@ import EditCollectionDialog from "@/components/profile/collections/edit-collecti
 import AdjustPadding from "@/components/shared/adjust-padding";
 import { UniqueImage } from "@/components/shared/unique-image";
 import { UniqueVideo } from "@/components/shared/unique-video";
-import { LinkCollections, LinkProfile } from "@/links/links";
+import { LinkCollections, LinkLoginPage, LinkProfile } from "@/links/links";
 import { getCurrentUser } from "@/servers/authentication/authentication-server";
+import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
 import { getCollectionNameById } from "@/servers/visage/visage-server";
 import { GetCollectionNameByIdEnum } from "@/servers/visage/visage-server-enum";
 import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
@@ -14,6 +15,7 @@ import { Images } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PiVideoLight } from "react-icons/pi";
 
 type CollectionIdPageProps = {
   params: { collection_id: string };
@@ -25,6 +27,12 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
   } = props;
   const { failed, success: collectionNameByIdSuccess } =
     await getCollectionNameById(collection_id);
+
+  if (failed) {
+    if (failed.message == AuthFailedEnum.USER_NOT_LOGGED_IN) {
+      redirect(LinkLoginPage);
+    }
+  }
 
   if (
     collectionNameByIdSuccess?.message ===
@@ -82,10 +90,17 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
             </Link>
           </div>
 
-          <div className="flex items-center gap-x-2 text-xl font-medium text-stone-400">
-            <Images size={25} />
-            {totalContents}
-            <span>Contents</span>
+          <div className="flex flex-col items-start justify-center gap-x-2 text-xl font-medium text-stone-400">
+            <div className="flex items-center gap-x-2">
+              <Images size={25} />
+              {totalCollectedImages}
+              <span>Images</span>
+            </div>
+            <div className="flex items-center gap-x-2">
+              <PiVideoLight strokeWidth={4} size={27} />
+              {totalCollectedVideos}
+              <span>Videos</span>
+            </div>
           </div>
         </div>
 

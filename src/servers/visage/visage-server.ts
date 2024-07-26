@@ -843,8 +843,6 @@ export async function updateUserProfilePicture(
  *
  * you have to request new token and again have to go through process to delete an account.
  *
- * if user is not authenticated return the USER_NOT_LOGGED_IN response object.
- *
  * @param token - The token for an account
  * @returns
  */

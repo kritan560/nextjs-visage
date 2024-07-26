@@ -9,7 +9,13 @@ import {
 import { getCurrentUserId } from "@/servers/authentication/authentication-server";
 import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, Image as LucideImage, Search, Video } from "lucide-react";
+import {
+  ChevronDown,
+  Images,
+  Image as LucideImage,
+  Search,
+  Video,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import nProgress from "nprogress";
@@ -32,7 +38,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { CollectionVideoResizable } from "../profile/collections/collection-resizable-video";
+import { PiVideoLight } from "react-icons/pi";
 
 const searchedKeyword = "searchedKeyword";
 
@@ -91,10 +97,15 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   const [keywords, setKeywords] = useState<string[] | null>([]);
   const [hoverElement, setHoverElement] = useState(onHoverDisplayElement[0]);
   const { globalCollectionNames } = useGlobalCollectionNameStore();
-  const hasCollection =
-    globalCollectionNames
-      ?.map((collectionName) => collectionName.collectionImages)
-      .reduce((prev, current) => prev + current.length, 0) ?? 0;
+
+  const totalCollectionCount =
+    globalCollectionNames?.reduce(
+      (prev, current) =>
+        current.collectionImages.length +
+        current.collectionVideos.length +
+        prev,
+      0,
+    ) ?? 0;
 
   // accessibility features. (escape key press / click elsewhere to close popover)
   function handleKeyDown(e: KeyboardEvent) {
@@ -303,8 +314,8 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
         <ScrollArea
           className={cn(
             "mt-10 p-4",
-            hasCollection > 0
-              ? hasCollection > 2
+            totalCollectionCount > 0
+              ? totalCollectionCount > 2
                 ? "h-96"
                 : "h-[272px]"
               : "h-fit",
@@ -357,7 +368,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
           </div>
 
           {/* collections names */}
-          {hasCollection > 0 && (
+          {totalCollectionCount > 0 && (
             <>
               <h2 className="mb-2 mt-6 text-xl font-bold text-stone-800 dark:text-stone-400">
                 Collections
@@ -370,39 +381,67 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                     }
                   })
                   .map((collection) => {
-                    const collectionImages =
-                      collection.collectionImages as unknown as UniversalImagesType;
-                    const collectionVideos =
-                      collection.collectionVideos as unknown as UniversalVideosType["videos"];
+                    const collectionImages = (
+                      collection.collectionImages as unknown as UniversalImagesType
+                    ).map((data) => data.src.medium);
 
-                    return (
-                      <Link
-                        href={`/collections/${collection.id}`}
-                        key={collection.id}
-                        className="flex items-center gap-x-2 rounded-md transition hover:bg-stone-100 dark:hover:bg-stone-900"
-                      >
-                        <div className="h-20 w-20">
-                          <CollectionImageResizable
-                            gapSize="sm"
-                            images={collectionImages}
-                          />
-                          <CollectionVideoResizable
+                    const collectionVideos = (
+                      collection.collectionVideos as unknown as UniversalVideosType["videos"]
+                    ).map((data) => data.image);
+
+                    let totalContents = [
+                      ...collectionImages,
+                      ...collectionVideos.reverse(),
+                    ];
+
+                    const middle = Math.ceil(totalContents.length / 2) - 1;
+                    let collectionContents = [
+                      totalContents[middle - 1],
+                      totalContents[middle],
+                      totalContents[middle + 1],
+                    ];
+
+                    if (collectionImages)
+                      return (
+                        <Link
+                          href={`/collections/${collection.id}`}
+                          key={collection.id}
+                          className="flex items-center gap-x-2 rounded-md transition hover:bg-stone-100 dark:hover:bg-stone-900"
+                        >
+                          <div className="h-20 w-20">
+                            <CollectionImageResizable
+                              gapSize="sm"
+                              images={collectionContents}
+                            />
+                            {/* <CollectionVideoResizable
                             gapSize="sm"
                             videos={collectionVideos}
-                          />
-                        </div>
-                        <div className="flex flex-col gap-y-2">
-                          <p className="text-base font-medium capitalize text-stone-800 dark:text-stone-400">
-                            {collection.collectionName}
-                          </p>
-                          <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
-                            {collection.collectionImages.length +
-                              collection.collectionVideos.length}{" "}
-                            Content
-                          </p>
-                        </div>
-                      </Link>
-                    );
+                          /> */}
+                          </div>
+                          <div className="flex flex-col gap-y-2">
+                            <p className="text-base font-medium capitalize text-stone-800 dark:text-stone-400">
+                              {collection.collectionName}
+                            </p>
+                            {/* <p className="text-sm font-medium text-stone-500 dark:text-stone-400">
+                              {collection.collectionImages.length +
+                                collection.collectionVideos.length}{" "}
+                              Content
+                            </p> */}
+                            <div className="flex flex-col text-sm font-medium text-stone-500 dark:text-stone-400">
+                              <div className="flex items-center gap-x-2">
+                                <Images size={18} />
+                                {collection.collectionImages.length}
+                                <span>Images</span>
+                              </div>
+                              <div className="flex items-center gap-x-2">
+                                <PiVideoLight strokeWidth={4} size={18} />
+                                {collection.collectionVideos.length}
+                                <span>Videos</span>
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                      );
                   })}
               </div>
             </>

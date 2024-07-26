@@ -4,11 +4,10 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
-import { UniversalImagesType } from "@/types/visage-type";
 import Image from "next/image";
 
 type CollectionImageResizableProps = {
-  images: UniversalImagesType;
+  images: string[];
   gapSize?: "sm" | "base";
 };
 
@@ -23,11 +22,12 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
     return (
       <ResizablePanelGroup
         direction="horizontal"
-        className="h-80 w-80 rounded-lg border">
+        className="h-80 w-80 rounded-lg border"
+      >
         <ResizablePanel defaultSize={100}>
-          <div className="flex h-full items-center justify-center relative">
+          <div className="relative flex h-full items-center justify-center">
             <Image
-              src={images[0].src.medium}
+              src={images[0]}
               alt=""
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -43,15 +43,17 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
     return (
       <ResizablePanelGroup
         direction="horizontal"
-        className="max-w-md rounded-lg border">
+        className="max-w-md rounded-lg border"
+      >
         <ResizablePanel defaultSize={50}>
           <div
             className={cn(
-              "flex h-full items-center justify-center relative",
-              gapSize === "sm" ? "mr-[1px]" : "mr-1 "
-            )}>
+              "relative flex h-full items-center justify-center",
+              gapSize === "sm" ? "mr-[1px]" : "mr-1",
+            )}
+          >
             <Image
-              src={images[0].src.medium}
+              src={images[0]}
               alt=""
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -65,11 +67,12 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
         <ResizablePanel defaultSize={50}>
           <div
             className={cn(
-              "flex h-full items-center justify-center relative",
-              gapSize === "sm" ? "ml-[1px]" : "ml-1"
-            )}>
+              "relative flex h-full items-center justify-center",
+              gapSize === "sm" ? "ml-[1px]" : "ml-1",
+            )}
+          >
             <Image
-              src={images[1].src.medium}
+              src={images[1]}
               alt=""
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -85,15 +88,17 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
     return (
       <ResizablePanelGroup
         direction="horizontal"
-        className="max-w-md rounded-lg border">
+        className="max-w-md rounded-lg border"
+      >
         <ResizablePanel defaultSize={50}>
           <div
             className={cn(
-              "flex h-full items-center justify-center relative",
-              gapSize === "sm" ? "mr-[2px]" : "mr-2"
-            )}>
+              "relative flex h-full items-center justify-center",
+              gapSize === "sm" ? "mr-[2px]" : "mr-2",
+            )}
+          >
             <Image
-              src={images[images.length - 3].src.medium}
+              src={images[images.length - 3]}
               alt=""
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -104,12 +109,12 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
 
         <ResizableHandle className="pointer-events-none" />
 
-        <ResizablePanel >
+        <ResizablePanel>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={50}>
-              <div className="flex h-full items-center justify-center relative">
+              <div className="relative flex h-full items-center justify-center">
                 <Image
-                  src={images[images.length - 2].src.medium}
+                  src={images[images.length - 2]}
                   alt=""
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -123,11 +128,12 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
             <ResizablePanel defaultSize={50}>
               <div
                 className={cn(
-                  "flex h-full items-center justify-center relative",
-                  gapSize === "sm" ? "mt-[2px]" : "mt-2"
-                )}>
+                  "relative flex h-full items-center justify-center",
+                  gapSize === "sm" ? "mt-[2px]" : "mt-2",
+                )}
+              >
                 <Image
-                  src={images[images.length - 1].src.medium}
+                  src={images[images.length - 1]}
                   alt=""
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
