@@ -20,7 +20,7 @@ import { IoVideocamSharp } from "react-icons/io5";
 import CollectIconVideo from "../icons/collect-icon/collect-icon-video";
 import HeartIconVideo from "../icons/heart-icon/heart-icon-video";
 import { Button } from "../ui/button";
-import DownloadVideoButtonDialog from "./download-video-button-dialog";
+import DownloadButtonDialogVideo from "./download-content-dialog";
 
 const blurDataURL =
   "data:image/webp;base64,UklGRowCAABXRUJQVlA4WAoAAAAgAAAAwwAAwwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggngAAADANAJ0BKsQAxAA+7Xa4VqmnJSOgSAEwHYlpbuCUBHjw8ALS4DeirhBlWYEvZMkE5w17ZOaVcLXVUoWusMkERNByxvpivvEAiJe/GT61Ti22jEhGCC0fLzI8LXVUnD7GTi1JuLgJvRCWwnsGxIwXQiKW4AD+pGXVOVryFj61/69G/5A1h4oQ6ARrjeCTcz7Ml3AOK7BnHqXIJQCAAAAA";
@@ -121,7 +121,13 @@ export function UniqueVideo(props: UniqueVideoProps) {
 
         {/*  download button dialog */}
 
-        <DownloadVideoButtonDialog video={video}>
+        <DownloadButtonDialogVideo
+          link={HD_Video?.link ?? ""}
+          image={video.image}
+          userName={video.user.name}
+          userURL={video.user.url}
+          contentType="Video"
+        >
           <Button
             onClick={() =>
               handleDownloadMediaClick(
@@ -130,14 +136,14 @@ export function UniqueVideo(props: UniqueVideoProps) {
                 "Video",
               )
             }
-            className="absolute bottom-4 right-4 flex h-12 items-center gap-x-2 rounded-full"
+            size={"visage"}
             variant={"visage"}
-            size={"default"}
+            className="absolute bottom-4 right-4 flex h-12 items-center gap-x-2 rounded-full"
           >
             <Download size={18} className="" />
             Download
           </Button>
-        </DownloadVideoButtonDialog>
+        </DownloadButtonDialogVideo>
 
         <div className="absolute right-4 top-4 flex items-center gap-x-2">
           {/* collect */}

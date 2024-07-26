@@ -14,7 +14,7 @@ import { VisageFormItem } from "@/components/visage/visage-form-item";
 import {
   EditCollectionNameFormSchema,
   EditCollectionNameFormSchemaType,
-} from "@/schemas/schemas";
+} from "@/schemas/editCollectionNameFormSchema";
 import {
   changeCollectionName,
   deleteCollectionName,

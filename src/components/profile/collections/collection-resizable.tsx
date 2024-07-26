@@ -15,7 +15,7 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
   const { images, gapSize = "base" } = props;
 
   if (images.length <= 0) {
-    return null;
+    return <></>;
   }
 
   if (images.length === 1) {

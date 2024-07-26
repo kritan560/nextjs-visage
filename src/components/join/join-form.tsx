@@ -5,7 +5,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { VisageFormItem } from "../visage/visage-form-item";
-import { JoinFormSchema, JoinFormSchemaType } from "@/schemas/schemas";
+import { JoinFormSchema, JoinFormSchemaType } from "@/schemas/joinFormSchema";
 
 export function JoinForm() {
   // 1. Define your form.
@@ -25,13 +25,11 @@ export function JoinForm() {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
-  
+
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-9">
-        <div className="flex gap-2 items-center w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-9">
+        <div className="flex w-full items-center gap-2">
           <FormField
             control={form.control}
             name="firstName"
@@ -81,7 +79,8 @@ export function JoinForm() {
           className="w-full"
           variant={"visage"}
           size={"visage"}
-          type="submit">
+          type="submit"
+        >
           Share your content on visage
         </Button>
       </form>

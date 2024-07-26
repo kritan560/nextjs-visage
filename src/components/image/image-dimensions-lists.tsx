@@ -3,7 +3,7 @@
 import { UniversalImageType } from "@/types/visage-type";
 import { handleDownloadMediaClick } from "@/utility/utils";
 import { useEffect, useState, useTransition } from "react";
-import DownloadButtonDialog from "../shared/download-button-dialog";
+import DownloadButtonDialog from "../shared/download-content-dialog";
 
 type ImageDimensionListProps = {
   obj: [string, string];
@@ -53,7 +53,13 @@ export default function ImageDimensionLists(props: ImageDimensionListProps) {
         </div>
       ) : (
         image && (
-          <DownloadButtonDialog image={image}>
+          <DownloadButtonDialog
+            contentType="Image"
+            image={image.src.large}
+            link={image.src.large}
+            userName={image.photographer}
+            userURL={image.photographer_url}
+          >
             <div
               className="cursor-pointer p-4 text-lg hover:bg-stone-100 active:bg-stone-200/80 dark:hover:bg-stone-800"
               onClick={(e) => {

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   EditProfileFormSchema,
   EditProfileFormSchemaType,
-} from "@/schemas/schemas";
+} from "@/schemas/editProfileFormSchema";
 import {
   createTokenForUserAccountDeletion,
   updateUserDetail,

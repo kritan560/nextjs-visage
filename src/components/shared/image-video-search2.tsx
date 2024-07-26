@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   ImageOrVideoSearchKeywordSchema,
   ImageOrVideoSearchKeywordSchemaType,
-} from "@/schemas/schemas";
+} from "@/schemas/imageOrVideoSearchKeywordSchema";
 import { getCurrentUserId } from "@/servers/authentication/authentication-server";
 import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -217,7 +217,6 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
         )}
         ref={inputRef}
       >
-        {" "}
         <HoverCard openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>
             <Button

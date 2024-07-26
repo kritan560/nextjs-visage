@@ -5,7 +5,7 @@ import { Form, FormField } from "@/components/ui/form";
 import {
   UploadImageFormSchema,
   UploadImageFormSchemaType,
-} from "@/schemas/schemas";
+} from "@/schemas/uploadImageFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TagsInput } from "@mantine/core";
 import { Images } from "@prisma/client";

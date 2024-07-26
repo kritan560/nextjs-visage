@@ -10,6 +10,10 @@ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
+.plyr {
+  --plyr-color-main: rgb(209 154 91);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

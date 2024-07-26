@@ -10,7 +10,7 @@ const VideosPage = async () => {
   const { userId } = await getCurrentUserId();
 
   return (
-    <div>
+    <>
       {/* inside main video */}
       <div className="relative h-[500px]">
         <video
@@ -55,7 +55,7 @@ const VideosPage = async () => {
       <div className="mt-6">
         <InfiniteScrollVideo mediaType={"Video"} />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -12,7 +12,7 @@ const ImagesPage = async () => {
   const { userId } = await getCurrentUserId();
 
   return (
-    <div>
+    <>
       {/* inside main image */}
       <div className="relative h-[500px]">
         <Image
@@ -53,7 +53,7 @@ const ImagesPage = async () => {
       <div className="mt-6">
         <InfiniteScroll mediaType={"Image"} />
       </div>
-    </div>
+    </>
   );
 };
 

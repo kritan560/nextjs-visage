@@ -51,7 +51,7 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
   const totalContents = totalCollectedImages + totalCollectedVideos;
 
   return (
-    <div className="">
+    <>
       <NavbarWithSearch />
 
       {/* editicon */}
@@ -119,6 +119,6 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
           ))}
         </MasonryClient>
       </AdjustPadding>
-    </div>
+    </>
   );
 }

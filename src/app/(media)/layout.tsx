@@ -66,8 +66,10 @@ export default async function ImageLayout(props: ImageLayoutProps) {
       likedVideosIds={likedVideosIds}
       globalVideos={globalVideos}
     >
-      {children}
-      {contents}
+      <>
+        {children}
+        {contents}
+      </>
     </InitGlobalStore>
   );
 }

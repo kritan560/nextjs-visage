@@ -2,7 +2,7 @@
 
 import CollectIconVideo from "@/components/icons/collect-icon/collect-icon-video";
 import HeartIconVideo from "@/components/icons/heart-icon/heart-icon-video";
-import DownloadButtonDialogVideo from "@/components/shared/download-button-dialog-video";
+import DownloadButtonDialogVideo from "@/components/shared/download-content-dialog";
 import VisageDialogContent from "@/components/shared/visage-dialog-content";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -132,6 +132,7 @@ export default function VideoDynamicInterception(
                     </p>
                     {video_quality_lists.map((video_list) => (
                       <DownloadButtonDialogVideo
+                        contentType="Video"
                         image={video.image}
                         key={video_list.id}
                         link={video_list.link}

@@ -10,7 +10,7 @@ import { LinkLoginPage } from "@/links/links";
 import {
   NewCollectionNameFormSchema,
   NewCollectionNameFormSchemaType,
-} from "@/schemas/schemas";
+} from "@/schemas/newCollectionNameFormSchema";
 import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
 import { collectImage } from "@/servers/visage/visage-server";
 import { CollectImageEnum } from "@/servers/visage/visage-server-enum";

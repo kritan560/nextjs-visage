@@ -11,3 +11,9 @@
 ✅ if user1 uploaded the pic and webapp is used by user2 then user1 profilepic should be visible to user2 in image hover.
 
 ✅ collecect all profile images and userid in global object. then based on user id show the profile image
+
+password login logout.
+
+change the title in every route
+
+user uploaded image when downloading dropdown menu will show same resolution

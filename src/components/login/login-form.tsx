@@ -3,7 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
 import { LinkForgotPassword } from "@/links/links";
-import { LoginFormSchema, LoginFormSchemaType } from "@/schemas/schemas";
+import {
+  LoginFormSchema,
+  LoginFormSchemaType,
+} from "@/schemas/loginFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -28,9 +31,7 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="email"
@@ -63,7 +64,8 @@ export function LoginForm() {
         <div>
           <Link
             href={LinkForgotPassword}
-            className="text-stone-500 font-medium border-b-2 w-fit border-dashed border-stone-300 cursor-pointer">
+            className="w-fit cursor-pointer border-b-2 border-dashed border-stone-300 font-medium text-stone-500"
+          >
             Forgot Your Password?
           </Link>
         </div>
@@ -72,7 +74,8 @@ export function LoginForm() {
           className="w-full"
           variant={"visage"}
           size={"visage"}
-          type="submit">
+          type="submit"
+        >
           Sign In
         </Button>
       </form>

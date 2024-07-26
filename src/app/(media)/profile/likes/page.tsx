@@ -11,7 +11,7 @@ export default async function LikesPage() {
   const likedVideos = successGetLikedVideos?.data;
 
   return (
-    <div>
+    <>
       <MasonryClient>
         {likedImages?.map((image) => (
           <UniqueImage key={image.id} image={image} />
@@ -20,6 +20,6 @@ export default async function LikesPage() {
           <UniqueVideo key={video.id} video={video} />
         ))}
       </MasonryClient>
-    </div>
+    </>
   );
 }

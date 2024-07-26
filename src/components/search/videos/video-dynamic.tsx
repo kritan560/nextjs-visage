@@ -3,7 +3,7 @@
 import CollectIconVideo from "@/components/icons/collect-icon/collect-icon-video";
 import HeartIconVideo from "@/components/icons/heart-icon/heart-icon-video";
 import AdjustPadding from "@/components/shared/adjust-padding";
-import DownloadButtonDialogVideo from "@/components/shared/download-button-dialog-video";
+import DownloadButtonDialogVideo from "@/components/shared/download-content-dialog";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,7 +103,7 @@ export default function VideoDynamic(props: VideoDynamicProps) {
               Download
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
                 <Button
                   className="rounded-none rounded-r-md bg-visage-400"
                   variant={"ghost"}
@@ -119,6 +119,7 @@ export default function VideoDynamic(props: VideoDynamicProps) {
                   </p>
                   {video_quality_lists.map((video_list) => (
                     <DownloadButtonDialogVideo
+                      contentType="Video"
                       image={video.image}
                       key={video_list.id}
                       link={video_list.link}

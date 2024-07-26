@@ -20,13 +20,10 @@ const VideosDynamicInterceptionPage = async (
   const video = success?.data;
 
   if (video) {
-    return (
-      <div>
-        <VideoDynamicInterception video={video} />
-      </div>
-    );
+    return <VideoDynamicInterception video={video} />;
   }
-  return null;
+
+  return <></>;
 };
 
 export default VideosDynamicInterceptionPage;

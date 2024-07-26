@@ -1,11 +1,11 @@
 "use client";
 
-import { UniversalVideoType } from "@/types/visage-type";
+import { MediaType } from "@/types/visage-type";
 import { handleDownloadMediaClick } from "@/utility/utils";
 import { Copy, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { memo, useState } from "react";
+import React, { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { SiPexels } from "react-icons/si";
 import { Button } from "../ui/button";
@@ -13,17 +13,20 @@ import { Dialog, DialogTitle, DialogTrigger } from "../ui/dialog";
 import VisageDialogContent from "./visage-dialog-content";
 import { VisageToast } from "./visage-toast";
 
-type DownloadVideoButtonDialogProps = {
+type DownloadContentDialogProps = {
   children: React.ReactNode;
-  video: UniversalVideoType;
+  image: string;
+  link: string;
+  userName: string;
+  userURL: string;
+  contentType: MediaType;
 };
 
-export default memo(DownloadVideoButtonDialog);
-function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
-  const { children, video } = props;
-  const [copy, setCopy] = useState(false);
+export default DownloadContentDialog;
+function DownloadContentDialog(props: DownloadContentDialogProps) {
+  const { children, link, image, userName, userURL, contentType } = props;
 
-  const HD_Image = video.video_files.find((video) => video.quality === "hd");
+  const [copy, setCopy] = useState(false);
 
   return (
     <Dialog>
@@ -32,7 +35,7 @@ function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
         <DialogTitle></DialogTitle>
         <div className="relative h-full w-[30%]">
           <Image
-            src={video.image}
+            src={image}
             fill
             alt=""
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -47,17 +50,17 @@ function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
           <p className="pt-4 font-semibold text-stone-500">
             Show some love to{" "}
             <Link
-              href={video.user.url}
+              href={userURL}
               className="mr-1 text-stone-900 dark:text-stone-400"
             >
-              {video.user.name}
+              {userName}
             </Link>
             by giving them follow
           </p>
 
           {/* follow button */}
           <div className="mt-5 flex items-center gap-x-4">
-            <Link target="_blank" href={video.user.url}>
+            <Link target="_blank" href={userURL}>
               <Button
                 variant={"visage"}
                 size={"visage"}
@@ -66,7 +69,7 @@ function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
                 View Profile
               </Button>
             </Link>
-            <Link target="_blank" href={video.user.url}>
+            <Link target="_blank" href={userURL}>
               <SiPexels
                 size={48}
                 className="rounded-md text-emerald-600 hover:text-emerald-600/90 active:text-emerald-600 dark:bg-white"
@@ -74,11 +77,7 @@ function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
             </Link>
             <Button
               onClick={() =>
-                handleDownloadMediaClick(
-                  HD_Image?.link ?? "",
-                  video.videoId,
-                  "Video",
-                )
+                handleDownloadMediaClick(link ?? "", userName, contentType)
               }
               variant={"default"}
               className="h-12"
@@ -89,7 +88,7 @@ function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
 
           {/* attribution copy */}
           <CopyToClipboard
-            text={`video by ${video.user.name}`}
+            text={`photo by ${userName}`}
             onCopy={() => {
               setCopy(true);
               VisageToast.success("copied to clipboard");
@@ -100,7 +99,7 @@ function DownloadVideoButtonDialog(props: DownloadVideoButtonDialogProps) {
           >
             <div className="mt-6 flex h-14 w-full cursor-pointer items-center justify-between rounded-md border px-4">
               <p className="font-medium text-stone-500">
-                {copy ? "copied" : `video by ${video.user.name}`}
+                {copy ? "copied" : `photo by ${userName}`}
               </p>
               <Copy className="text-stone-700 transition hover:text-stone-500 active:text-stone-600" />
             </div>

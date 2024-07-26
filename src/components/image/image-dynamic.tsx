@@ -11,7 +11,7 @@ import { useState } from "react";
 import CollectIcon from "../icons/collect-icon/collect-icon";
 import DeleteIcon from "../icons/delete-icon/delete-icon";
 import HeartIcon from "../icons/heart-icon/heart-icon";
-import DownloadButtonDialog from "../shared/download-button-dialog";
+import DownloadButtonDialog from "../shared/download-content-dialog";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -124,7 +124,13 @@ export default function ImageDynamic(props: ImageDynamicProps) {
             <HeartIcon image={image} nameIncluded />
           </div>
           <div className="flex items-center gap-x-1 rounded-md bg-visage-400 hover:bg-visage-500">
-            <DownloadButtonDialog image={image}>
+            <DownloadButtonDialog
+              contentType="Image"
+              image={image.src.large}
+              link={image.src.large}
+              userName={image.photographer}
+              userURL={image.photographer_url}
+            >
               <Button
                 onClick={() =>
                   handleDownloadMediaClick(
@@ -186,7 +192,13 @@ export default function ImageDynamic(props: ImageDynamicProps) {
                     />
                   </div>
 
-                  <DownloadButtonDialog image={image}>
+                  <DownloadButtonDialog
+                    contentType="Image"
+                    image={image.src.large}
+                    link={image.src.large}
+                    userName={image.photographer}
+                    userURL={image.photographer_url}
+                  >
                     <Button
                       className="mt-4 w-full px-4"
                       size={"visage"}

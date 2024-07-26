@@ -114,7 +114,7 @@ const DeleteIcon = (props: DeleteIconType) => {
     );
   }
 
-  return null;
+  return <></>;
 };
 
 export default DeleteIcon;

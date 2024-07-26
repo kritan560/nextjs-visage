@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import DownloadButtonDialog from "../shared/download-button-dialog";
+import DownloadButtonDialog from "../shared/download-content-dialog";
 import CollectIcon from "../icons/collect-icon/collect-icon";
 import HeartIcon from "../icons/heart-icon/heart-icon";
 import { Button } from "../ui/button";
@@ -148,7 +148,13 @@ export default function ImageDynamicInterception(
               <HeartIcon image={image} nameIncluded />
             </div>
             <div className="flex items-center gap-x-1 rounded-md bg-visage-400 hover:bg-visage-500">
-              <DownloadButtonDialog image={image}>
+              <DownloadButtonDialog
+                contentType="Image"
+                image={image.src.large}
+                link={image.src.large}
+                userName={image.photographer}
+                userURL={image.photographer_url}
+              >
                 <Button
                   onClick={() =>
                     handleDownloadMediaClick(
@@ -214,7 +220,13 @@ export default function ImageDynamicInterception(
                       />
                     </div>
 
-                    <DownloadButtonDialog image={image}>
+                    <DownloadButtonDialog
+                      contentType="Image"
+                      image={image.src.large}
+                      link={image.src.large}
+                      userName={image.photographer}
+                      userURL={image.photographer_url}
+                    >
                       <Button
                         className="mt-4 w-full px-4"
                         size={"visage"}

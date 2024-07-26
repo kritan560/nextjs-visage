@@ -31,5 +31,5 @@ export default async function VideoIdPage(props: VideoIdProps) {
       </>
     );
   }
-  return null;
+  return <></>;
 }

@@ -8,11 +8,10 @@ import {
   AugmentLikedImagesIntoUniversalImages,
   AugmentLikedVideoIntoUniversalVideo,
   AugmentLikedVideosIntoUniversalVideos,
-  AugmentVideoIntoUniversalvideoType,
 } from "@/augment/augment";
 import { DailyUploadCount } from "@/constants/constants";
 import { LinkLikePage } from "@/links/links";
-import { EditProfileFormSchemaType } from "@/schemas/schemas";
+import { EditProfileFormSchemaType } from "@/schemas/editProfileFormSchema";
 import {
   UniversalImageType,
   UniversalImagesType,
