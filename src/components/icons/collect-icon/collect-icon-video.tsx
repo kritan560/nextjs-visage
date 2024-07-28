@@ -6,10 +6,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGlobalCollectionNameStore } from "@/global-states/visage-image-state";
 import { useGlobalCollectVideosIds } from "@/global-states/visage-video-state";
 import { cn } from "@/lib/utils";
-import { LinkCollections, LinkLoginPage } from "@/links/links";
-import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
-import { collectVideo } from "@/servers/visage/visage-server";
-import { UniversalVideoType, UniversalVideosType } from "@/types/visage-type";
+import { LinkCollections, LinkLoginPage } from "@/links/visage-links";
+import { AuthFailedEnum } from "@/enums/authentication-server-enums";
+import {
+  UniversalVideoType,
+  UniversalVideosType,
+} from "@/types/universalVideo.type";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CirclePlus } from "lucide-react";
 import Image from "next/image";
@@ -28,6 +30,7 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { CollectIconFormVideo } from "./collect-icon-form-video";
+import { collectVideo } from "@/servers/CollectVideo.server";
 
 type CollectIconVideoProps = {
   video: UniversalVideoType;

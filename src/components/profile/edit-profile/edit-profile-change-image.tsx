@@ -1,13 +1,12 @@
 "use client";
 
-import { updateUserProfilePicture } from "@/servers/visage/visage-server";
+import { VisageToast } from "@/components/shared/visage-toast";
+import { Button } from "@/components/ui/button";
+import { updateUserProfilePicture } from "@/servers/User.server";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import { useState, useTransition } from "react";
-import toast from "react-hot-toast";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { VisageToast } from "@/components/shared/visage-toast";
+import { useState, useTransition } from "react";
 
 type EditProfileChangeImageProps = {
   profilePicture: string | null | undefined;

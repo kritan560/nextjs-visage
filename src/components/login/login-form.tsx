@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
-import { LinkForgotPassword } from "@/links/links";
+import { LinkForgotPassword } from "@/links/visage-links";
 import {
   LoginFormSchema,
   LoginFormSchemaType,

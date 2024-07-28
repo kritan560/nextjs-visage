@@ -1,15 +1,10 @@
 "use client";
 
-import { AugmentImagesImageField } from "@/augment/augment";
 import { Button } from "@/components/ui/button";
 import { DailyUploadCount } from "@/constants/constants";
 import { cn } from "@/lib/utils";
-import { LinkHomepage, LinkProfile } from "@/links/links";
-import { getCurrentUserId } from "@/servers/authentication/authentication-server";
-import {
-  createImages,
-  getDailyUploadCount,
-} from "@/servers/visage/visage-server";
+import { LinkHomepage, LinkProfile } from "@/links/visage-links";
+import { getCurrentUserId } from "@/servers/Authentication.server";
 import { Images } from "@prisma/client";
 import { average } from "color.js";
 import CryptoRandomHex from "crypto-random-hex";
@@ -20,13 +15,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import nProgress from "nprogress";
 import { useEffect, useState, useTransition } from "react";
-import toast from "react-hot-toast";
 import { FaRegCircleDot } from "react-icons/fa6";
 import UploadIcon from "../icons/upload-icon";
 import AdjustPadding from "../shared/adjust-padding";
+import { VisageToast } from "../shared/visage-toast";
 import { ScrollArea } from "../ui/scroll-area";
 import UploadedImageData from "./uploaded-image-data";
-import { VisageToast } from "../shared/visage-toast";
+import { AugmentImagesImageField } from "@/augments/Image.augment";
+import { createImages } from "@/servers/Image.server";
+import { getDailyImagesUploadCount } from "@/servers/Upload.server";
+import { ManipulateCloudinaryURL } from "@/helpers/manipulateCloudinaryURL";
 
 let uploadedDataArray: ReturnType<typeof AugmentImagesImageField> = [];
 
@@ -44,7 +42,7 @@ export default function UploadImageContent() {
   useEffect(() => {
     startTransition(async () => {
       // this can be server rendered. i left intentionally for client rendered.
-      const { failed, success } = await getDailyUploadCount();
+      const { failed, success } = await getDailyImagesUploadCount();
       if (success) {
         setDailyUploadCountLeft(DailyUploadCount - success.data);
       }
@@ -101,14 +99,24 @@ export default function UploadImageContent() {
         photographer_url: "",
         url: "",
         src: {
-          landscape: info.secure_url,
-          large: info.secure_url,
-          large2x: info.secure_url,
-          medium: info.secure_url,
+          landscape: ManipulateCloudinaryURL(
+            info.secure_url,
+            info.width,
+            info.height,
+            "landscape",
+          ),
+          large2x: ManipulateCloudinaryURL(info.secure_url, 1200),
+          large: ManipulateCloudinaryURL(info.secure_url, 900),
+          medium: ManipulateCloudinaryURL(info.secure_url, 600),
           original: info.secure_url,
-          portrait: info.secure_url,
-          small: info.secure_url,
-          tiny: info.secure_url,
+          portrait: ManipulateCloudinaryURL(
+            info.secure_url,
+            info.width,
+            info.height,
+            "potrait",
+          ),
+          small: ManipulateCloudinaryURL(info.secure_url, 300),
+          tiny: ManipulateCloudinaryURL(info.secure_url, 150),
         },
         id: randomInt,
       },

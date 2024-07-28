@@ -2,14 +2,14 @@
 
 import { useGlobalImagesStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
-import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexel-server";
-import { MediaType } from "@/types/visage-type";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexelPhoto.server";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
 import { MasonryClient } from "../masonry/masonry-client";
 import AdjustPadding from "./adjust-padding";
 import { UniqueImage } from "./unique-image";
+import { MediaType } from "@/types/mediaType.type";
 
 type InfiniteScrollProps = {
   mediaType: MediaType | undefined;

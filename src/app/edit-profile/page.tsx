@@ -3,7 +3,15 @@ import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
 import EditProfileChangeImage from "@/components/profile/edit-profile/edit-profile-change-image";
 import { EditProfileForm } from "@/components/profile/edit-profile/edit-profile-form";
 import AdjustPadding from "@/components/shared/adjust-padding";
-import { getCurrentUserId, getUserDetailById } from "@/servers/authentication/authentication-server";
+import {
+  getCurrentUserId,
+  getUserDetailById,
+} from "@/servers/Authentication.server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Profile Page",
+};
 
 export default async function EditProfilePage() {
   const { userId } = await getCurrentUserId();
@@ -24,11 +32,11 @@ export default async function EditProfilePage() {
         <NavbarWithSearch />
       </NavbarWhenScrolled>
 
-      <h1 className="text-center font-semibold text-5xl tracking-[0.015rem]">
+      <h1 className="text-center text-5xl font-semibold tracking-[0.015rem]">
         Profile settings
       </h1>
 
-      <AdjustPadding className="w-[60%] mx-auto mt-12">
+      <AdjustPadding className="mx-auto mt-12 w-[60%]">
         <EditProfileChangeImage
           userId={userId}
           profilePicture={profilePicture}

@@ -1,9 +1,9 @@
 "use client";
 
-import { UniversalImageType } from "@/types/visage-type";
-import { handleDownloadMediaClick } from "@/utility/utils";
+import { UniversalImageType } from "@/types/universalImage.type";
 import { useEffect, useState, useTransition } from "react";
 import DownloadButtonDialog from "../shared/download-content-dialog";
+import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
 
 type ImageDimensionListProps = {
   obj: [string, string];

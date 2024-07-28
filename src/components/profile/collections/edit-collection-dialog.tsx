@@ -18,12 +18,12 @@ import {
 import {
   changeCollectionName,
   deleteCollectionName,
-} from "@/servers/visage/visage-server";
+} from "@/servers/CollectionName.server";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import nProgress from "nprogress";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { AiOutlineEdit } from "react-icons/ai";
 
 type EditCollectionDialogProps = {
@@ -71,6 +71,7 @@ export default function EditCollectionDialog(props: EditCollectionDialogProps) {
 
     if (success) {
       VisageToast.success(success.message);
+      nProgress.start();
       setDialogOpen(false);
       router.refresh();
     }

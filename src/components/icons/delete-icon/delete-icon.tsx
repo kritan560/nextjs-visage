@@ -3,17 +3,16 @@
 import VisageDialogContent from "@/components/shared/visage-dialog-content";
 import { VisageToast } from "@/components/shared/visage-toast";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   useGlobalAuthUserImagesIdstore,
   useGlobalImagesStore,
 } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
-import { deleteUserUploadedImage } from "@/servers/visage/visage-server";
-import { UniversalImageType } from "@/types/visage-type";
+import { deleteUserUploadedImage } from "@/servers/Upload.server";
+import { UniversalImageType } from "@/types/universalImage.type";
 import Image from "next/image";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { MdDeleteForever } from "react-icons/md";
 
 type DeleteIconType = {

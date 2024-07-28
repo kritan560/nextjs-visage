@@ -1,18 +1,16 @@
 import InitGlobalStore from "@/components/shared/init-global-store";
+import { getCollectVideosIds } from "@/servers/CollectVideo.server";
 import {
-  getPexelCuratedPhotosByPage_PerPage,
-  getVideos,
-} from "@/servers/pexel/pexel-server";
-import {
-  getAllImages,
-  getAuthUserUploadedImageId,
-  getCollectVideosIds,
-  getCollectionImagesIds,
+  getCollectionNameImagesIds,
   getCollectionNames,
-  getLikedImages,
-  getLikedVideosIds,
-  getPublicProfilePictures,
-} from "@/servers/visage/visage-server";
+} from "@/servers/CollectionName.server";
+import { getAllImages } from "@/servers/Image.server";
+import { getLikedImages } from "@/servers/LikeImage.server";
+import { getLikedVideosIds } from "@/servers/LikeVideo.server";
+import { getPublicProfilePictures } from "@/servers/ProfilePicture.server";
+import { getAuthUserUploadedImageId } from "@/servers/Upload.server";
+import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexelPhoto.server";
+import { getVideos } from "@/servers/pexel/pexelVideo.server";
 import React from "react";
 
 type ImageLayoutProps = {
@@ -29,7 +27,7 @@ export default async function ImageLayout(props: ImageLayoutProps) {
   const { success: likedImagesSuccess } = await getLikedImages();
   const { success: collectionNameSuccess } = await getCollectionNames();
   const { success: collectionImagesIdsSuccess } =
-    await getCollectionImagesIds();
+    await getCollectionNameImagesIds();
   const { success: authUserUploadedImagesIds } =
     await getAuthUserUploadedImageId();
   const { success: publicProfilePicturesSuccess } =

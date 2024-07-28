@@ -1,20 +1,23 @@
 "use client";
 
+import { useGlobalPublicProfileDetailStore } from "@/global-states/visage-image-state";
+import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
+import { ManipulateCloudinaryURL } from "@/helpers/manipulateCloudinaryURL";
 import { cn } from "@/lib/utils";
-import { UniversalImageType } from "@/types/visage-type";
-import { handleDownloadMediaClick } from "@/utility/utils";
+import { UniversalImageType } from "@/types/universalImage.type";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import DownloadButtonDialog from "../shared/download-content-dialog";
 import CollectIcon from "../icons/collect-icon/collect-icon";
+import DeleteIcon from "../icons/delete-icon/delete-icon";
 import HeartIcon from "../icons/heart-icon/heart-icon";
+import DownloadButtonDialog from "../shared/download-content-dialog";
+import VisageDialogContent from "../shared/visage-dialog-content";
 import { Button } from "../ui/button";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
@@ -28,9 +31,6 @@ import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import ImageDimensionLists from "./image-dimensions-lists";
-import DeleteIcon from "../icons/delete-icon/delete-icon";
-import VisageDialogContent from "../shared/visage-dialog-content";
-import { useGlobalPublicProfileDetailStore } from "@/global-states/visage-image-state";
 
 type ImageDynamicInterceptionProps = {
   image: UniversalImageType;
@@ -76,9 +76,27 @@ export default function ImageDynamicInterception(
   }
 
   function handleCustomImageDownload() {
-    const customDownloadUrl = image.src.original.concat(
-      `?&h=${customHeight}&w=${customWidth}`,
+    const origionalImage = image.src.original;
+    const isCloudinaryImage = origionalImage.startsWith(
+      "https://res.cloudinary.com",
     );
+
+    let customDownloadUrl = "";
+    if (isCloudinaryImage) {
+      customDownloadUrl = ManipulateCloudinaryURL(
+        origionalImage,
+        customWidth,
+        customHeight,
+        null,
+        true,
+      );
+    }
+
+    if (!isCloudinaryImage) {
+      customDownloadUrl = image.src.original.concat(
+        `?&h=${customHeight}&w=${customWidth}`,
+      );
+    }
 
     handleDownloadMediaClick(
       customDownloadUrl,

@@ -1,14 +1,14 @@
-import AdjustPadding from "@/components/shared/adjust-padding";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
-import { LinkEditProfile } from "@/links/links";
-import { getCurrentUser } from "@/servers/authentication/authentication-server";
+import EditProfileButton from "@/components/profile/edit-profile/edit-profile-button";
+import AdjustPadding from "@/components/shared/adjust-padding";
+import { LinkEditProfile } from "@/links/visage-links";
+import { getCurrentUser } from "@/servers/Authentication.server";
+import { getTotalImagesViewsCount } from "@/servers/Image.server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ProfileLink from "../../../components/profile/profile-link";
-import EditProfileButton from "@/components/profile/edit-profile/edit-profile-button";
-import { getTotalViewsCount } from "@/servers/visage/visage-server";
 
 type ProfileLayoutProps = {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
   const { children } = props;
 
   const { profilePic, userName } = await getCurrentUser();
-  const { failed, success } = await getTotalViewsCount();
+  const { failed, success } = await getTotalImagesViewsCount();
   const totalViews = success?.data.views;
   const totalContent = success?.data.totalContent;
 

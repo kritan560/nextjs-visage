@@ -1,4 +1,4 @@
-import { UniversalVideosType } from "@/types/visage-type";
+import { UniversalVideosType } from "@/types/universalVideo.type";
 import { create } from "zustand";
 
 type GlobalCollectVideosIds = {

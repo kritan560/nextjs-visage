@@ -2,8 +2,7 @@
 
 import AdjustPadding from "@/components/shared/adjust-padding";
 import { cn } from "@/lib/utils";
-import { UniversalImageType } from "@/types/visage-type";
-import { handleDownloadMediaClick } from "@/utility/utils";
+import { UniversalImageType } from "@/types/universalImage.type";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,6 +22,8 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import ImageDimensionLists from "./image-dimensions-lists";
 import { useGlobalPublicProfileDetailStore } from "@/global-states/visage-image-state";
+import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
+import { ManipulateCloudinaryURL } from "@/helpers/manipulateCloudinaryURL";
 
 type ImageDynamicProps = {
   image: UniversalImageType;
@@ -43,6 +44,7 @@ export default function ImageDynamic(props: ImageDynamicProps) {
 
   function calcCustomWidth(width: string) {
     const widthInNumber = parseInt(width);
+
     if (!isNaN(widthInNumber)) {
       setCustomHeight(widthInNumber * imageRatio);
       setCustomWidth(widthInNumber);
@@ -53,6 +55,7 @@ export default function ImageDynamic(props: ImageDynamicProps) {
   }
   function calcCustomHeight(height: string) {
     const heightInNumber = parseInt(height);
+
     if (!isNaN(heightInNumber)) {
       setCustomWidth(heightInNumber / imageRatio);
       setCustomHeight(heightInNumber);
@@ -63,9 +66,27 @@ export default function ImageDynamic(props: ImageDynamicProps) {
   }
 
   function handleCustomImageDownload() {
-    const customDownloadUrl = image.src.original.concat(
-      `?&h=${customHeight}&w=${customWidth}`,
+    const origionalImage = image.src.original;
+    const isCloudinaryImage = origionalImage.startsWith(
+      "https://res.cloudinary.com",
     );
+
+    let customDownloadUrl = "";
+    if (isCloudinaryImage) {
+      customDownloadUrl = ManipulateCloudinaryURL(
+        origionalImage,
+        customWidth,
+        customHeight,
+        null,
+        true,
+      );
+    }
+
+    if (!isCloudinaryImage) {
+      customDownloadUrl = image.src.original.concat(
+        `?&h=${customHeight}&w=${customWidth}`,
+      );
+    }
 
     handleDownloadMediaClick(
       customDownloadUrl,

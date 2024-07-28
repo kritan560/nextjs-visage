@@ -1,13 +1,13 @@
 "use server";
 
 import { auth, signOut } from "@/auth";
-import { LinkHomepage } from "@/links/links";
-import prisma from "../../../prisma/prisma.db";
-import { getUserProfilePicture } from "../visage/visage-server";
+import { LinkHomepage } from "@/links/visage-links";
+import prisma from "../../prisma/prisma.db";
+import { getUserProfilePicture } from "./ProfilePicture.server";
 import {
   AuthFailedEnum,
   getUserDetailByIdEnum,
-} from "./authentication-server-enums";
+} from "../enums/authentication-server-enums";
 
 /**
  * This server action will return the profilePicture, userName, userId and isUserAuthenticated of a logged in user

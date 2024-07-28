@@ -1,14 +1,19 @@
-"use server";
-
-import AdjustPadding from "@/components/shared/adjust-padding";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
-import { getVideosByKeyword } from "@/servers/pexel/pexel-server";
 import VideoSearch from "@/components/search/videos/video-search";
+import AdjustPadding from "@/components/shared/adjust-padding";
+import { getVideosByKeyword } from "@/servers/pexel/pexelVideo.server";
 
 type VideoSearchPageProps = {
   params: { keyword: string };
 };
+
+// or Dynamic metadata
+export async function generateMetadata({ params }: VideoSearchPageProps) {
+  return {
+    title: `Free Stock Video ${params.keyword}`,
+  };
+}
 
 export default async function VideoSearchPage(props: VideoSearchPageProps) {
   const {

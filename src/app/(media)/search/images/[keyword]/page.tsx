@@ -4,13 +4,20 @@ import AdjustPadding from "@/components/shared/adjust-padding";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
 import ImageSearch from "@/components/search/images/image-search";
-import { getPexelPhotoByKeyword } from "@/servers/pexel/pexel-server";
-import { getImagesByTags } from "@/servers/visage/visage-server";
-import { UniversalImagesType } from "@/types/visage-type";
+import { getPexelPhotoByKeyword } from "@/servers/pexel/pexelPhoto.server";
+import { UniversalImagesType } from "@/types/universalImage.type";
+import { getImagesByTags } from "@/servers/Image.server";
 
 type ImageSearchPageProps = {
   params: { keyword: string };
 };
+
+// or Dynamic metadata
+export async function generateMetadata({ params }: ImageSearchPageProps) {
+  return {
+    title: `Free Stock Image ${params.keyword}`,
+  };
+}
 
 export default async function ImageSearchPage(props: ImageSearchPageProps) {
   const {

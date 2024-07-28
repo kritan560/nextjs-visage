@@ -12,8 +12,20 @@
 
 ✅ collecect all profile images and userid in global object. then based on user id show the profile image
 
-password login logout.
+✅ user uploaded image when downloading dropdown menu will show same resolution
 
-change the title in every route
+✅ update the dark:background color of collection page resizable in /profile/collection page
 
-user uploaded image when downloading dropdown menu will show same resolution
+✅ show 1 image in resizable if only one image is given
+✅ show 2 image in resizable if 2 image isgiven. 
+✅ above bugs are in /profile/collection page
+
+✅ show top loader when collection is delete and redirected : Updated the code see for changes
+
+✅ not found page added
+
+✅ change the title in every route
+
+credential password login logout.
+
+build the webapp mobile responsive..

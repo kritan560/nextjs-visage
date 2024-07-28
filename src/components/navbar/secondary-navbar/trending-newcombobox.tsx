@@ -17,7 +17,7 @@ import {
 import { useGlobalImagesStore } from "@/global-states/visage-image-state";
 import { useGlobalVideos } from "@/global-states/visage-video-state";
 import { cn } from "@/lib/utils";
-import { LinkVideoPage } from "@/links/links";
+import { LinkVideoPage } from "@/links/visage-links";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";

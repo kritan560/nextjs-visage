@@ -5,8 +5,14 @@ import { SecondaryNavbar } from "@/components/navbar/secondary-navbar/-navbar-se
 import ImageSearchVideo2 from "@/components/shared/image-video-search2";
 import InfiniteScroll from "@/components/shared/infinite-scroll";
 import MainImage from "@/images/pexels-alexmoliski-26341034.jpg";
-import { getCurrentUserId } from "@/servers/authentication/authentication-server";
+import { getCurrentUserId } from "@/servers/Authentication.server";
+import { Metadata } from "next";
 import Image from "next/image";
+
+// Static metadata
+export const metadata: Metadata = {
+  title: "Free Stock Photos",
+};
 
 const ImagesPage = async () => {
   const { userId } = await getCurrentUserId();

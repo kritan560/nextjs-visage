@@ -1,15 +1,22 @@
 import ImageDynamic from "@/components/image/image-dynamic";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
-import { getPexelPhotoById } from "@/servers/pexel/pexel-server";
-import { getPexelPhotoByIdEnum } from "@/servers/pexel/pexel-server-enums";
-import { getImageById } from "@/servers/visage/visage-server";
-import { UniversalImageType } from "@/types/visage-type";
-import { destructureTheIdFromStructuredParams } from "@/utility/utils";
+import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
+import { getPexelPhotoByIdEnum } from "@/enums/pexel-server-enums";
+import { getImageById } from "@/servers/Image.server";
+import { UniversalImageType } from "@/types/universalImage.type";
+import { destructureTheIdFromStructuredParams } from "@/helpers/idHandler";
 
 type ImageIdProps = {
   params: { id: string };
 };
+
+// or Dynamic metadata
+export async function generateMetadata({ params }: ImageIdProps) {
+  return {
+    title: `Free Stock Image ${params.id}`,
+  };
+}
 
 let universalImage: UniversalImageType;
 

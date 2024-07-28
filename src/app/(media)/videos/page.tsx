@@ -4,7 +4,13 @@ import NavbarWithoutSearchBox from "@/components/navbar/-navbar-without-searchbo
 import { SecondaryNavbar } from "@/components/navbar/secondary-navbar/-navbar-secondary";
 import ImageSearchVideo2 from "@/components/shared/image-video-search2";
 import InfiniteScrollVideo from "@/components/shared/infinite-scroll-video";
-import { getCurrentUserId } from "@/servers/authentication/authentication-server";
+import { getCurrentUserId } from "@/servers/Authentication.server";
+import { Metadata } from "next";
+
+// Static metadata
+export const metadata: Metadata = {
+  title: "Free Stock Videos",
+};
 
 const VideosPage = async () => {
   const { userId } = await getCurrentUserId();

@@ -1,11 +1,20 @@
 import VideoDynamicInterception from "@/components/search/videos/video-dynamic-interception";
-import { getPexelVideoById } from "@/servers/pexel/pexel-server";
-import { destructureTheIdFromStructuredParams } from "@/utility/utils";
+import { getPexelVideoById } from "@/servers/pexel/pexelVideo.server";
+import { destructureTheIdFromStructuredParams } from "@/helpers/idHandler";
 import React from "react";
 
 type VideoDynamicInterceptionProps = {
   params: { id: string };
 };
+
+// or Dynamic metadata
+export async function generateMetadata({
+  params,
+}: VideoDynamicInterceptionProps) {
+  return {
+    title: `Free Stock Video ${params.id}`,
+  };
+}
 
 const VideosDynamicInterceptionPage = async (
   props: VideoDynamicInterceptionProps,

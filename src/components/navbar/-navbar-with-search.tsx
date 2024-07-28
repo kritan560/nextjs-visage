@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/servers/authentication/authentication-server";
+import { getCurrentUser } from "@/servers/Authentication.server";
 import AdjustPadding from "../shared/adjust-padding";
 import ImageSearchVideo2 from "../shared/image-video-search2";
 import { NavbarAvatarLoggedIn } from "./components/avatar-loggedin";
@@ -9,7 +9,7 @@ import { NavbarThreeDotsHorizontal } from "./components/three-dots-horizontal";
 import Upload from "./components/upload";
 import { NavbarNotificationLoggedInOnly } from "./components/notification-loggedIn-only";
 import { NavbarButton } from "./components/button";
-import { LinkJoinPage, LinkUploadPage } from "@/links/links";
+import { LinkJoinPage, LinkUploadPage } from "@/links/visage-links";
 import { ModeToggle } from "../mode-toggle";
 
 const NavbarWithSearchBox = async () => {

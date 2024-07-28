@@ -1,25 +1,21 @@
 "use client";
 
 import { MasonryClient } from "@/components/masonry/masonry-client";
+import { UniqueVideo } from "@/components/shared/unique-video";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { UniqueImage } from "@/components/shared/unique-image";
-import {
-  getPexelPhotoByKeyword,
-  getVideosByKeyword,
-} from "@/servers/pexel/pexel-server";
-import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
-import Link from "next/link";
-import { generate } from "random-words";
-import { useEffect, useState, useTransition } from "react";
-import { useInView } from "react-intersection-observer";
-import { PropagateLoader } from "react-spinners";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { UniqueVideo } from "@/components/shared/unique-video";
+import { getVideosByKeyword } from "@/servers/pexel/pexelVideo.server";
+import { UniversalVideosType } from "@/types/universalVideo.type";
+import Link from "next/link";
+import { generate } from "random-words";
+import { useEffect, useState, useTransition } from "react";
+import { useInView } from "react-intersection-observer";
+import { PropagateLoader } from "react-spinners";
 
 type VideoSearchProps = {
   keyword: string;

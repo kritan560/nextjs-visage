@@ -6,8 +6,9 @@ import {
   ImageOrVideoSearchKeywordSchema,
   ImageOrVideoSearchKeywordSchemaType,
 } from "@/schemas/imageOrVideoSearchKeywordSchema";
-import { getCurrentUserId } from "@/servers/authentication/authentication-server";
-import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
+import { getCurrentUserId } from "@/servers/Authentication.server";
+import { UniversalImagesType } from "@/types/universalImage.type";
+import { UniversalVideosType } from "@/types/universalVideo.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChevronDown,
@@ -21,6 +22,7 @@ import { usePathname, useRouter } from "next/navigation";
 import nProgress from "nprogress";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { PiVideoLight } from "react-icons/pi";
 import { CollectionImageResizable } from "../profile/collections/collection-resizable";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
@@ -38,7 +40,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { PiVideoLight } from "react-icons/pi";
 
 const searchedKeyword = "searchedKeyword";
 
@@ -174,8 +175,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
 
     nProgress.start();
 
-    const { isUserAuthenticated } = await getCurrentUserId();
-    if (!isUserAuthenticated) {
+    if (!userId) {
       return;
     }
     // the logic is: to add array to localstorage.

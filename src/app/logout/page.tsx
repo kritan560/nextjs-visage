@@ -1,18 +1,13 @@
-"use client";
+import LogoutClientComponent from "@/components/logout/logout-client-component";
+import { Metadata } from "next";
+import React from "react";
 
-import { LinkHomepage } from "@/links/links";
-import { signOut } from "next-auth/react";
-import { useEffect } from "react";
+export const metadata: Metadata = {
+  title: "logout page",
+};
 
 const LogoutPage = () => {
-  useEffect(() => {
-    async function signoutUser() {
-      await signOut({ callbackUrl: LinkHomepage, redirect: true });
-    }
-    signoutUser();
-  }, []);
-
-  return <></>;
+  return <LogoutClientComponent />;
 };
 
 export default LogoutPage;

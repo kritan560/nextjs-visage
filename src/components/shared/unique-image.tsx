@@ -6,12 +6,7 @@ import {
   useGlobalPublicProfileDetailStore,
 } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
-import { UniversalImageType } from "@/types/visage-type";
-import {
-  StructureTheImageParam,
-  TruncatePhotgrapherName,
-  handleDownloadMediaClick,
-} from "@/utility/utils";
+import { UniversalImageType } from "@/types/universalImage.type";
 import { Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,9 +16,10 @@ import DeleteIcon from "../icons/delete-icon/delete-icon";
 import HeartIcon from "../icons/heart-icon/heart-icon";
 import { Button } from "../ui/button";
 import DownloadButtonDialog from "./download-content-dialog";
-
-const blurDataURL =
-  "data:image/webp;base64,UklGRowCAABXRUJQVlA4WAoAAAAgAAAAwwAAwwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggngAAADANAJ0BKsQAxAA+7Xa4VqmnJSOgSAEwHYlpbuCUBHjw8ALS4DeirhBlWYEvZMkE5w17ZOaVcLXVUoWusMkERNByxvpivvEAiJe/GT61Ti22jEhGCC0fLzI8LXVUnD7GTi1JuLgJvRCWwnsGxIwXQiKW4AD+pGXVOVryFj61/69G/5A1h4oQ6ARrjeCTcz7Ml3AOK7BnHqXIJQCAAAAA";
+import { StructureTheImageParam } from "@/helpers/idHandler";
+import { TruncateCreatorName } from "@/helpers/truncateCreatorName";
+import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
+import { blurDataURL } from "@/constants/blurDataUrl";
 
 type UniqueImageProps = {
   image: UniversalImageType;
@@ -90,7 +86,7 @@ export function UniqueImage(props: UniqueImageProps) {
 
           {/* photographer name */}
           <p className="text-xl font-medium capitalize text-stone-50">
-            {TruncatePhotgrapherName(image.photographer)}
+            {TruncateCreatorName(image.photographer)}
           </p>
         </Link>
 

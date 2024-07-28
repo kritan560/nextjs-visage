@@ -13,7 +13,8 @@ import {
   useGlobalLikeVideosIds,
   useGlobalVideos,
 } from "@/global-states/visage-video-state";
-import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
+import { UniversalImagesType } from "@/types/universalImage.type";
+import { UniversalVideosType } from "@/types/universalVideo.type";
 import { CollectionNames } from "@prisma/client";
 import React, { useEffect } from "react";
 

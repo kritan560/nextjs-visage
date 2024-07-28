@@ -1,7 +1,5 @@
 "use client";
 
-import { MediaType } from "@/types/visage-type";
-import { handleDownloadMediaClick } from "@/utility/utils";
 import { Copy, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +10,8 @@ import { Button } from "../ui/button";
 import { Dialog, DialogTitle, DialogTrigger } from "../ui/dialog";
 import VisageDialogContent from "./visage-dialog-content";
 import { VisageToast } from "./visage-toast";
+import { MediaType } from "@/types/mediaType.type";
+import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
 
 type DownloadContentDialogProps = {
   children: React.ReactNode;

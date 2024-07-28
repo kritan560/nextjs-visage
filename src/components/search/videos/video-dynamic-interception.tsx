@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGlobalPublicProfileDetailStore } from "@/global-states/visage-image-state";
-import { UniversalVideoType } from "@/types/visage-type";
-import { handleDownloadMediaClick } from "@/utility/utils";
+import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
+import { UniversalVideoType } from "@/types/universalVideo.type";
 import { MediaPlayer, MediaProvider } from "@vidstack/react";
 import {
   PlyrLayout,

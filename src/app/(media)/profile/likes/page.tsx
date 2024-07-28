@@ -1,7 +1,14 @@
 import { MasonryClient } from "@/components/masonry/masonry-client";
 import { UniqueImage } from "@/components/shared/unique-image";
 import { UniqueVideo } from "@/components/shared/unique-video";
-import { getLikedImages, getLikedVideos } from "@/servers/visage/visage-server";
+import { getLikedImages } from "@/servers/LikeImage.server";
+import { getLikedVideos } from "@/servers/LikeVideo.server";
+import { Metadata } from "next";
+
+// Static metadata
+export const metadata: Metadata = {
+  title: "Likes page",
+};
 
 export default async function LikesPage() {
   const { failed, success } = await getLikedImages();

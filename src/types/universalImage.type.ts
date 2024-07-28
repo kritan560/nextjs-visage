@@ -1,11 +1,4 @@
-import { Photo, Video, Videos } from "pexels";
-
-export type onHoverDisplayElementsType = {
-  elementName: MediaType;
-  element: JSX.Element;
-}[];
-
-export type MediaType = "Image" | "Video";
+import { Photo } from "pexels";
 
 /**
  * @example
@@ -41,21 +34,3 @@ export type UniversalImageType = Omit<Photo, "liked"> & {
 };
 
 export type UniversalImagesType = UniversalImageType[];
-
-/**
- *
- */
-export type UniversalVideoType = Pick<
-  Video,
-  | "id" // the video id in type number
-  | "image" // image contain the video thumbnail
-  | "video_files" // the video_files contains the array of video resolution
-  | "user" // the videographer
-> & { videoId: string }; // videoId is generated at augmentation if id is type number i.e. videoId : String(id) else if type string videoId : id
-
-export type UniversalVideosType = {
-  videos: UniversalVideoType[];
-  totalResults: Videos["total_results"];
-};
-
-// video : id, image, url, videoFiles

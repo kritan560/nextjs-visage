@@ -3,8 +3,8 @@
 import { MasonryClient } from "@/components/masonry/masonry-client";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { UniqueImage } from "@/components/shared/unique-image";
-import { getPexelPhotoByKeyword } from "@/servers/pexel/pexel-server";
-import { UniversalImagesType } from "@/types/visage-type";
+import { getPexelPhotoByKeyword } from "@/servers/pexel/pexelPhoto.server";
+import { UniversalImagesType } from "@/types/universalImage.type";
 import Link from "next/link";
 import { generate } from "random-words";
 import { useEffect, useState, useTransition } from "react";

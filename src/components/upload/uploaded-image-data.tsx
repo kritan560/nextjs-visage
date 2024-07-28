@@ -1,6 +1,6 @@
 "use client";
 
-import { AugmentImagesImageField } from "@/augment/augment";
+import { AugmentImagesImageField } from "@/augments/Image.augment";
 import { Form, FormField } from "@/components/ui/form";
 import {
   UploadImageFormSchema,

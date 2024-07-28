@@ -1,9 +1,9 @@
 import { VisageToast } from "@/components/shared/visage-toast";
 import { useGlobalLikeVideosIds } from "@/global-states/visage-video-state";
 import { cn } from "@/lib/utils";
-import { LinkLoginPage } from "@/links/links";
-import { likeVideo } from "@/servers/visage/visage-server";
-import { UniversalVideoType } from "@/types/visage-type";
+import { LinkLoginPage } from "@/links/visage-links";
+import { likeVideo } from "@/servers/LikeVideo.server";
+import { UniversalVideoType } from "@/types/universalVideo.type";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import nProgress from "nprogress";

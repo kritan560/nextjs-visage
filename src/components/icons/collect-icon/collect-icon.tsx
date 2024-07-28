@@ -8,10 +8,12 @@ import {
   useGlobalCollectionNameStore,
 } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
-import { LinkCollections, LinkLoginPage } from "@/links/links";
-import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
-import { collectImage } from "@/servers/visage/visage-server";
-import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
+import { LinkCollections, LinkLoginPage } from "@/links/visage-links";
+import { AuthFailedEnum } from "@/enums/authentication-server-enums";
+import {
+  UniversalImageType,
+  UniversalImagesType,
+} from "@/types/universalImage.type";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CirclePlus } from "lucide-react";
 import Image from "next/image";
@@ -30,6 +32,7 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { CollectIconForm } from "./collect-icon-form";
+import { collectImage } from "@/servers/CollectImage.server";
 
 type CollectIconProps = {
   image: UniversalImageType;

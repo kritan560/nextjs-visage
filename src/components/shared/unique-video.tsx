@@ -5,12 +5,7 @@ import {
   useGlobalLikeVideosIds,
 } from "@/global-states/visage-video-state";
 import { cn } from "@/lib/utils";
-import { UniversalVideoType } from "@/types/visage-type";
-import {
-  StructureTheImageParam,
-  TruncatePhotgrapherName,
-  handleDownloadMediaClick,
-} from "@/utility/utils";
+import { UniversalVideoType } from "@/types/universalVideo.type";
 import { Download } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,6 +16,9 @@ import CollectIconVideo from "../icons/collect-icon/collect-icon-video";
 import HeartIconVideo from "../icons/heart-icon/heart-icon-video";
 import { Button } from "../ui/button";
 import DownloadButtonDialogVideo from "./download-content-dialog";
+import { StructureTheImageParam } from "@/helpers/idHandler";
+import { TruncateCreatorName } from "@/helpers/truncateCreatorName";
+import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
 
 const blurDataURL =
   "data:image/webp;base64,UklGRowCAABXRUJQVlA4WAoAAAAgAAAAwwAAwwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggngAAADANAJ0BKsQAxAA+7Xa4VqmnJSOgSAEwHYlpbuCUBHjw8ALS4DeirhBlWYEvZMkE5w17ZOaVcLXVUoWusMkERNByxvpivvEAiJe/GT61Ti22jEhGCC0fLzI8LXVUnD7GTi1JuLgJvRCWwnsGxIwXQiKW4AD+pGXVOVryFj61/69G/5A1h4oQ6ARrjeCTcz7Ml3AOK7BnHqXIJQCAAAAA";
@@ -115,7 +113,7 @@ export function UniqueVideo(props: UniqueVideoProps) {
 
           {/* photographer name */}
           <p className="text-xl font-medium capitalize text-stone-50">
-            {TruncatePhotgrapherName(video.user.name)}
+            {TruncateCreatorName(video.user.name)}
           </p>
         </Link>
 

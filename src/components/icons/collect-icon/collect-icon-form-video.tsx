@@ -8,20 +8,23 @@ import {
   useGlobalCollectionNameStore,
 } from "@/global-states/visage-image-state";
 import { useGlobalCollectVideosIds } from "@/global-states/visage-video-state";
-import { LinkLoginPage } from "@/links/links";
+import { LinkLoginPage } from "@/links/visage-links";
 import {
   NewCollectionNameFormSchema,
   NewCollectionNameFormSchemaType,
 } from "@/schemas/newCollectionNameFormSchema";
-import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
-import { collectVideo } from "@/servers/visage/visage-server";
-import { CollectVideoEnum } from "@/servers/visage/visage-server-enum";
-import { UniversalVideoType, UniversalVideosType } from "@/types/visage-type";
+import { AuthFailedEnum } from "@/enums/authentication-server-enums";
+import {
+  UniversalVideoType,
+  UniversalVideosType,
+} from "@/types/universalVideo.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import nProgress from "nprogress";
 import { useForm } from "react-hook-form";
 import { VisageFormItem } from "../../visage/visage-form-item";
+import { collectVideo } from "@/servers/CollectVideo.server";
+import { CollectVideoEnum } from "@/enums/CollectVideo.enum";
 
 type CollectIconFormVideo = {
   video: UniversalVideoType;

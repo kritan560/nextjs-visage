@@ -2,14 +2,14 @@
 
 import { useGlobalVideos } from "@/global-states/visage-video-state";
 import { cn } from "@/lib/utils";
-import { getVideos } from "@/servers/pexel/pexel-server";
-import { MediaType } from "@/types/visage-type";
+import { getVideos } from "@/servers/pexel/pexelVideo.server";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
 import { MasonryClient } from "../masonry/masonry-client";
 import AdjustPadding from "./adjust-padding";
 import { UniqueVideo } from "./unique-video";
+import { MediaType } from "@/types/mediaType.type";
 
 type InfiniteScrollVideoProps = {
   mediaType: MediaType | undefined;

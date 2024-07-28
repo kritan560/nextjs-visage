@@ -1,0 +1,19 @@
+export enum GetDailyImagesUploadCountEnum {
+  FAILED_TO_GET_UPLOAD_COUNT = "FAILED_TO_GET_UPLOAD_COUNT",
+  UPLOAD_COUNT = "UPLOAD_COUNT",
+}
+
+export enum GetUserUploadedImageIdEnum {
+  IMAGE_ID_FOUND = "IMAGE_ID_FOUND",
+  FAILED_TO_GET_IMAGE_IDS = "FAILED_TO_GET_IMAGE_IDS",
+}
+
+export enum DeleteUserUploadedImageEnum {
+  IMAGE_DELETED = "IMAGE_DELETED",
+  FAILED_TO_DELETE_IMAGE = "FAILED_TO_DELETE_IMAGE",
+}
+
+export enum DeleteUserUploadedVideoEnum {
+  VIDEO_DELETED = "VIDEO_DELETED",
+  FAILED_TO_DELETE_VIDEO = "FAILED_TO_DELETE_VIDEO",
+}

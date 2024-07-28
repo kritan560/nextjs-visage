@@ -1,13 +1,12 @@
 import { VisageToast } from "@/components/shared/visage-toast";
 import { useGlobalLikeImageStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
-import { LinkLoginPage } from "@/links/links";
-import { likeImage } from "@/servers/visage/visage-server";
-import { UniversalImageType } from "@/types/visage-type";
+import { LinkLoginPage } from "@/links/visage-links";
+import { likeImage } from "@/servers/LikeImage.server";
+import { UniversalImageType } from "@/types/universalImage.type";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import nProgress from "nprogress";
-import toast from "react-hot-toast";
 
 type HeartIconProps = {
   image: UniversalImageType;

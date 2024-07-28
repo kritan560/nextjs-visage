@@ -1,19 +1,16 @@
 import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 import {
   LinkCollections,
   LinkEditProfile,
-  LinkForgotPassword,
   LinkHomepage,
-  LinkImagePage,
   LinkJoinPage,
   LinkLikePage,
   LinkLoginPage,
   LinkLogoutPage,
   LinkProfile,
   LinkUploadPage,
-  LinkVideoPage,
-} from "./links/links";
-import { NextResponse } from "next/server";
+} from "./links/visage-links";
 
 // WAC : add links to unauthorized routes and hitting a link that is in unauthorized routes should redirect you to login page.
 // WAC : add links to authorized routes that can be accessed when you are logged out only.

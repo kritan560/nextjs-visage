@@ -1,6 +1,6 @@
 "use client";
 
-import { UniversalImagesType } from "@/types/visage-type";
+import { UniversalImagesType } from "@/types/universalImage.type";
 import { MasonryClient } from "../masonry/masonry-client";
 import { UniqueImage } from "../shared/unique-image";
 
@@ -13,12 +13,7 @@ const Gallery = (props: GalleryProps) => {
 
   return (
     <MasonryClient>
-      {images?.map((img) => (
-        <UniqueImage
-          key={img.id}
-          image={img}
-        />
-      ))}
+      {images?.map((img) => <UniqueImage key={img.id} image={img} />)}
     </MasonryClient>
   );
 };

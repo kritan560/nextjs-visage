@@ -6,15 +6,16 @@ import {
   useGlobalCollectImageIdsStore,
   useGlobalCollectionNameStore,
 } from "@/global-states/visage-image-state";
-import { LinkLoginPage } from "@/links/links";
+import { LinkLoginPage } from "@/links/visage-links";
 import {
   NewCollectionNameFormSchema,
   NewCollectionNameFormSchemaType,
 } from "@/schemas/newCollectionNameFormSchema";
-import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
-import { collectImage } from "@/servers/visage/visage-server";
-import { CollectImageEnum } from "@/servers/visage/visage-server-enum";
-import { UniversalImageType, UniversalImagesType } from "@/types/visage-type";
+import { AuthFailedEnum } from "@/enums/authentication-server-enums";
+import {
+  UniversalImageType,
+  UniversalImagesType,
+} from "@/types/universalImage.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import nProgress from "nprogress";
@@ -22,6 +23,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { VisageFormItem } from "../../visage/visage-form-item";
 import { VisageToast } from "@/components/shared/visage-toast";
+import { collectImage } from "@/servers/CollectImage.server";
+import { CollectImageEnum } from "@/enums/CollectImage.enum";
 
 type CollectIconForm = {
   image: UniversalImageType;

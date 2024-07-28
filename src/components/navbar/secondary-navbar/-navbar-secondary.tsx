@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { LinkHomepage, LinkVideoPage } from "@/links/links";
+import { LinkHomepage, LinkVideoPage } from "@/links/visage-links";
 // import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import TrendingNewComboBox from "./trending-newcombobox";

@@ -5,20 +5,31 @@ import EditCollectionDialog from "@/components/profile/collections/edit-collecti
 import AdjustPadding from "@/components/shared/adjust-padding";
 import { UniqueImage } from "@/components/shared/unique-image";
 import { UniqueVideo } from "@/components/shared/unique-video";
-import { LinkCollections, LinkLoginPage, LinkProfile } from "@/links/links";
-import { getCurrentUser } from "@/servers/authentication/authentication-server";
-import { AuthFailedEnum } from "@/servers/authentication/authentication-server-enums";
-import { getCollectionNameById } from "@/servers/visage/visage-server";
-import { GetCollectionNameByIdEnum } from "@/servers/visage/visage-server-enum";
-import { UniversalImagesType, UniversalVideosType } from "@/types/visage-type";
+import { AuthFailedEnum } from "@/enums/authentication-server-enums";
+import {
+  LinkCollections,
+  LinkLoginPage,
+  LinkProfile,
+} from "@/links/visage-links";
+import { getCurrentUser } from "@/servers/Authentication.server";
+
+import { GetCollectionNameByIdEnum } from "@/enums/CollectionName.enum";
+import { getCollectionNameById } from "@/servers/CollectionName.server";
+import { UniversalImagesType } from "@/types/universalImage.type";
+import { UniversalVideosType } from "@/types/universalVideo.type";
 import { Images } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PiVideoLight } from "react-icons/pi";
+import { Metadata } from "next";
 
 type CollectionIdPageProps = {
   params: { collection_id: string };
+};
+
+export const metadata: Metadata = {
+  title: `Unique Collection`,
 };
 
 export default async function CollectionIdPage(props: CollectionIdPageProps) {
@@ -47,8 +58,6 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
     collectionNameByIdSuccess?.data?.collectionImages.length ?? 0;
   const totalCollectedVideos =
     collectionNameByIdSuccess?.data?.collectionVideos.length ?? 0;
-
-  const totalContents = totalCollectedImages + totalCollectedVideos;
 
   return (
     <>

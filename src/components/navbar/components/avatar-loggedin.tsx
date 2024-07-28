@@ -5,7 +5,7 @@ import {
   LinkEditProfile,
   LinkLogoutPage,
   LinkProfile,
-} from "@/links/links";
+} from "@/links/visage-links";
 import { ChevronUp } from "lucide-react";
 import { User } from "next-auth";
 import Link from "next/link";

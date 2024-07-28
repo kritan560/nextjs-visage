@@ -1,32 +1,29 @@
 "use client";
 
+import VisageDialogContent from "@/components/shared/visage-dialog-content";
+import { VisageToast } from "@/components/shared/visage-toast";
 import { Button } from "@/components/ui/button";
-import { Form, FormField } from "@/components/ui/form";
-import { SendEmail } from "@/email/email";
-import { cn } from "@/lib/utils";
-import {
-  EditProfileFormSchema,
-  EditProfileFormSchemaType,
-} from "@/schemas/editProfileFormSchema";
-import {
-  createTokenForUserAccountDeletion,
-  updateUserDetail,
-} from "@/servers/visage/visage-server";
-import { getBaseURL } from "@/utility/base-url";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import {
   Dialog,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Form, FormField } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { VisageFormItem } from "@/components/visage/visage-form-item";
-import VisageDialogContent from "@/components/shared/visage-dialog-content";
-import { VisageToast } from "@/components/shared/visage-toast";
+import { SendEmail } from "@/email/email";
+import { cn } from "@/lib/utils";
+import {
+  EditProfileFormSchema,
+  EditProfileFormSchemaType,
+} from "@/schemas/editProfileFormSchema";
+import { createTokenForUserAccountDeletion } from "@/servers/Account.server";
+import { updateUserDetail } from "@/servers/User.server";
+import { getBaseURL } from "@/utility/base-url";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 type EditProfileFormProps = {
   profileId: string;

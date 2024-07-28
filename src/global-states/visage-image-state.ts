@@ -1,4 +1,4 @@
-import { UniversalImagesType } from "@/types/visage-type";
+import { UniversalImagesType } from "@/types/universalImage.type";
 import { CollectionNames, Images } from "@prisma/client";
 import { create } from "zustand";
 
