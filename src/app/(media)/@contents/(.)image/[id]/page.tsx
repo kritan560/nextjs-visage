@@ -1,6 +1,6 @@
 import ImageDynamicInterception from "@/components/image/image-dynamic-interception";
 import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
-import { getPexelPhotoByIdEnum } from "@/enums/pexel-server-enums";
+import { getPexelPhotoByIdEnum } from "@/enums/PexelPhoto.enum";
 import { getImageById } from "@/servers/Image.server";
 import { UniversalImageType } from "@/types/universalImage.type";
 import { destructureTheIdFromStructuredParams } from "@/helpers/idHandler";

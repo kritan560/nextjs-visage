@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
   const randomPagePicker = Math.ceil(Math.random() * 10);
+
   const images = await getPexelCuratedPhotosByPage_PerPage(
     randomPagePicker,
     19,

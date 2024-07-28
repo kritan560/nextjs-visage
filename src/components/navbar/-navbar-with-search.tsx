@@ -16,25 +16,20 @@ const NavbarWithSearchBox = async () => {
   const { userId, profilePic, userName } = await getCurrentUser();
 
   const userAuthenticated = (
-    <div className="">
-      <div className="flex items-center gap-x-8">
-        <LogoVisage />
+    <div className="flex items-center gap-x-8">
+      <LogoVisage />
 
-        <div className="flex-grow">
-          <ImageSearchVideo2 userId={userId} grid={3} />
-        </div>
+      <div className="flex-grow">
+        <ImageSearchVideo2 userId={userId} grid={3} />
+      </div>
 
-        <div className="flex items-center gap-x-6">
-          <Explore />
-          <License />
-          <NavbarNotificationLoggedInOnly />
-          <NavbarAvatarLoggedIn
-            userName={userName}
-            profilePicture={profilePic}
-          />
-          <ModeToggle />
-          <NavbarButton buttonName="Upload" href={LinkUploadPage} />
-        </div>
+      <div className="flex items-center gap-x-6">
+        <Explore />
+        <License />
+        <NavbarNotificationLoggedInOnly />
+        <NavbarAvatarLoggedIn userName={userName} profilePicture={profilePic} />
+        <ModeToggle />
+        <NavbarButton buttonName="Upload" href={LinkUploadPage} />
       </div>
     </div>
   );

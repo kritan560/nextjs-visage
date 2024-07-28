@@ -5,10 +5,11 @@ import {
   AugmentVideosIntoUniversalVideosType,
 } from "@/augments/pexelVideo.augment";
 import {
+  GetRandomVideoEnum,
   GetVideosByKeywordEnum,
   GetVideosEnum,
   getPexelVideoByIdEnum,
-} from "../../enums/pexel-server-enums";
+} from "../../enums/PexelVideo.enum";
 import { pexel } from "./pexel-client";
 
 /**
@@ -133,6 +134,59 @@ export async function getVideosByKeyword(
       failed: {
         data: null,
         message: GetVideosByKeywordEnum.FAILED_TO_GET_VIDEOS,
+      },
+    };
+  }
+}
+
+/**
+ * This server action will return the Popular videos later choose one video randomly
+ *
+ * @returns
+ */
+export async function getRandomVideo() {
+  try {
+    const randomVideo = await pexel.videos.popular();
+    const isVideosTypeCheck = pexel.typeCheckers.isVideos(randomVideo);
+    const isErrorTypeCheck = pexel.typeCheckers.isError(randomVideo);
+
+    if (isVideosTypeCheck) {
+      const randomNumberFrom1To15 = Math.ceil(Math.random() * 15);
+
+      const augmentVideosIntoUniversalVideos =
+        AugmentVideosIntoUniversalVideosType(randomVideo).videos[
+          randomNumberFrom1To15
+        ];
+
+      return {
+        success: {
+          data: augmentVideosIntoUniversalVideos,
+          message: GetRandomVideoEnum.VIDEO_FOUND,
+        },
+      };
+    }
+
+    if (isErrorTypeCheck) {
+      return {
+        failed: {
+          data: null,
+          message: GetRandomVideoEnum.FAILED_TO_GET_RANDOM_VIDEO,
+        },
+      };
+    }
+
+    return {
+      failed: {
+        data: null,
+        message: GetRandomVideoEnum.FAILED_TO_GET_RANDOM_VIDEO,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        message: GetRandomVideoEnum.FAILED_TO_GET_RANDOM_VIDEO,
       },
     };
   }

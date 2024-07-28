@@ -2,9 +2,8 @@
 
 import { useGlobalScrollAreaPositionState } from "@/global-states/scroll-area-state";
 import { cn } from "@/lib/utils";
-import React, { useEffect, useRef } from "react";
-// import { ScrollArea } from "../ui/scroll-area";
 import { ScrollArea } from "@mantine/core";
+import React, { useEffect, useRef } from "react";
 import classes from "./scroll-area.module.css";
 import { useGlobalVisageScrollAreaGlobal } from "./visage-scroll-area-global-state";
 

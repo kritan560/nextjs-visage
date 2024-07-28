@@ -17,8 +17,8 @@ import {
   GetTotalViewsCountEnum,
 } from "../enums/Image.enum";
 import { AuthFailedEnum } from "../enums/authentication-server-enums";
-import { getDailyImagesUploadCount } from "./Upload.server";
 import { getCurrentUserId } from "./Authentication.server";
+import { getDailyImagesUploadCount } from "./Upload.server";
 
 /**
  * This server action will search for the unique image in DB.

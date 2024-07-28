@@ -1,9 +1,3 @@
-export enum getPexelPhotoByIdEnum {
-  FOUND_PHOTOS = "FOUND_PHOTOS",
-  NOT_PHOTO_TYPE = "NOT_PHOTO_TYPE",
-  NULL = "NULL",
-}
-
 export enum getPexelVideoByIdEnum {
   FOUND_VIDEOS = "FOUND_VIDEOS",
   NOT_VIDEO_TYPE = "NOT_VIDEO_TYPE",
@@ -18,4 +12,9 @@ export enum GetVideosEnum {
 export enum GetVideosByKeywordEnum {
   VIDEOS_FOUND = "VIDEOS_FOUND",
   FAILED_TO_GET_VIDEOS = "FAILED_TO_GET_VIDEOS",
+}
+
+export enum GetRandomVideoEnum {
+  VIDEO_FOUND = "VIDEO_FOUND",
+  FAILED_TO_GET_RANDOM_VIDEO = "FAILED_TO_GET_RANDOM_VIDEO",
 }

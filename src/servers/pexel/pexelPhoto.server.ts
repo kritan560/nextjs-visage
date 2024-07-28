@@ -5,7 +5,10 @@ import {
   AugmentPexelCuratedPhotosIntoUniversalImages,
   AugmentPixelSearchedPhotoIntoUniversalImage,
 } from "@/augments/pexelPhoto.augment";
-import { getPexelPhotoByIdEnum } from "../../enums/pexel-server-enums";
+import {
+  GetRandomPhotoEnum,
+  getPexelPhotoByIdEnum,
+} from "../../enums/PexelPhoto.enum";
 import { pexel } from "./pexel-client";
 
 /**
@@ -100,5 +103,43 @@ export async function getPexelPhotoByKeyword(
   } catch (error) {
     console.error(error);
     throw new Error("failed to get pexel photo by keyword");
+  }
+}
+
+/**
+ * This server action will return the random universalImage when request
+ *
+ * @returns
+ */
+export async function getRandomPhoto() {
+  try {
+    const randomPhoto = await pexel.photos.random();
+    const isErrorTypechecker = pexel.typeCheckers.isError(randomPhoto);
+
+    if (!isErrorTypechecker) {
+      const augmentImageIntoUniversalImage =
+        AugmentPexelCuratedPhotoIntoUniversalImage(randomPhoto);
+
+      return {
+        success: {
+          data: augmentImageIntoUniversalImage,
+          message: GetRandomPhotoEnum.PHOTO_FOUND,
+        },
+      };
+    }
+    return {
+      failed: {
+        data: null,
+        message: GetRandomPhotoEnum.FAILED_TO_GET_RANDOM_PHOTO,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      failed: {
+        data: null,
+        messasge: GetRandomPhotoEnum.FAILED_TO_GET_RANDOM_PHOTO,
+      },
+    };
   }
 }

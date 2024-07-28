@@ -26,6 +26,23 @@
 
 ✅ change the title in every route
 
+✅ if no image in collection, likes or gallery then give some visual asthetic.
+
+✅ /image/[id] the modetoggle will come below when scroll
+
+✅ different image when refresh or page visit at /not-found , at / homepage, 
+
+✅ different video when refresh or page visit at /videos
+
+✅ seperate enums for pexel-server photos and videos
+
 credential password login logout.
 
 build the webapp mobile responsive..
+
+edit profile loading page visual overhaul.
+
+see why uploading the image won't render the uploaded data page.
+disable upload button at /upload while isPending
+
+to create ^ arrow while hovering into the element or on dropdown menu you can create an svg or search some triangle svg and apply it position abosulte in dropdown menu .

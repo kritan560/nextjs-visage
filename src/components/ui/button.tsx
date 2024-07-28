@@ -20,7 +20,7 @@ const buttonVariants = cva(
         // ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         visage:
-          "bg-visage-400 hover:bg-visage-500 text-base active:bg-visage-400 text-stone-50",
+          "bg-visage-400 hover:bg-visage-500 text-base active:bg-visage-400 text-stone-50 dark:text-stone-900",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -34,7 +34,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -53,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

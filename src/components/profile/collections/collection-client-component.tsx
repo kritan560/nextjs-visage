@@ -7,10 +7,23 @@ import { UniversalVideosType } from "@/types/universalVideo.type";
 import { Images } from "lucide-react";
 import Link from "next/link";
 import { PiVideoLight } from "react-icons/pi";
+import NoMediaContent from "../no-media-content";
 
 export default function CollectionsClientComponent() {
   const { globalCollectionNames: collectionNamesSuccess } =
     useGlobalCollectionNameStore();
+
+  if (collectionNamesSuccess && collectionNamesSuccess?.length <= 0) {
+    return (
+      <NoMediaContent
+        heading="You haven't collected any content yet 🙁"
+        message="It's ok, we know it's probably hard to collect what you see
+    from all your amazing photos. You can come back and collect at any time.
+    In the meantime, how about some amazing content from the talented
+    photographers on Visage?"
+      />
+    );
+  }
 
   return (
     <>
