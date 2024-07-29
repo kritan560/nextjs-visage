@@ -1,5 +1,8 @@
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
-import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
+import {
+  default as NavbarWithSearch,
+  default as NavbarWithSearchBox,
+} from "@/components/navbar/-navbar-with-search";
 import EditProfileButton from "@/components/profile/edit-profile/edit-profile-button";
 import AdjustPadding from "@/components/shared/adjust-padding";
 import { LinkEditProfile } from "@/links/visage-links";
@@ -9,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ProfileLink from "../../../components/profile/profile-link";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
 
 type ProfileLayoutProps = {
   children: React.ReactNode;
@@ -17,14 +21,18 @@ type ProfileLayoutProps = {
 export default async function ProfileLayout(props: ProfileLayoutProps) {
   const { children } = props;
 
-  const { profilePic, userName } = await getCurrentUser();
+  const { profilePic, userName, userId } = await getCurrentUser();
   const { failed, success } = await getTotalImagesViewsCount();
   const totalViews = success?.data.views;
   const totalContent = success?.data.totalContent;
 
   return (
-    <>
-      <NavbarWithSearch />
+    <div className="w-screen">
+      <NavbarWithSearchBox />
+      <div className="w-screen">
+        <NavbarWithSearchBoxMobile userId={userId} />
+      </div>
+
       <div className="mx-auto mt-16 w-fit">
         <div className="flex flex-col items-center space-y-8">
           {/* profile image */}
@@ -63,16 +71,17 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
       </div>
 
       <NavbarWhenScrolled threshold={100}>
-        <NavbarWithSearch />
+        <NavbarWithSearchBox />
+        <NavbarWithSearchBoxMobile userId={userId} />
       </NavbarWhenScrolled>
 
       {/* profile links */}
-      <AdjustPadding className="mt-12 font-medium">
+      <AdjustPadding className="mt-12 w-full font-medium">
         <ProfileLink totalContent={totalContent} />
       </AdjustPadding>
 
       {/* children */}
       <AdjustPadding className="mt-8">{children}</AdjustPadding>
-    </>
+    </div>
   );
 }

@@ -20,6 +20,7 @@ import {
   Dialog,
   DialogDescription,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
 } from "../ui/dialog";
 import {
@@ -113,7 +114,8 @@ export default function ImageDynamicInterception(
         router.back();
       }}
     >
-      <VisageDialogContent className="fixed w-full max-w-full md:w-[80%]">
+      <DialogOverlay className="z-[10]" />
+      <VisageDialogContent className="w-full max-w-full md:w-[80%]">
         <div className="flex items-center justify-between">
           {/* hidden in width less than md */}
           <div className="hidden items-center gap-x-2 md:flex">

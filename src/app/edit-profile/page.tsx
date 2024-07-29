@@ -1,5 +1,7 @@
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
+import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
 import EditProfileChangeImage from "@/components/profile/edit-profile/edit-profile-change-image";
 import { EditProfileForm } from "@/components/profile/edit-profile/edit-profile-form";
 import AdjustPadding from "@/components/shared/adjust-padding";
@@ -27,16 +29,18 @@ export default async function EditProfilePage() {
   return (
     <div>
       <NavbarWithSearch />
+      <NavbarWithSearchBoxMobile userId={userId} />
 
       <NavbarWhenScrolled threshold={90}>
-        <NavbarWithSearch />
+        <NavbarWithSearchBox />
+        <NavbarWithSearchBoxMobile userId={userId} />
       </NavbarWhenScrolled>
 
-      <h1 className="text-center text-5xl font-semibold tracking-[0.015rem]">
+      <h1 className="mt-6 text-center text-5xl font-semibold tracking-[0.015rem] text-stone-700 dark:text-stone-400 md:mt-1">
         Profile settings
       </h1>
 
-      <AdjustPadding className="mx-auto mt-12 w-[60%]">
+      <AdjustPadding className="mx-auto mt-12 w-full md:w-[60%]">
         <EditProfileChangeImage
           userId={userId}
           profilePicture={profilePicture}

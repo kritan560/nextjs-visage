@@ -61,9 +61,9 @@ export default function VideoDynamicInterception(
         router.back();
       }}
     >
-      <VisageDialogContent className="fixed w-[80%] max-w-full">
+      <VisageDialogContent className="fixed w-full max-w-full md:w-[80%]">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-x-2">
+          <div className="hidden items-center gap-x-2 md:flex">
             <DialogHeader>
               <DialogTitle></DialogTitle>
               <DialogDescription></DialogDescription>
@@ -99,10 +99,17 @@ export default function VideoDynamicInterception(
           </div>
 
           <div className="flex items-center gap-x-2">
-            <div>
+            <div className="block md:hidden">
+              <CollectIconVideo video={video} />
+            </div>
+            <div className="hidden md:block">
               <CollectIconVideo video={video} nameIncluded />
             </div>
-            <div>
+
+            <div className="block md:hidden">
+              <HeartIconVideo video={video} />
+            </div>
+            <div className="hidden md:block">
               <HeartIconVideo video={video} nameIncluded />
             </div>
 
@@ -167,12 +174,17 @@ export default function VideoDynamicInterception(
           </div>
         </div>
 
-        <AspectRatio ratio={16 / 7} className="mx-auto w-full">
+        <AspectRatio ratio={16 / 9} className="mx-auto w-full">
           <MediaPlayer
             autoPlay
             playsInline
+            streamType="on-demand"
+            logLevel="warn"
+            viewType="video"
+            crossOrigin
             src={HD_video?.link}
             className="h-full w-full"
+            style={{ objectFit: "cover" }}
           >
             <MediaProvider />
             <PlyrLayout icons={plyrLayoutIcons} />

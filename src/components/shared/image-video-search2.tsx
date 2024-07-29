@@ -233,7 +233,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                   "border border-stone-400 bg-stone-200 dark:bg-stone-900",
               )}
             >
-              <span className="block text-black md:hidden">
+              <span className="block text-black dark:text-white md:hidden">
                 {hoverElement?.elementName === "Image" && (
                   <LucideImage size={IconSize} />
                 )}
@@ -243,7 +243,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               </span>
               <span className="hidden md:block">{hoverElement.element}</span>
 
-              <div className="ml-2 text-black transition duration-300 group-hover:rotate-180">
+              <div className="ml-2 text-black transition duration-300 group-hover:rotate-180 dark:text-white">
                 <ChevronDown size={17} />
               </div>
             </Button>
@@ -309,7 +309,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               <Button
                 type="submit"
                 variant={"ghost"}
-                className="cursor-pointer text-black transition hover:text-visage-600"
+                className="cursor-pointer text-black transition hover:text-visage-600 dark:text-white"
               >
                 <Search type="submit" strokeWidth={2.4} size={20} />
               </Button>

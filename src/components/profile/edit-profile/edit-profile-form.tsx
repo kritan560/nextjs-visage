@@ -97,7 +97,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex items-center gap-x-6">
+        <div className="block items-center gap-x-6 space-y-4 md:flex md:space-y-0">
           <FormField
             control={form.control}
             name="name"
@@ -125,7 +125,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
             )}
           />
         </div>
-        <div className="flex items-center gap-x-6">
+        <div className="block items-center gap-x-6 space-y-4 md:flex md:space-y-0">
           <FormField
             control={form.control}
             name="email"
@@ -190,7 +190,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
           )}
         />
 
-        <div className="flex items-center gap-x-6">
+        <div className="block items-center gap-x-6 space-y-4 md:flex md:space-y-0">
           <FormField
             control={form.control}
             name="location"
@@ -217,7 +217,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
           />
         </div>
 
-        <div className="flex items-center gap-x-6">
+        <div className="block items-center gap-x-6 space-y-4 md:flex md:space-y-0">
           <FormField
             control={form.control}
             name="x"
@@ -244,7 +244,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
           />
         </div>
 
-        <div className="flex items-center gap-x-6">
+        <div className="block items-center gap-x-6 space-y-4 md:flex md:space-y-0">
           <FormField
             control={form.control}
             name="instagram"
@@ -276,14 +276,14 @@ export function EditProfileForm(props: EditProfileFormProps) {
             Additional Settings
           </h1>
 
-          <p>Remove account and all Data</p>
+          <p>Remove accotextunt and all Data</p>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger>
               <span className="w-fit cursor-pointer border-b border-dashed border-stone-400 text-stone-600 dark:text-stone-400">
                 Remove Account
               </span>
             </DialogTrigger>
-            <VisageDialogContent className="min-w-[600px] p-12">
+            <VisageDialogContent className="w-full p-12 md:min-w-[600px]">
               <DialogHeader>
                 <DialogTitle className="text-center text-2xl font-semibold">
                   Request to Close Your Visage Account
