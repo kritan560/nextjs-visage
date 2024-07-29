@@ -36,11 +36,11 @@
 
 ✅ seperate enums for pexel-server photos and videos
 
+✅ edit profile loading page visual overhaul.
+
 credential password login logout.
 
 build the webapp mobile responsive..
-
-edit profile loading page visual overhaul.
 
 see why uploading the image won't render the uploaded data page.
 disable upload button at /upload while isPending

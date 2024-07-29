@@ -98,7 +98,7 @@ export default function ImageDynamic(props: ImageDynamicProps) {
   return (
     <div>
       <AdjustPadding className="flex items-center justify-between">
-        <div className="mt-4 flex items-center gap-x-2">
+        <div className="mt-4 hidden items-center gap-x-2 md:flex">
           {!publicProfile ? (
             <div
               className="flex aspect-square h-14 w-14 items-center justify-center rounded-full text-xl font-bold text-stone-50"
@@ -131,17 +131,28 @@ export default function ImageDynamic(props: ImageDynamicProps) {
 
         {/* download */}
         <div className="flex items-center gap-x-2">
-          <div>
+          <div className="block md:hidden">
+            <DeleteIcon imageId={image.imageId} imageSrc={image.src.medium} />
+          </div>
+          <div className="hidden md:block">
             <DeleteIcon
+              nameIncluded
               imageId={image.imageId}
               imageSrc={image.src.medium}
-              nameIncluded
             />
           </div>
-          <div>
+
+          <div className="block md:hidden">
+            <CollectIcon image={image} />
+          </div>
+          <div className="hidden md:block">
             <CollectIcon image={image} nameIncluded />
           </div>
-          <div>
+
+          <div className="block md:hidden">
+            <HeartIcon image={image} />
+          </div>
+          <div className="hidden md:block">
             <HeartIcon image={image} nameIncluded />
           </div>
           <div className="flex items-center gap-x-1 rounded-md bg-visage-400 hover:bg-visage-500">
@@ -161,7 +172,7 @@ export default function ImageDynamic(props: ImageDynamicProps) {
                   )
                 }
                 variant={"visage"}
-                className="h-14"
+                className="h-10 md:h-14"
               >
                 Free Download
               </Button>
@@ -172,7 +183,7 @@ export default function ImageDynamic(props: ImageDynamicProps) {
             <DropdownMenu>
               <DropdownMenuTrigger
                 className={cn(
-                  "flex h-14 items-center justify-center rounded-md bg-inherit p-4 font-medium text-stone-50 hover:bg-inherit focus:border-none active:bg-inherit",
+                  "flex h-10 items-center justify-center rounded-md bg-inherit p-4 font-medium text-stone-50 hover:bg-inherit focus:border-none active:bg-inherit md:h-14",
                   "group",
                 )}
               >
@@ -236,15 +247,17 @@ export default function ImageDynamic(props: ImageDynamicProps) {
         </div>
       </AdjustPadding>
 
-      {/* image */}
-      <div className="relative mt-8 h-[30rem]">
-        <Image
-          src={image.src.large}
-          alt={image.alt ?? ""}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          style={{ objectFit: "contain", borderRadius: 20 }}
-        />
+      <div className="px-4">
+        {/* image */}
+        <div className="relative h-[30rem] md:mt-8">
+          <Image
+            src={image.src.large}
+            alt={image.alt ?? ""}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: "cover", borderRadius: 10 }}
+          />
+        </div>
       </div>
 
       {/* giving some height below an image */}

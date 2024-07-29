@@ -1,11 +1,12 @@
 import ImageDynamic from "@/components/image/image-dynamic";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
-import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
 import { getPexelPhotoByIdEnum } from "@/enums/PexelPhoto.enum";
-import { getImageById } from "@/servers/Image.server";
-import { UniversalImageType } from "@/types/universalImage.type";
 import { destructureTheIdFromStructuredParams } from "@/helpers/idHandler";
+import { getImageById } from "@/servers/Image.server";
+import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
+import { UniversalImageType } from "@/types/universalImage.type";
 
 type ImageIdProps = {
   params: { id: string };
@@ -44,9 +45,13 @@ export default async function ImageIdPage(props: ImageIdProps) {
   return (
     <>
       <NavbarWithSearch />
+      <div className="w-screen">
+        <NavbarWithSearchBoxMobile userId={image?.userId} />
+      </div>
 
       <NavbarWhenScrolled threshold={70}>
         <NavbarWithSearch />
+        <NavbarWithSearchBoxMobile userId={image?.userId} />
       </NavbarWhenScrolled>
 
       <ImageDynamic image={universalImage} />

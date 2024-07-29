@@ -6,7 +6,6 @@ import {
   ImageOrVideoSearchKeywordSchema,
   ImageOrVideoSearchKeywordSchemaType,
 } from "@/schemas/imageOrVideoSearchKeywordSchema";
-import { getCurrentUserId } from "@/servers/Authentication.server";
 import { UniversalImagesType } from "@/types/universalImage.type";
 import { UniversalVideosType } from "@/types/universalVideo.type";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -98,6 +97,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   const [keywords, setKeywords] = useState<string[] | null>([]);
   const [hoverElement, setHoverElement] = useState(onHoverDisplayElement[0]);
   const { globalCollectionNames } = useGlobalCollectionNameStore();
+  const [open, setOpen] = useState(false);
 
   const totalCollectionCount =
     globalCollectionNames?.reduce(
@@ -217,19 +217,33 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
         )}
         ref={inputRef}
       >
-        <HoverCard openDelay={100} closeDelay={100}>
-          <HoverCardTrigger asChild>
+        <HoverCard
+          defaultOpen={false}
+          onOpenChange={setOpen}
+          open={open}
+          openDelay={100}
+          closeDelay={100}
+        >
+          <HoverCardTrigger autoFocus={false} asChild>
             <Button
               variant={"ghost"}
               className={cn(
-                "group mx-1 flex w-32 items-center justify-center rounded-md px-4",
+                "group mx-1 flex w-fit items-center justify-center rounded-md px-2 md:w-32 md:px-4",
                 border &&
                   "border border-stone-400 bg-stone-200 dark:bg-stone-900",
               )}
             >
-              {hoverElement?.element}
+              <span className="block text-black md:hidden">
+                {hoverElement?.elementName === "Image" && (
+                  <LucideImage size={IconSize} />
+                )}
+                {hoverElement?.elementName === "Video" && (
+                  <Video size={IconSize} />
+                )}
+              </span>
+              <span className="hidden md:block">{hoverElement.element}</span>
 
-              <div className="ml-2 transition duration-300 group-hover:rotate-180">
+              <div className="ml-2 text-black transition duration-300 group-hover:rotate-180">
                 <ChevronDown size={17} />
               </div>
             </Button>
@@ -281,7 +295,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                         }}
                         type="text"
                         className={cn(
-                          "border-none bg-white pl-4 text-lg ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-black",
+                          "border-none bg-white pl-4 text-lg text-black ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-black dark:text-stone-100",
                           !border && "bg-slate-100",
                           openPopOver && "bg-white",
                         )}
@@ -295,7 +309,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               <Button
                 type="submit"
                 variant={"ghost"}
-                className="cursor-pointer transition hover:text-visage-600"
+                className="cursor-pointer text-black transition hover:text-visage-600"
               >
                 <Search type="submit" strokeWidth={2.4} size={20} />
               </Button>

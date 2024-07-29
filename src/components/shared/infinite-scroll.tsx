@@ -3,13 +3,13 @@
 import { useGlobalImagesStore } from "@/global-states/visage-image-state";
 import { cn } from "@/lib/utils";
 import { getPexelCuratedPhotosByPage_PerPage } from "@/servers/pexel/pexelPhoto.server";
+import { MediaType } from "@/types/mediaType.type";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
 import { MasonryClient } from "../masonry/masonry-client";
 import AdjustPadding from "./adjust-padding";
 import { UniqueImage } from "./unique-image";
-import { MediaType } from "@/types/mediaType.type";
 
 type InfiniteScrollProps = {
   mediaType: MediaType | undefined;
@@ -52,18 +52,18 @@ export default function InfiniteScroll(props: InfiniteScrollProps) {
           ))}
         </MasonryClient>
       )}
-      <div className="relative h-14 overflow-x-clip">
+      <div className="relative h-7 overflow-x-clip md:h-14">
         <PropagateLoader
           size={30}
           className={cn(
-            "bottom-0 block scale-[2.0] text-center",
+            "bottom-0 block scale-[1.5] text-center md:scale-[2.0]",
             initialLoading && "animate-pulse",
           )}
           color="rgb(197 129 50)"
           loading={isPending || initialLoading}
         />
       </div>
-      <div ref={ref} className="h-1"></div>
+      <div ref={ref} className="h-[1px]"></div>
     </AdjustPadding>
   );
 }

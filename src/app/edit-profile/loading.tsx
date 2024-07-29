@@ -1,5 +1,9 @@
-import React from "react";
+import EditProfileSkeleton from "@/components/skeleton/navbar-skeleton";
 
 export default function EditProfileLoadingPage() {
-  return <div className="text-4xl font-semibold">EditProfileLoadingPage</div>;
+  return (
+    <div>
+      <EditProfileSkeleton />
+    </div>
+  );
 }

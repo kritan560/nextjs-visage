@@ -1,9 +1,9 @@
 import ImageDynamicInterception from "@/components/image/image-dynamic-interception";
-import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
 import { getPexelPhotoByIdEnum } from "@/enums/PexelPhoto.enum";
-import { getImageById } from "@/servers/Image.server";
-import { UniversalImageType } from "@/types/universalImage.type";
 import { destructureTheIdFromStructuredParams } from "@/helpers/idHandler";
+import { getImageById } from "@/servers/Image.server";
+import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
+import { UniversalImageType } from "@/types/universalImage.type";
 
 type ImageInterceptionRoutePageProps = {
   params: { id: string };
@@ -44,5 +44,9 @@ export default async function ImageInterceptionRoutePage(
     }
   }
 
-  return <ImageDynamicInterception image={universalImage} />;
+  return (
+    <>
+      <ImageDynamicInterception image={universalImage} />;
+    </>
+  );
 }

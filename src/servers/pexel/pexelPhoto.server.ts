@@ -122,7 +122,7 @@ export async function getRandomPhoto() {
 
       return {
         success: {
-          data: augmentImageIntoUniversalImage,
+          data: null,
           message: GetRandomPhotoEnum.PHOTO_FOUND,
         },
       };

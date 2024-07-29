@@ -113,9 +113,10 @@ export default function ImageDynamicInterception(
         router.back();
       }}
     >
-      <VisageDialogContent className="fixed w-[80%] max-w-full">
+      <VisageDialogContent className="fixed w-full max-w-full md:w-[80%]">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-x-2">
+          {/* hidden in width less than md */}
+          <div className="hidden items-center gap-x-2 md:flex">
             <DialogHeader>
               <DialogTitle></DialogTitle>
               <DialogDescription></DialogDescription>
@@ -152,19 +153,31 @@ export default function ImageDynamicInterception(
 
           {/* download */}
           <div className="flex items-center gap-x-2">
-            <div>
+            <div className="block md:hidden">
+              <DeleteIcon imageId={image.imageId} imageSrc={image.src.medium} />
+            </div>
+            <div className="hidden md:block">
               <DeleteIcon
                 nameIncluded
                 imageId={image.imageId}
                 imageSrc={image.src.medium}
               />
             </div>
-            <div>
+
+            <div className="block md:hidden">
+              <CollectIcon image={image} />
+            </div>
+            <div className="hidden md:block">
               <CollectIcon image={image} nameIncluded />
             </div>
-            <div>
+
+            <div className="block md:hidden">
+              <HeartIcon image={image} />
+            </div>
+            <div className="hidden md:block">
               <HeartIcon image={image} nameIncluded />
             </div>
+
             <div className="flex items-center gap-x-1 rounded-md bg-visage-400 hover:bg-visage-500">
               <DownloadButtonDialog
                 contentType="Image"
@@ -182,7 +195,7 @@ export default function ImageDynamicInterception(
                     )
                   }
                   variant={"visage"}
-                  className="h-14"
+                  className="h-10 md:h-14"
                 >
                   Free Download
                 </Button>
@@ -193,7 +206,7 @@ export default function ImageDynamicInterception(
               <DropdownMenu>
                 <DropdownMenuTrigger
                   className={cn(
-                    "flex h-14 items-center justify-center rounded-md bg-inherit p-4 font-medium text-stone-50 hover:bg-inherit focus:border-none active:bg-inherit",
+                    "flex h-10 items-center justify-center rounded-md bg-inherit p-4 font-medium text-stone-50 hover:bg-inherit focus:border-none active:bg-inherit md:h-14 md:p-4",
                     "group",
                   )}
                 >
@@ -268,7 +281,7 @@ export default function ImageDynamicInterception(
             alt={image.alt ?? ""}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{ objectFit: "contain", borderRadius: 20 }}
+            style={{ objectFit: "cover", borderRadius: 10 }}
           />
         </div>
       </VisageDialogContent>

@@ -23,7 +23,8 @@ export function MasonryClient(props: MasonryProps) {
   return (
     <ResponsiveMasonry
       className={className}
-      columnsCountBreakPoints={{ 350: 1, 750: 2, 900: breakPoint900 }}>
+      columnsCountBreakPoints={{ 350: 2, 750: 2, 900: breakPoint900 }}
+    >
       <Mansonry gutter={gutter}>{children}</Mansonry>
     </ResponsiveMasonry>
   );

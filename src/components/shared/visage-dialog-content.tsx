@@ -13,7 +13,16 @@ const VisageDialogContent = (props: VisageDialogContentProps) => {
   return (
     <DialogContent className={className}>
       {children}
-      <DialogClose className="absolute -right-2 translate-x-full">
+      {/* visible in mobile */}
+      <DialogClose className="absolute left-0 block -translate-y-full md:hidden">
+        <IoIosCloseCircle
+          size={40}
+          className="fill-stone-100 dark:fill-stone-400"
+        />
+      </DialogClose>
+
+      {/* visible in laptop */}
+      <DialogClose className="absolute -right-2 top-0 hidden translate-x-full md:block">
         <IoIosCloseCircle
           size={40}
           className="fill-stone-100 dark:fill-stone-400"
