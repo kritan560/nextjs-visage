@@ -40,7 +40,7 @@ export default async function LoginPage() {
         <MasonryClient
           breakPoint900={6}
           gutter="8px"
-          className="fixed left-0 right-0 scale-[1.29] bg-stone-900"
+          className="fixed left-0 right-0 hidden scale-[1.29] bg-stone-900 md:block"
         >
           {images?.map((image) => (
             <div key={image.id}>
@@ -56,16 +56,16 @@ export default async function LoginPage() {
         </MasonryClient>
 
         {/* overlay dark */}
-        <div className="fixed left-0 right-0 h-[800px] bg-black/40"></div>
+        <div className="fixed left-0 right-0 hidden h-[800px] bg-black/40 md:block"></div>
 
         {/* card */}
-        <Card className="absolute left-1/2 top-1/2 z-10 mt-11 min-w-fit -translate-x-1/2 -translate-y-1/2 rounded-[2rem] p-6">
+        <Card className="absolute left-1/2 top-1/2 z-10 mt-11 min-w-full -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border-none px-4 md:min-w-fit md:p-6">
           <CardHeader className="p-0">
             <CardTitle className="text-center text-4xl font-semibold text-stone-800 dark:text-stone-400">
               Welcome Back
             </CardTitle>
           </CardHeader>
-          <CardContent className="mt-10 min-w-[500px] space-y-11 p-0">
+          <CardContent className="mt-10 w-full space-y-11 p-0 md:min-w-[500px]">
             <div className="flex items-center gap-x-4">
               <form
                 className="w-full"

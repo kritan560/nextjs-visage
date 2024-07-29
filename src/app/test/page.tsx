@@ -1,11 +1,7 @@
-import NavbarSkeleton from "@/components/skeleton/navbar-skeleton";
+import React from "react";
 
 const TestPage = () => {
-  return (
-    <>
-      <NavbarSkeleton />
-    </>
-  );
+  return <div>TestPage</div>;
 };
 
 export default TestPage;

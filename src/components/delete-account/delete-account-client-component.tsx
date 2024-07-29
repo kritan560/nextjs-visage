@@ -15,6 +15,7 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import nProgress from "nprogress";
+import { useState } from "react";
 
 type DeleteAccountClientComponentProps = {
   id: string;
@@ -24,6 +25,7 @@ export default function DeleteAccountClientComponent(
   props: DeleteAccountClientComponentProps,
 ) {
   const { id: token } = props;
+  const [open, setOpen] = useState(true);
 
   const router = useRouter();
 
@@ -52,7 +54,14 @@ export default function DeleteAccountClientComponent(
   }
 
   return (
-    <Dialog open={true}>
+    <Dialog
+      open={open}
+      onOpenChange={() => {
+        setOpen(false);
+        router.push(LinkHomepage);
+        nProgress.start();
+      }}
+    >
       <VisageDialogContent>
         <DialogHeader>
           <DialogTitle className="text-center text-3xl font-semibold text-rose-600">
@@ -68,14 +77,14 @@ export default function DeleteAccountClientComponent(
         <div className="mt-6 flex items-center justify-between">
           <Button
             onClick={handleAccountDelete}
-            className="h-12 px-6 text-lg capitalize"
+            className="h-10 px-4 text-lg capitalize md:h-12 md:px-6"
             variant={"destructive"}
           >
             Delete my Account
           </Button>
           <Link href={LinkHomepage}>
             <Button
-              className="h-12 px-6 text-lg capitalize"
+              className="h-10 px-4 text-lg capitalize md:h-12 md:px-6"
               variant={"outline"}
             >
               Cancel

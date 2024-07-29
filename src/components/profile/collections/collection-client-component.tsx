@@ -27,7 +27,7 @@ export default function CollectionsClientComponent() {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-x-8 gap-y-14">
+      <div className="grid grid-cols-2 gap-x-8 gap-y-14 md:grid-cols-3">
         {collectionNamesSuccess &&
           collectionNamesSuccess.map((collection) => {
             const collectionImages = (
@@ -67,7 +67,7 @@ export default function CollectionsClientComponent() {
             return (
               <Link
                 href={`/collections/${collection.id}`}
-                className="relative h-80 w-full cursor-pointer rounded-md bg-stone-200 transition hover:contrast-75 active:contrast-100 dark:bg-stone-800"
+                className="relative block h-44 w-full cursor-pointer rounded-md bg-stone-200 transition hover:contrast-75 active:contrast-100 dark:bg-stone-800 md:h-80"
                 key={collection.id}
               >
                 <CollectionImageResizable images={collectionContents} />
@@ -75,7 +75,7 @@ export default function CollectionsClientComponent() {
                   <p className="text-xl font-medium">
                     {collection.collectionName}
                   </p>
-                  <span className="flex items-center gap-x-2">
+                  <div className="flex items-center gap-x-2">
                     <div className="flex items-center gap-x-2">
                       <Images size={25} />
                       {collectionImages.length}
@@ -84,7 +84,7 @@ export default function CollectionsClientComponent() {
                       <PiVideoLight strokeWidth={4} size={25} />
                       {collectionVideos.length}
                     </div>
-                  </span>
+                  </div>
                 </div>
               </Link>
             );

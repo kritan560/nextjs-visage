@@ -1,6 +1,5 @@
 import { MasonryClient } from "@/components/masonry/masonry-client";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
-import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
 import EditCollectionDialog from "@/components/profile/collections/edit-collection-dialog";
 import AdjustPadding from "@/components/shared/adjust-padding";
 import { UniqueImage } from "@/components/shared/unique-image";
@@ -13,16 +12,18 @@ import {
 } from "@/links/visage-links";
 import { getCurrentUser } from "@/servers/Authentication.server";
 
+import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
 import { GetCollectionNameByIdEnum } from "@/enums/CollectionName.enum";
 import { getCollectionNameById } from "@/servers/CollectionName.server";
 import { UniversalImagesType } from "@/types/universalImage.type";
 import { UniversalVideosType } from "@/types/universalVideo.type";
 import { Images } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PiVideoLight } from "react-icons/pi";
-import { Metadata } from "next";
 
 type CollectionIdPageProps = {
   params: { collection_id: string };
@@ -38,6 +39,8 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
   } = props;
   const { failed, success: collectionNameByIdSuccess } =
     await getCollectionNameById(collection_id);
+
+  const userId = collectionNameByIdSuccess?.data?.userId;
 
   if (failed) {
     if (failed.message == AuthFailedEnum.USER_NOT_LOGGED_IN) {
@@ -61,7 +64,8 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
 
   return (
     <>
-      <NavbarWithSearch />
+      <NavbarWithSearchBox />
+      <NavbarWithSearchBoxMobile userId={userId} />
 
       {/* editicon */}
       <div className="mt-12 flex flex-col items-center justify-center space-y-8">
@@ -77,7 +81,8 @@ export default async function CollectionIdPage(props: CollectionIdPageProps) {
       </div>
 
       <NavbarWhenScrolled threshold={100}>
-        <NavbarWithSearch />
+        <NavbarWithSearchBox />
+        <NavbarWithSearchBoxMobile userId={userId} />
       </NavbarWhenScrolled>
 
       <AdjustPadding className="mt-8 space-y-8">

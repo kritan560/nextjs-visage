@@ -65,7 +65,9 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
           <div className="mx-4">
             {/* 1st bundle */}
             <div className="space-y-[15px]">
-              <Link href={LinkHomepage}>Home</Link>
+              <Link className="block" href={LinkHomepage}>
+                Home
+              </Link>
               <p>Discover Photos</p>
               <p>Popular Searches</p>
               <p>Free Videos</p>
@@ -77,14 +79,22 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
             <Separator className="my-7" />
             {/* 2nd bundle */}
             <div className="space-y-[15px]">
-              <Link href={LinkProfile}>Your Profile</Link>
+              <Link className="block" href={LinkProfile}>
+                Your Profile
+              </Link>
               <p className="flex items-center gap-x-2">
                 Change Language <span></span>
               </p>
-              <Link href={LinkUploadPage}>Upload</Link>
+              <Link className="block" href={LinkUploadPage}>
+                Upload
+              </Link>
               <p>Lisence</p>
-              <Link href={LinkEditProfile}>Settings</Link>
-              <Link href={LinkLogoutPage}>Logout</Link>
+              <Link className="block" href={LinkEditProfile}>
+                Settings
+              </Link>
+              <Link className="block" href={LinkLogoutPage}>
+                Logout
+              </Link>
             </div>
 
             <Separator className="my-7" />

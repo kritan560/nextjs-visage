@@ -38,6 +38,10 @@
 
 ✅ edit profile loading page visual overhaul.
 
+✅ download dialog: the dialog that appears after downling the content todo : responsive
+
+✅ video save to collection : responsive
+
 credential password login logout.
 
 build the webapp mobile responsive..
@@ -46,3 +50,5 @@ see why uploading the image won't render the uploaded data page.
 disable upload button at /upload while isPending
 
 to create ^ arrow while hovering into the element or on dropdown menu you can create an svg or search some triangle svg and apply it position abosulte in dropdown menu .
+
+hamburgerMenu menus needs to be updated according to authenticated user and anonymous user

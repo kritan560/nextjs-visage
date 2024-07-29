@@ -35,12 +35,12 @@ export default async function JoinPage() {
       {/* left and right section */}
       <div className="flex h-screen w-full gap-x-6">
         {/* left section */}
-        <div className="w-1/2">
+        <div className="hidden w-1/2 md:block">
           <JoinRandomImages images={images} />
         </div>
 
         {/* right section */}
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <div className="flex flex-col gap-y-5">
             <h2 className="text-3xl font-semibold leading-normal text-stone-800 dark:text-stone-400">
               Where your photography is seen, used and loved by the world
@@ -101,7 +101,7 @@ export default async function JoinPage() {
 
             {/* seperator */}
             <Separator className="relative my-4 h-[2px] w-full">
-              <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white px-2 dark:bg-inherit">
+              <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-white px-2 dark:bg-inherit">
                 Or, sign up with your email
               </p>
             </Separator>

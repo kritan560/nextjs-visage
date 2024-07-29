@@ -15,14 +15,14 @@ export function CollectionImageResizable(props: CollectionImageResizableProps) {
   const { images, gapSize = "base" } = props;
 
   if (images.length <= 0) {
-    return <></>;
+    return <div className="h-44 w-44 md:h-80 md:w-80"></div>;
   }
 
   if (images.length === 1) {
     return (
       <ResizablePanelGroup
         direction="horizontal"
-        className="h-80 w-80 rounded-lg border"
+        className="h-44 w-44 rounded-lg border md:h-80 md:w-80"
       >
         <ResizablePanel defaultSize={100}>
           <div className="relative flex h-full items-center justify-center">

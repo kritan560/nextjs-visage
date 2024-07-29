@@ -1,5 +1,6 @@
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
 import { blurDataURL } from "@/constants/blurDataUrl";
 import ImageNotFound from "@/images/image-not-found.jpeg";
 import { LinkHomepage, LinkVideoPage } from "@/links/visage-links";
@@ -20,14 +21,16 @@ const PageNotFoundPage = async () => {
   return (
     <div className="bg-inherit">
       <NavbarWithSearchBox />
+      <NavbarWithSearchBoxMobile userId={undefined} />
 
       <NavbarWhenScrolled threshold={40}>
         <NavbarWithSearchBox />
+        <NavbarWithSearchBoxMobile userId={undefined} />
       </NavbarWhenScrolled>
 
-      <div className="mx-auto my-8 flex w-[70%]">
+      <div className="mx-auto my-8 flex w-full px-4 md:w-[70%] md:px-0">
         {/* left section */}
-        <div className="flex w-1/2 items-center">
+        <div className="flex w-full items-center md:w-1/2">
           <div className="flex flex-col">
             <h1 className="text-5xl font-semibold tracking-[0.01rem] text-stone-700 dark:text-stone-400">
               Oops, we couldn&apos;t find this page.
@@ -78,7 +81,7 @@ const PageNotFoundPage = async () => {
                 Refresh the page
               </p>
 
-              <p className="flex items-center gap-x-2">
+              <p className="flex items-center gap-x-2 whitespace-break-spaces">
                 <span>
                   <RiMessage3Line />
                 </span>
@@ -95,7 +98,7 @@ const PageNotFoundPage = async () => {
         </div>
 
         {/* right section */}
-        <div className="h-[500px] flex-1">
+        <div className="hidden h-[500px] flex-1 md:block">
           <div className="relative mx-auto h-full w-80">
             <Image
               placeholder="blur"

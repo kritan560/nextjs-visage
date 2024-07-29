@@ -12,6 +12,7 @@ import VisageDialogContent from "./visage-dialog-content";
 import { VisageToast } from "./visage-toast";
 import { MediaType } from "@/types/mediaType.type";
 import { handleDownloadMediaClick } from "@/helpers/downloadMedia";
+import { CgProfile } from "react-icons/cg";
 
 type DownloadContentDialogProps = {
   children: React.ReactNode;
@@ -33,7 +34,7 @@ function DownloadContentDialog(props: DownloadContentDialogProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <VisageDialogContent className="z-[60] m-0 flex h-80 gap-0 p-0 sm:max-w-[625px]">
         <DialogTitle></DialogTitle>
-        <div className="relative h-full w-[30%]">
+        <div className="relative h-full w-[40%] md:w-[30%]">
           <Image
             src={image}
             fill
@@ -43,7 +44,7 @@ function DownloadContentDialog(props: DownloadContentDialogProps) {
             style={{ objectFit: "cover" }}
           />
         </div>
-        <div className="w-[70%] px-8 py-6">
+        <div className="w-[60%] px-4 py-3 md:w-[70%] md:px-8 md:py-6">
           <h2 className="text-2xl font-semibold text-stone-800 dark:text-stone-400">
             Say Thanks!
           </h2>
@@ -64,10 +65,14 @@ function DownloadContentDialog(props: DownloadContentDialogProps) {
               <Button
                 variant={"visage"}
                 size={"visage"}
-                className="px-8 text-lg font-medium"
+                className="hidden h-12 w-48 text-lg font-medium capitalize md:block md:px-8"
               >
-                View Profile
+                <p className="">view profile</p>
               </Button>
+              <CgProfile
+                className="block rounded-md bg-visage-500 p-1 md:hidden"
+                size={48}
+              />
             </Link>
             <Link target="_blank" href={userURL}>
               <SiPexels

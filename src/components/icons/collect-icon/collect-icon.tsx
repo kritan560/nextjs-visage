@@ -121,7 +121,7 @@ export default function CollectIcon(props: CollectIconProps) {
           )}
         </div>
       </DialogTrigger>
-      <VisageDialogContent className="h-[500px] min-w-[650px] p-8">
+      <VisageDialogContent className="h-[500px] w-full p-2 md:min-w-[650px] md:p-8">
         <ScrollArea type="auto" className="h-[434px] w-full">
           <DialogHeader>
             <DialogTitle className="flex flex-col gap-y-4 text-center text-3xl font-semibold">
@@ -141,13 +141,13 @@ export default function CollectIcon(props: CollectIconProps) {
               <DialogTrigger asChild>
                 {/* create new collection */}
                 <div className="flex w-fit flex-col">
-                  <div className="group flex aspect-square w-40 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 dark:bg-stone-400">
+                  <div className="group flex aspect-square w-24 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 dark:bg-stone-400 md:w-40">
                     <CirclePlus
                       size={45}
                       className="text-stone-600 transition group-hover:scale-110"
                     />
                   </div>
-                  <p className="mt-1 w-40 truncate text-center">
+                  <p className="mt-1 w-24 truncate text-center md:w-40">
                     Create new Collection
                   </p>
                 </div>
@@ -162,7 +162,7 @@ export default function CollectIcon(props: CollectIconProps) {
                         collectionName.id,
                       )
                     }
-                    className="relative flex aspect-square w-40 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 active:scale-100 dark:bg-stone-400"
+                    className="relative flex aspect-square w-24 cursor-pointer items-center justify-center rounded-md bg-stone-200 transition hover:scale-105 active:scale-100 dark:bg-stone-400 md:w-40"
                   >
                     {(
                       collectionName.collectionImages as UniversalImagesType
@@ -176,7 +176,7 @@ export default function CollectIcon(props: CollectIconProps) {
                           className="rounded-md"
                           style={{ objectFit: "cover" }}
                         />
-                        <div className="group absolute flex h-40 w-40 items-center justify-center rounded-md bg-emerald-600/80 hover:bg-rose-600/80">
+                        <div className="group absolute flex h-24 w-24 items-center justify-center rounded-md bg-emerald-600/80 hover:bg-rose-600/80 md:h-40 md:w-40">
                           <FaCheckCircle
                             size={45}
                             className="text-stone-50 group-hover:hidden"
@@ -188,7 +188,7 @@ export default function CollectIcon(props: CollectIconProps) {
                         </div>
                       </>
                     ) : (
-                      <div className="group relative flex h-40 w-40 items-center justify-center rounded-md transition hover:bg-black/75">
+                      <div className="group relative flex h-24 w-24 items-center justify-center rounded-md transition hover:bg-black/75 md:h-40 md:w-40">
                         <LuImagePlus
                           size={45}
                           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-stone-600 group-hover:opacity-40"
@@ -201,14 +201,14 @@ export default function CollectIcon(props: CollectIconProps) {
                       </div>
                     )}
                   </div>
-                  <p className="mt-1 w-40 truncate text-center capitalize">
+                  <p className="mt-1 w-24 truncate text-center capitalize md:w-40">
                     {collectionName.collectionName}
                   </p>
                 </div>
               ))}
             </div>
 
-            <VisageDialogContent className="min-w-[600px] p-12">
+            <VisageDialogContent className="w-full p-4 md:min-w-[600px] md:p-12">
               <DialogHeader>
                 <DialogTitle className="text-center text-3xl font-semibold">
                   Save To New Collection
