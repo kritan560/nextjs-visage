@@ -27,11 +27,11 @@ export default async function ProfileLayout(props: ProfileLayoutProps) {
   const totalContent = success?.data.totalContent;
 
   return (
-    <div className="w-screen">
+    <div className="w-full">
       <NavbarWithSearchBox />
-      <div className="w-screen">
-        <NavbarWithSearchBoxMobile userId={userId} />
-      </div>
+      {/* <div className="w-screen"> */}
+      <NavbarWithSearchBoxMobile userId={userId} />
+      {/* </div> */}
 
       <div className="mx-auto mt-16 w-fit">
         <div className="flex flex-col items-center space-y-8">

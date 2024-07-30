@@ -1,10 +1,10 @@
 "use client";
 
-import { useGlobalScrollAreaPositionState } from "@/global-states/scroll-area-state";
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "@mantine/core";
+import {
+  useGlobalScrollAreaPositionXState,
+  useGlobalScrollAreaPositionYState,
+} from "@/global-states/scroll-area-state";
 import React, { useEffect, useRef } from "react";
-import classes from "./scroll-area.module.css";
 import { useGlobalVisageScrollAreaGlobal } from "./visage-scroll-area-global-state";
 
 type VisageScrollAreaProps = {
@@ -21,9 +21,11 @@ const VisageScrollArea = (props: VisageScrollAreaProps) => {
   const { children, className } = props;
   const viewport = useRef<HTMLDivElement>(null);
 
-  const { setPosition: onScrollPositionChange } =
-    useGlobalScrollAreaPositionState();
   const { setGlobalViewPort } = useGlobalVisageScrollAreaGlobal();
+  const { setPosition: onScrollPositionYChange } =
+    useGlobalScrollAreaPositionYState();
+  const { setPosition: onScrollPositionXChange } =
+    useGlobalScrollAreaPositionXState();
 
   useEffect(() => {
     setGlobalViewPort(viewport);
@@ -31,18 +33,32 @@ const VisageScrollArea = (props: VisageScrollAreaProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // this useEffect hooks is used to calculate the current width of a window.
+  useEffect(() => {
+    function updateWindowSize() {
+      const width = window.innerWidth;
+      onScrollPositionXChange({ x: width });
+    }
+
+    // Initial call to set the size on load
+    updateWindowSize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", updateWindowSize);
+  }, [onScrollPositionXChange]);
+
   return (
-    <ScrollArea
-      viewportRef={viewport}
-      type="always"
-      classNames={classes}
-      onScrollPositionChange={onScrollPositionChange}
-      scrollHideDelay={150}
-      scrollbars="y"
-      className={cn("h-screen", className)}
+    <div
+      ref={viewport}
+      onScroll={(e) => {
+        onScrollPositionYChange({
+          y: e.currentTarget.scrollTop,
+        });
+      }}
+      className="h-screen w-screen overflow-x-clip overflow-y-scroll scrollbar-thin scrollbar-track-transparent scrollbar-thumb-visage-400 scrollbar-thumb-rounded-full scrollbar-h-2"
     >
-      {children}
-    </ScrollArea>
+      <div className="">{children}</div>
+    </div>
   );
 };
 

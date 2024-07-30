@@ -152,7 +152,7 @@ export default function UploadImageContent() {
   if (dataUploaded) {
     return (
       <AdjustPadding className="relative mt-16">
-        <div className="mx-auto w-[75%]">
+        <div className="mx-auto w-full md:w-[75%]">
           <h1 className="text-center text-3xl font-semibold text-stone-600 dark:text-stone-400">
             Make your photos easy to find and be seen.
           </h1>
@@ -163,6 +163,71 @@ export default function UploadImageContent() {
               Add some keywords that describe your photo and what is in it.
             </span>
           </p>
+
+          {/* left side image thumbnails */}
+          <div className="mt-4 flex md:fixed md:left-0 md:top-1/2 md:w-28 md:-translate-y-1/2 md:translate-x-[40%]">
+            <div className="flex items-center gap-x-2 overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-visage-500 scrollbar-track-rounded-full md:block md:h-96">
+              <CldUploadWidget
+                uploadPreset={"scmoywbv"}
+                onSuccess={handleSuccess}
+                onClose={handleClose}
+                options={{
+                  multiple: true,
+                  maxFiles: 5,
+                  clientAllowedFormats: ["jpg", "png", "jpeg"],
+                }}
+              >
+                {({ open }) => {
+                  return (
+                    <div
+                      onClick={() => open()}
+                      className="mx-auto flex aspect-square h-20 cursor-pointer items-center justify-center rounded-lg bg-stone-100 dark:bg-stone-800"
+                    >
+                      <Plus
+                        size={25}
+                        strokeWidth={4}
+                        className="text-stone-600 dark:text-stone-400"
+                      />
+                    </div>
+                  );
+                }}
+              </CldUploadWidget>
+
+              {/* loop the image thumbnail here */}
+              <ScrollArea type="hover" className="md:h-[298px]">
+                <div className="flex h-fit w-full items-center gap-x-2 md:flex-col">
+                  {/* this div is for scrollbar padding */}
+                  {uploadedData.map((data) => (
+                    <div
+                      id={data.imageId}
+                      key={data.imageId}
+                      onClick={() => {
+                        document.getElementById(data.imageId)?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                      }}
+                      className={cn(
+                        "relative mx-auto my-2 aspect-square h-[72px] cursor-pointer rounded-lg border-white",
+                        activeImage === data.imageId
+                          ? "border-[3px] outline outline-[3px] outline-visage-600"
+                          : "outline-none",
+                      )}
+                    >
+                      <Image
+                        src={data.image.src.original}
+                        alt=""
+                        fill
+                        className="rounded-lg"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          </div>
 
           {/* looping this div */}
           {uploadedData.map((data) => (
@@ -176,82 +241,20 @@ export default function UploadImageContent() {
           ))}
         </div>
 
-        {/* left side image thumbnails */}
-        <div className="fixed left-0 top-1/2 w-28 -translate-y-1/2 translate-x-[40%]">
-          <div className="h-96">
-            <CldUploadWidget
-              uploadPreset={"scmoywbv"}
-              onSuccess={handleSuccess}
-              onClose={handleClose}
-              options={{
-                multiple: true,
-                maxFiles: 5,
-                clientAllowedFormats: ["jpg", "png", "jpeg"],
-              }}
-            >
-              {({ open }) => {
-                return (
-                  <div
-                    onClick={() => open()}
-                    className="mx-auto flex aspect-square h-20 cursor-pointer items-center justify-center rounded-lg bg-stone-100 dark:bg-stone-800"
-                  >
-                    <Plus
-                      size={25}
-                      strokeWidth={4}
-                      className="text-stone-600 dark:text-stone-400"
-                    />
-                  </div>
-                );
-              }}
-            </CldUploadWidget>
-
-            {/* loop the image thumbnail here */}
-            <ScrollArea type="hover" className="h-[298px]">
-              {/* this div is for scrollbar padding */}
-              {uploadedData.map((data) => (
-                <div
-                  id={data.imageId}
-                  key={data.imageId}
-                  onClick={() => {
-                    document.getElementById(data.imageId)?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "center",
-                    });
-                  }}
-                  className={cn(
-                    "relative mx-auto my-2 aspect-square h-[72px] cursor-pointer rounded-lg border-white",
-                    activeImage === data.imageId
-                      ? "border-[3px] outline outline-[3px] outline-visage-600"
-                      : "outline-none",
-                  )}
-                >
-                  <Image
-                    src={data.image.src.original}
-                    alt=""
-                    fill
-                    className="rounded-lg"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-              ))}
-            </ScrollArea>
-          </div>
-        </div>
-
         {/* footer content */}
         {/* this is to componsate the fixed div height so the the content won't go beyond the fixed div*/}
-        <div className="h-32"></div>
+        <div className="h-40"></div>
         <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-stone-900">
           <AdjustPadding>
-            <div className="flex h-full justify-between py-8">
+            <div className="flex h-full justify-between py-3 md:py-7">
               <div className="flex items-start gap-x-4 text-visage-600">
                 <FaRegCircleDot size={30} className="m-[6px]" />
                 <div>
                   <h2 className="text-lg font-semibold">Content uploaded</h2>
-                  <p className="font-medium">
+                  <p className="hidden font-medium md:block">
                     {uploadedData.length} photos or videos have been uploaded
                   </p>
+                  <p className="block md:hidden">{`${uploadedData.length} / ${uploadedData.length}`}</p>
                 </div>
               </div>
               <Button
@@ -261,7 +264,8 @@ export default function UploadImageContent() {
                 variant={"visage"}
               >
                 {" "}
-                Submit Your Content
+                <p className="hidden md:block">Submit Your Content</p>
+                <p className="block md:hidden">Submit</p>
               </Button>
             </div>
           </AdjustPadding>
@@ -273,7 +277,7 @@ export default function UploadImageContent() {
   if (!dataUploaded)
     return (
       <AdjustPadding className="mt-20">
-        <div className="mx-auto w-[60%]">
+        <div className="mx-auto w-full md:w-[60%]">
           <h1 className="text-center text-4xl font-semibold text-stone-700 dark:text-stone-400">
             Share your photos and videos, and let the world love them.
           </h1>
@@ -289,7 +293,7 @@ export default function UploadImageContent() {
               ({DailyUploadCount - dailyUploadCountLeft}/{DailyUploadCount})
             </span>
             <UploadIcon />{" "}
-            <h1 className="text-4xl font-bold text-stone-700 dark:text-stone-400">
+            <h1 className="text-center text-4xl font-bold text-stone-700 dark:text-stone-400">
               Click to upload
             </h1>
             <CldUploadWidget

@@ -4,6 +4,10 @@ import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-m
 import { blurDataURL } from "@/constants/blurDataUrl";
 import ImageNotFound from "@/images/image-not-found.jpeg";
 import { LinkHomepage, LinkVideoPage } from "@/links/visage-links";
+import {
+  getCurrentUser,
+  getCurrentUserId,
+} from "@/servers/Authentication.server";
 import { getRandomPhoto } from "@/servers/pexel/pexelPhoto.server";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,17 +19,18 @@ import { TbViewfinder } from "react-icons/tb";
 const PageNotFoundPage = async () => {
   const { success } = await getRandomPhoto();
 
+  const { userId } = await getCurrentUserId();
   const randomPhoto = success?.data?.src.medium ?? ImageNotFound;
   const photographerName = success?.data?.photographer;
 
   return (
     <div className="bg-inherit">
       <NavbarWithSearchBox />
-      <NavbarWithSearchBoxMobile userId={undefined} />
+      <NavbarWithSearchBoxMobile userId={userId} />
 
       <NavbarWhenScrolled threshold={40}>
         <NavbarWithSearchBox />
-        <NavbarWithSearchBoxMobile userId={undefined} />
+        <NavbarWithSearchBoxMobile userId={userId} />
       </NavbarWhenScrolled>
 
       <div className="mx-auto my-8 flex w-full px-4 md:w-[70%] md:px-0">

@@ -349,8 +349,8 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
           <div
             className={cn(
               "grid gap-3",
-              grid === 3 && "grid-cols-3",
-              grid === 4 && "grid-cols-4",
+              grid === 3 && "grid-cols-2 md:grid-cols-3",
+              grid === 4 && "grid-cols-2 md:grid-cols-4",
             )}
           >
             {keywords?.map((keyword, index) => (
@@ -386,7 +386,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               <h2 className="mb-2 mt-6 text-xl font-bold text-stone-800 dark:text-stone-400">
                 Collections
               </h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {globalCollectionNames
                   ?.filter((collectionName) => {
                     if (collectionName.userId === userId) {

@@ -45,9 +45,9 @@ export default async function ImageIdPage(props: ImageIdProps) {
   return (
     <>
       <NavbarWithSearch />
-      <div className="w-screen">
-        <NavbarWithSearchBoxMobile userId={image?.userId} />
-      </div>
+      {/* <div className="w-screen"> */}
+      <NavbarWithSearchBoxMobile userId={image?.userId} />
+      {/* </div> */}
 
       <NavbarWhenScrolled threshold={70}>
         <NavbarWithSearch />

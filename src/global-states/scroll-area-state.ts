@@ -1,22 +1,23 @@
 import { create } from "zustand";
 
-// interface ScrollAreaState {
-//   isScrolled: boolean;
-//   setScrolled: (bool: boolean) => void;
-// }
-
-// export const useGlobalScrollAreaState = create<ScrollAreaState>()((set) => ({
-//   isScrolled: false,
-//   setScrolled: (bool) => set({ isScrolled: bool }),
-// }));
-
-interface ScrollAreaPositionState {
-  position: { x: number; y: number };
-  setPosition: (value: { x: number; y: number }) => void;
+interface ScrollAreaPositionXState {
+  position: { x: number };
+  setPosition: (value: { x: number }) => void;
 }
 
-export const useGlobalScrollAreaPositionState =
-  create<ScrollAreaPositionState>()((set) => ({
-    position: { x: 0, y: 0 },
+export const useGlobalScrollAreaPositionXState =
+  create<ScrollAreaPositionXState>()((set) => ({
+    position: { x: 0 },
+    setPosition: (value) => set({ position: value }),
+  }));
+
+interface ScrollAreaPositionYState {
+  position: { y: number };
+  setPosition: (value: { y: number }) => void;
+}
+
+export const useGlobalScrollAreaPositionYState =
+  create<ScrollAreaPositionYState>()((set) => ({
+    position: { y: 0 },
     setPosition: (value) => set({ position: value }),
   }));

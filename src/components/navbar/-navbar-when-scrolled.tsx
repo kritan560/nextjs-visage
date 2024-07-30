@@ -1,6 +1,6 @@
 "use client";
 
-import { useGlobalScrollAreaPositionState } from "@/global-states/scroll-area-state";
+import { useGlobalScrollAreaPositionYState } from "@/global-states/scroll-area-state";
 import { cn } from "@/lib/utils";
 
 type NavbarWhenScrolledProps = {
@@ -12,7 +12,7 @@ let scrolled = false;
 export function NavbarWhenScrolled(props: NavbarWhenScrolledProps) {
   const { children, threshold = 500 } = props;
 
-  const { position } = useGlobalScrollAreaPositionState();
+  const { position } = useGlobalScrollAreaPositionYState();
 
   if (position.y > threshold) {
     scrolled = true;
@@ -24,9 +24,10 @@ export function NavbarWhenScrolled(props: NavbarWhenScrolledProps) {
   return (
     <div
       className={cn(
-        "fixed top-0 z-10 right-0 left-0 transition",
-        scrolled ? "opacity-100" : "opacity-0 -z-10"
-      )}>
+        "fixed left-0 right-0 top-0 z-10 transition",
+        scrolled ? "opacity-100" : "-z-10 opacity-0",
+      )}
+    >
       {children}
     </div>
   );

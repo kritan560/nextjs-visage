@@ -67,10 +67,10 @@ export default function UploadedImageData(props: UploadedDataProps) {
       ref={ref}
       key={data.id}
       id={data.imageId}
-      className="relative mt-14 h-fit w-full rounded-3xl bg-stone-100 px-10 py-8 dark:bg-stone-800"
+      className="relative mt-4 h-fit w-full rounded-3xl bg-stone-100 px-4 py-4 dark:bg-stone-800 md:mt-14 md:px-10 md:py-8"
     >
-      <div className="flex items-center gap-x-4">
-        <div className="relative w-1/2">
+      <div className="flex flex-col items-center gap-y-4 md:flex-row md:gap-x-4">
+        <div className="relative w-full md:w-1/2">
           {/* you can use image.height and width here when you iterate through uploadedData state. */}
           <Image
             src={data.image.src.medium}
@@ -83,7 +83,7 @@ export default function UploadedImageData(props: UploadedDataProps) {
           />
         </div>
 
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           {/* <UploadImageForm /> */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

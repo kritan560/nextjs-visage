@@ -45,9 +45,9 @@ export default function RootLayout({
 
           <Toaster />
 
-          <MantineProvider>
-            <VisageScrollArea>{children}</VisageScrollArea>
-          </MantineProvider>
+          <VisageScrollArea>
+            <MantineProvider>{children}</MantineProvider>
+          </VisageScrollArea>
         </ThemeProvider>
       </body>
     </html>

@@ -1,7 +1,9 @@
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
 import VideoSearch from "@/components/search/videos/video-search";
 import AdjustPadding from "@/components/shared/adjust-padding";
+import { getCurrentUserId } from "@/servers/Authentication.server";
 import { getVideosByKeyword } from "@/servers/pexel/pexelVideo.server";
 
 type VideoSearchPageProps = {
@@ -20,6 +22,8 @@ export default async function VideoSearchPage(props: VideoSearchPageProps) {
     params: { keyword },
   } = props;
 
+  const { userId } = await getCurrentUserId();
+
   const { failed, success } = await getVideosByKeyword(
     decodeURI(keyword).toLowerCase(),
   );
@@ -29,9 +33,11 @@ export default async function VideoSearchPage(props: VideoSearchPageProps) {
   return (
     <>
       <NavbarWithSearchBox />
+      <NavbarWithSearchBoxMobile userId={userId} />
 
       <NavbarWhenScrolled threshold={200}>
         <NavbarWithSearchBox />
+        <NavbarWithSearchBoxMobile userId={userId} />
       </NavbarWhenScrolled>
 
       <AdjustPadding>

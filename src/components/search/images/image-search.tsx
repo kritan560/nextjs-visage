@@ -1,8 +1,14 @@
 "use client";
 
 import { MasonryClient } from "@/components/masonry/masonry-client";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { UniqueImage } from "@/components/shared/unique-image";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { getPexelPhotoByKeyword } from "@/servers/pexel/pexelPhoto.server";
 import { UniversalImagesType } from "@/types/universalImage.type";
 import Link from "next/link";
@@ -10,12 +16,6 @@ import { generate } from "random-words";
 import { useEffect, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { PropagateLoader } from "react-spinners";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 type ImageSearchProps = {
   keyword: string;
@@ -68,25 +68,25 @@ export default function ImageSearch(props: ImageSearchProps) {
   }, [inView]);
 
   return (
-    <div className="mt-4">
-      <ScrollArea className="w-[1240px] max-w-7xl">
-        <div className="flex items-center gap-x-2 pb-4">
+    <div className="mt-2 w-full md:mt-4">
+      <div className="overflow-x-scroll scrollbar-thin scrollbar-track-transparent scrollbar-thumb-visage-500">
+        <div className="flex gap-x-2 pb-2">
           {randomKeywords.map((keyword, index) => (
             <Link
               href={`/search/images/${keyword}`}
               key={index}
-              className="cursor-pointer rounded-md border bg-transparent px-6 py-4 text-base font-medium text-stone-800 transition hover:bg-visage-600 hover:text-white active:bg-visage-500 dark:bg-stone-800 dark:text-white dark:hover:bg-stone-700"
+              className="cursor-pointer rounded-md border bg-transparent px-4 py-2 text-base font-medium text-stone-800 transition hover:bg-visage-600 hover:text-white active:bg-visage-500 dark:bg-stone-800 dark:text-white dark:hover:bg-stone-700 md:px-6 md:py-4"
             >
               {keyword}
             </Link>
           ))}
         </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+        {/* <ScrollBar orientation="horizontal" /> */}
+      </div>
       <TooltipProvider delayDuration={150}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <h1 className="my-8 h-[70px] w-[700px] truncate text-6xl font-medium text-stone-600 dark:text-stone-400">
+            <h1 className="my-8 h-[70px] w-full truncate text-5xl font-medium text-stone-600 dark:text-stone-400 md:w-[700px] md:text-6xl">
               Free{" "}
               <span className="mr-2 capitalize text-stone-800 dark:text-stone-600">
                 {decodeURI(keyword)}{" "}
@@ -108,7 +108,7 @@ export default function ImageSearch(props: ImageSearchProps) {
         </span>
       </div>
       <MasonryClient>
-        {photos?.map((photo) => <UniqueImage key={photo.id} image={photo} />)}
+        {photos?.map((image) => <UniqueImage key={image.id} image={image} />)}
       </MasonryClient>
       <div ref={ref} className="my-4 h-9 w-full overflow-x-clip text-center">
         <PropagateLoader

@@ -7,6 +7,8 @@ import ImageSearch from "@/components/search/images/image-search";
 import { getPexelPhotoByKeyword } from "@/servers/pexel/pexelPhoto.server";
 import { UniversalImagesType } from "@/types/universalImage.type";
 import { getImagesByTags } from "@/servers/Image.server";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
+import { getCurrentUserId } from "@/servers/Authentication.server";
 
 type ImageSearchPageProps = {
   params: { keyword: string };
@@ -23,6 +25,8 @@ export default async function ImageSearchPage(props: ImageSearchPageProps) {
   const {
     params: { keyword },
   } = props;
+
+  const { userId } = await getCurrentUserId();
 
   const pexelPhotoByKeyword = await getPexelPhotoByKeyword(keyword);
   const totalResult = pexelPhotoByKeyword?.pop()?.totalResult;
@@ -44,9 +48,11 @@ export default async function ImageSearchPage(props: ImageSearchPageProps) {
   return (
     <>
       <NavbarWithSearchBox />
+      <NavbarWithSearchBoxMobile userId={userId} />
 
       <NavbarWhenScrolled threshold={200}>
         <NavbarWithSearchBox />
+        <NavbarWithSearchBoxMobile userId={userId} />
       </NavbarWhenScrolled>
 
       <AdjustPadding>
