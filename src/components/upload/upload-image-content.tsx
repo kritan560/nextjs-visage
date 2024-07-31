@@ -281,13 +281,13 @@ export default function UploadImageContent() {
           <h1 className="text-center text-4xl font-semibold text-stone-700 dark:text-stone-400">
             Share your photos and videos, and let the world love them.
           </h1>
-          <p className="mx-auto mt-5 w-[70%] text-center text-lg font-medium text-stone-500 dark:text-stone-300">
+          <p className="mx-auto mt-5 w-[95%] text-center text-lg font-medium text-stone-500 dark:text-stone-300 md:w-[70%]">
             Share your first {DailyUploadCount} photos or videos to introduce
             yourself to millions of ImageHive users.
           </p>
         </div>
 
-        <AdjustPadding className="relative mt-8">
+        <div className="relative mt-8">
           <div className="relative flex h-[700px] w-full flex-col items-center justify-center gap-y-11 rounded-[2rem] border-2 border-dashed border-stone-300 p-6">
             <span className="absolute right-8 top-4 text-sm font-medium text-stone-400">
               ({DailyUploadCount - dailyUploadCountLeft}/{DailyUploadCount})
@@ -341,7 +341,7 @@ export default function UploadImageContent() {
             {/* blur part */}
             <div className="absolute -bottom-2 left-0 right-0 h-28 w-full scale-x-105 scale-y-110 bg-white blur-md dark:bg-black"></div>
           </div>
-        </AdjustPadding>
+        </div>
       </AdjustPadding>
     );
 }

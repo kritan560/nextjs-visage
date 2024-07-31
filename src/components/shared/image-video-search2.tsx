@@ -24,12 +24,12 @@ import { useForm } from "react-hook-form";
 import { PiVideoLight } from "react-icons/pi";
 import { CollectionImageResizable } from "../profile/collections/collection-resizable";
 import { Button } from "../ui/button";
-import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../ui/hover-card";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
@@ -90,6 +90,7 @@ type ImageOrVideoSearchType = {
 const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
   const { border, userId, grid = 4 } = props;
 
+  const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
   const [openPopOver, setOpenPopOver] = useState(false);
@@ -207,24 +208,26 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
     }
   }
 
+  const ScrollAreaRefHeight = ref.current?.clientHeight;
+
   return (
     <div className="relative">
       <div
         className={cn(
-          "relative z-10 flex h-12 items-center rounded-md bg-white dark:bg-black dark:text-stone-50",
+          "relative z-10 flex h-12 items-center rounded-md bg-white dark:border dark:border-stone-100 dark:bg-black dark:text-stone-50",
           border ? "bg-white" : "bg-stone-100",
           openPopOver && "bg-white ring-1 ring-stone-300",
         )}
         ref={inputRef}
       >
-        <HoverCard
+        <DropdownMenu
           defaultOpen={false}
           onOpenChange={setOpen}
           open={open}
-          openDelay={100}
-          closeDelay={100}
+          // openDelay={100}
+          // closeDelay={100}
         >
-          <HoverCardTrigger autoFocus={false} asChild>
+          <DropdownMenuTrigger autoFocus={false} asChild>
             <Button
               variant={"ghost"}
               className={cn(
@@ -247,8 +250,8 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                 <ChevronDown size={17} />
               </div>
             </Button>
-          </HoverCardTrigger>
-          <HoverCardContent
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
             className="-ml-1 mt-[2px] w-fit p-0 py-2"
             align="start"
           >
@@ -267,8 +270,8 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                 </div>
               ))}
             </div>
-          </HoverCardContent>
-        </HoverCard>
+          </DropdownMenuContent>
+        </DropdownMenu>
         {!border && (
           <Separator orientation="vertical" className="h-9 bg-stone-300" />
         )}
@@ -320,18 +323,15 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
 
       <div
         className={cn(
-          "absolute top-0 w-full rounded-md bg-white dark:bg-black",
+          "absolute top-0 h-fit w-full rounded-md bg-white dark:bg-black",
           openPopOver ? "visible z-[7] ring-1 ring-stone-300" : "invisible",
         )}
       >
         <ScrollArea
+          ref={ref}
           className={cn(
             "mt-10 p-4",
-            totalCollectionCount > 0
-              ? totalCollectionCount > 2
-                ? "h-96"
-                : "h-[272px]"
-              : "h-fit",
+            ScrollAreaRefHeight && ScrollAreaRefHeight > 384 ? "h-96" : "h-fit",
           )}
         >
           <div className="flex items-center justify-between">
@@ -357,12 +357,12 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
               <Link
                 href={`/search/images/${keyword}`}
                 key={index}
-                className="rounded-md border bg-white text-base font-medium transition hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-600"
+                className="rounded-md border bg-white text-start text-base font-medium text-black transition hover:bg-stone-100 dark:bg-stone-400 dark:hover:bg-stone-600"
               >
                 <TooltipProvider delayDuration={150}>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex h-12 items-center justify-center px-2">
+                      <div className="flex h-12 items-center px-2">
                         <div className="w-[90%] truncate">{keyword}</div>
                         <Search
                           className="m-0 h-5 w-5 flex-1 p-0"
@@ -382,7 +382,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
 
           {/* collections names */}
           {totalCollectionCount > 0 && (
-            <>
+            <div className="h-fit">
               <h2 className="mb-2 mt-6 text-xl font-bold text-stone-800 dark:text-stone-400">
                 Collections
               </h2>
@@ -402,16 +402,14 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                       collection.collectionVideos as unknown as UniversalVideosType["videos"]
                     ).map((data) => data.image);
 
-                    let totalContents = [
-                      ...collectionImages,
-                      ...collectionVideos.reverse(),
-                    ];
+                    const collectionImagesLast2Contents =
+                      collectionImages.slice(-2);
+                    const collectionVideosLast2Contents =
+                      collectionVideos.slice(-2);
 
-                    const middle = Math.ceil(totalContents.length / 2) - 1;
                     let collectionContents = [
-                      totalContents[middle - 1],
-                      totalContents[middle],
-                      totalContents[middle + 1],
+                      ...collectionImagesLast2Contents,
+                      ...collectionVideosLast2Contents,
                     ];
 
                     if (collectionImages)
@@ -457,7 +455,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
                       );
                   })}
               </div>
-            </>
+            </div>
           )}
         </ScrollArea>
       </div>

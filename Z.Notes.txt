@@ -58,3 +58,5 @@ hamburgerMenu menus needs to be updated according to authenticated user and anon
 todo : responsive upload and uploaded data. page
 
 todo : mansonry client 5px for small 15px for width >= then md:
+
+you now have the variable width can manipulate the imaveVideoHover2 popover

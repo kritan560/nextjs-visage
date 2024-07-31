@@ -6,12 +6,13 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import {
   LinkEditProfile,
   LinkHomepage,
+  LinkJoinPage,
+  LinkLoginPage,
   LinkLogoutPage,
   LinkProfile,
   LinkUploadPage,
@@ -24,7 +25,7 @@ import {
   IoLogoInstagram,
   IoLogoTwitter,
   IoLogoYoutube,
-} from "react-icons/io5";
+} from "react-icons/io";
 import NavbarLogoVisage from "./logo-visage";
 import { ModeToggle } from "@/components/mode-toggle";
 
@@ -35,10 +36,13 @@ type HamburgerMenuProps = {
 
 const HamburgerMenu = (props: HamburgerMenuProps) => {
   const { userId, hamburgerColor } = props;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <GiHamburgerMenu
+          id="gihamburgerMenuId"
+          key="gihamburgerMenuKey"
           size={25}
           className={cn(
             "cursor-pointer md:hidden",
@@ -47,11 +51,11 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
           )}
         />
       </DialogTrigger>
-      <DialogContent className="z-[100] h-full border-none bg-black p-0 text-white sm:max-w-[425px]">
+      <DialogContent className="h-full w-full border-none bg-black/80 p-0 text-white">
         <DialogHeader>
-          <div className="sticky top-0 flex w-full items-center justify-center gap-x-5 px-4 pt-4">
+          <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-x-5 px-4 pt-4">
             <NavbarLogoVisage />
-            <ImageSearchVideo2 userId={userId} />
+            <ImageSearchVideo2 key={"imagesearchVideo2"} userId={userId} />
             <Upload strokeWidth={2.5} size={36} />
             <DialogClose>
               <X strokeWidth={2} className="h-8 w-8" />
@@ -59,7 +63,7 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
           </div>
         </DialogHeader>
 
-        <ScrollArea className="text-[19px] font-bold">
+        <div className="h-full overflow-y-scroll text-[19px] font-bold scrollbar-thin scrollbar-track-transparent scrollbar-thumb-visage-500 scrollbar-track-rounded-full">
           <Separator className="mb-7" />
           {/* navbar */}
           <div className="mx-4">
@@ -73,31 +77,49 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
               <p>Free Videos</p>
               <p>Challenges</p>
               <p>LeaderBoard</p>
-              <p>Pexels Blog</p>
+              <p>Visage Blog</p>
             </div>
-
             <Separator className="my-7" />
             {/* 2nd bundle */}
             <div className="space-y-[15px]">
-              <Link className="block" href={LinkProfile}>
-                Your Profile
-              </Link>
-              <p className="flex items-center gap-x-2">
-                Change Language <span></span>
-              </p>
-              <Link className="block" href={LinkUploadPage}>
-                Upload
-              </Link>
-              <p>Lisence</p>
-              <Link className="block" href={LinkEditProfile}>
-                Settings
-              </Link>
-              <Link className="block" href={LinkLogoutPage}>
-                Logout
-              </Link>
+              {userId && (
+                <div className="space-y-[15px]">
+                  <Link className="block" href={LinkProfile}>
+                    Your Profile
+                  </Link>
+                  <p className="flex items-center gap-x-2">
+                    Change Language <span></span>
+                  </p>
+                  <Link className="block" href={LinkUploadPage}>
+                    Upload
+                  </Link>
+                  <p>Lisence</p>
+                  <Link className="block" href={LinkEditProfile}>
+                    Settings
+                  </Link>
+                  <Link className="block" href={LinkLogoutPage}>
+                    Logout
+                  </Link>
+                </div>
+              )}
+              {!userId && (
+                <div className="space-y-[15px]">
+                  <Link className="block" href={LinkLoginPage}>
+                    Login
+                  </Link>
+                  <Link className="block" href={LinkJoinPage}>
+                    Join
+                  </Link>
+                  <p className="flex items-center gap-x-2">
+                    Change Language <span></span>
+                  </p>
+                  <p>Lisence</p>
+                </div>
+              )}
             </div>
 
             <Separator className="my-7" />
+
             {/* 3rd bundle */}
             <div className="space-y-[15px]">
               <p>Apps & Plugin</p>
@@ -105,11 +127,11 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
               <p>About Us</p>
               <p>Imprint & Terms</p>
             </div>
+
             <Separator className="my-7" />
 
-            {/* 4th bungle */}
-            {/* logoss... */}
-            <div className="mb-8 mt-8 flex items-center justify-center gap-x-10">
+            {/* 4th bundle : logos */}
+            <div className="mb-4 flex items-center justify-between gap-x-2">
               <IoLogoFacebook
                 className="cursor-pointer"
                 strokeWidth={2.5}
@@ -130,9 +152,10 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
                 strokeWidth={2.5}
                 size={30}
               />
+              <ModeToggle />
             </div>
           </div>
-        </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
