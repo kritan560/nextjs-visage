@@ -42,21 +42,24 @@
 
 ✅ video save to collection : responsive
 
-credential password login logout.
+✅ todo : responsive search page
 
-build the webapp mobile responsive..
+✅ todo : responsive upload and uploaded data. page
+
+✅ todo : mansonry client 5px for small 15px for width >= then md:
+
+✅ you now have the variable width can manipulate the imageVideoHover2 popover
+
+✅ build the webapp mobile responsive..
+
+✅ hamburgerMenu menus needs to be updated according to authenticated user and anonymous user
+
+credential password login logout.
 
 see why uploading the image won't render the uploaded data page.
 disable upload button at /upload while isPending
 
 to create ^ arrow while hovering into the element or on dropdown menu you can create an svg or search some triangle svg and apply it position abosulte in dropdown menu .
 
-hamburgerMenu menus needs to be updated according to authenticated user and anonymous user
 
-✅ todo : responsive search page
-
-todo : responsive upload and uploaded data. page
-
-todo : mansonry client 5px for small 15px for width >= then md:
-
-you now have the variable width can manipulate the imaveVideoHover2 popover
+✅ upload link was redirect to uploadPage at navbar upload

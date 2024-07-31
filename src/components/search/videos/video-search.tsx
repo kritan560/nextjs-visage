@@ -90,7 +90,7 @@ export default function VideoSearch(props: VideoSearchProps) {
       <TooltipProvider delayDuration={150}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <h1 className="my-8 h-[70px] w-[700px] truncate text-6xl font-medium text-stone-600 dark:text-stone-400">
+            <h1 className="my-8 h-[70px] w-[700px] truncate text-5xl font-medium text-stone-600 dark:text-stone-400">
               Free{" "}
               <span className="mr-2 capitalize text-stone-800 dark:text-stone-600">
                 {decodeURI(keyword)}{" "}

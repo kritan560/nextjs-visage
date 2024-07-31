@@ -22,7 +22,7 @@ class VisageToastHandler {
           t.visible ? "animate-enter" : "animate-leave"
         } h-fit w-fit rounded-full bg-rose-500 px-6 py-3 text-white dark:bg-rose-700`}
       >
-        ❌ {message}
+        ✖️ {message}
       </div>
     ));
   }

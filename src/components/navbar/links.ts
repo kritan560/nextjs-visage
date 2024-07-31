@@ -1,4 +1,11 @@
 import {
+  LinkFacebookPage,
+  LinkInstagramPage,
+  LinkLinkedInProfile,
+  LinkPinterestPage,
+  LinkWhatsappPage,
+} from "@/links/visage-links";
+import {
   FaInstagram,
   FaLinkedin,
   FaPinterest,
@@ -46,26 +53,26 @@ export const SocialLogosLinks: {
   {
     socialLogoName: "Facebook",
     socialLogo: FaFacebookF,
-    href: "#",
+    href: LinkFacebookPage,
   },
   {
     socialLogoName: "Instagram",
     socialLogo: FaInstagram,
-    href: "#1",
+    href: LinkInstagramPage,
   },
   {
     socialLogoName: "Linkedin",
     socialLogo: FaLinkedin,
-    href: "#2",
+    href: LinkLinkedInProfile,
   },
   {
     socialLogoName: "Pinterest",
     socialLogo: FaPinterest,
-    href: "#3",
+    href: LinkPinterestPage,
   },
   {
     socialLogoName: "Whatsapp",
     socialLogo: FaWhatsapp,
-    href: "#4",
+    href: LinkWhatsappPage,
   },
 ];

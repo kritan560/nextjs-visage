@@ -10,3 +10,10 @@ export const LinkCollections = "/profile/collections";
 export const LinkProfile = "/profile";
 export const LinkLikePage = "/profile/likes";
 export const LinkEditProfile = "/edit-profile";
+export const LinkKritanGithub = "https://github.com/kritan560";
+export const LinkLinkedInProfile =
+  "https://www.linkedin.com/in/kritan-shrestha-52a61a144/";
+export const LinkInstagramPage = "https://www.instagram.com/";
+export const LinkPinterestPage = "https://www.pinterest.com/";
+export const LinkFacebookPage = "https://www.facebook.com/";
+export const LinkWhatsappPage = "https://web.whatsapp.com/";

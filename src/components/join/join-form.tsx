@@ -23,7 +23,6 @@ export function JoinForm() {
   function onSubmit(values: JoinFormSchemaType) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
   }
 
   return (

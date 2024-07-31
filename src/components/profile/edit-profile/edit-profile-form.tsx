@@ -283,7 +283,7 @@ export function EditProfileForm(props: EditProfileFormProps) {
                 Remove Account
               </span>
             </DialogTrigger>
-            <VisageDialogContent className="w-full p-12 md:min-w-[600px]">
+            <VisageDialogContent className="w-full p-4 md:min-w-[600px] md:p-12">
               <DialogHeader>
                 <DialogTitle className="text-center text-2xl font-semibold">
                   Request to Close Your Visage Account

@@ -220,13 +220,7 @@ const ImageSearchVideo2 = (props: ImageOrVideoSearchType) => {
         )}
         ref={inputRef}
       >
-        <DropdownMenu
-          defaultOpen={false}
-          onOpenChange={setOpen}
-          open={open}
-          // openDelay={100}
-          // closeDelay={100}
-        >
+        <DropdownMenu defaultOpen={false} onOpenChange={setOpen} open={open}>
           <DropdownMenuTrigger autoFocus={false} asChild>
             <Button
               variant={"ghost"}

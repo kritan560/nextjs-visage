@@ -41,7 +41,7 @@ const NavbarWithoutSearchBox = async () => {
       <div className="flex items-center justify-between">
         <LogoVisage />
 
-        <div className="items-center gap-x-9">
+        <div className="flex items-center gap-x-9">
           <Explore />
           <License />
           <Upload />

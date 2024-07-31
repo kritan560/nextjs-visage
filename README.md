@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+**Visage**: A Pexels Web App Clone
+Visage is an innovative web application designed as a clone of the popular Pexels platform, offering a rich repository of high-quality, free stock photos and videos. The project aims to replicate the seamless user experience and comprehensive functionality of Pexels, allowing users to explore, download, and share a vast collection of media content. With a sleek and intuitive interface, Visage enables users to easily search for images and videos using various filters and categories, ensuring they find exactly what they need. The app incorporates advanced features such as user authentication, personalized collections, and the ability to upload and manage media assets. Built with modern web technologies and a robust backend, Visage promises a reliable and efficient performance, making it a valuable resource for designers, marketers, and content creators seeking high-quality visual content for their projects. Whether you are looking for inspiration or specific media for your work, Visage provides a user-friendly and comprehensive solution, capturing the essence of the Pexels experience.
 
-## Getting Started
+## Technologies Used
 
-First, run the development server:
+- **Next.js**: A React framework for server-side rendering and generating static websites.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **TypeScript**: A typed superset of JavaScript that adds type safety and enhances development experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Tailwind CSS**: A utility-first CSS framework for styling the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **ShadcnUI** : Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **NextAuth** : NextAuth.js is a complete open-source authentication solution for Next.js applications.
+  It is designed from the ground up to support Next.js and Serverless.
 
-## Learn More
+## Currently work on progress
 
-To learn more about Next.js, take a look at the following resources:
+- User authentication via email password
+- Video Uploads
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Screenshot
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![alt text](src/images/visage-videopage-screenshot.png)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![alt text](src/images/visage-videopage-mobile-screenshot.png)

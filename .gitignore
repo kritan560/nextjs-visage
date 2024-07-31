@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+test.js
+test.tsx
 
 # next.js
 /.next/

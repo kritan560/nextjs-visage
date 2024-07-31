@@ -57,7 +57,7 @@ export function UniqueImage(props: UniqueImageProps) {
       </Link>
 
       {/* download button, bookmark, favorite */}
-      <div className="opacity-0 transition group-hover:opacity-100">
+      <div className="opacity-0 transition md:group-hover:opacity-100">
         {/* photographer name and image */}
         <Link
           target="_blank"

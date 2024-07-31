@@ -70,6 +70,7 @@ export function NavbarThreeDotsHorizontal() {
         <div className="flex items-center gap-x-4 px-6 py-2">
           {SocialLogosLinks.map((logo) => (
             <Link
+              target="_blank"
               className="cursor-pointer rounded-md hover:bg-stone-100"
               key={logo.href}
               href={logo.href}

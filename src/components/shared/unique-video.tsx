@@ -74,7 +74,7 @@ export function UniqueVideo(props: UniqueVideoProps) {
             }}
             onCanPlay={() => setBlur(false)}
             className={cn(
-              "z-10 cursor-pointer rounded bg-cover group-hover/image:contrast-125",
+              "z-10 cursor-pointer rounded bg-cover md:group-hover/image:contrast-125",
               blur && "animate-pulse bg-gray-500 object-contain",
             )}
           >
@@ -93,7 +93,7 @@ export function UniqueVideo(props: UniqueVideoProps) {
         </div>
       </Link>
 
-      <div className="opacity-0 transition group-hover:opacity-100">
+      <div className="invisible transition md:group-hover:visible">
         <Link
           target="_blank"
           href={video.user.url}

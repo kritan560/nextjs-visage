@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle";
 import ImageSearchVideo2 from "@/components/shared/image-video-search2";
 import {
   Dialog,
@@ -11,11 +12,13 @@ import { cn } from "@/lib/utils";
 import {
   LinkEditProfile,
   LinkHomepage,
+  LinkImagePage,
   LinkJoinPage,
   LinkLoginPage,
   LinkLogoutPage,
   LinkProfile,
   LinkUploadPage,
+  LinkVideoPage,
 } from "@/links/visage-links";
 import { Upload, X } from "lucide-react";
 import Link from "next/link";
@@ -27,7 +30,8 @@ import {
   IoLogoYoutube,
 } from "react-icons/io";
 import NavbarLogoVisage from "./logo-visage";
-import { ModeToggle } from "@/components/mode-toggle";
+import { SocialLogosLinks } from "../links";
+import { SocialLogosSize } from "../constants";
 
 type HamburgerMenuProps = {
   userId: string | undefined;
@@ -51,7 +55,7 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
           )}
         />
       </DialogTrigger>
-      <DialogContent className="h-full w-full border-none bg-black/80 p-0 text-white">
+      <DialogContent className="block h-screen border-none bg-black/80 p-0 text-white md:hidden">
         <DialogHeader>
           <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-x-5 px-4 pt-4">
             <NavbarLogoVisage />
@@ -63,18 +67,23 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
           </div>
         </DialogHeader>
 
-        <div className="h-full overflow-y-scroll text-[19px] font-bold scrollbar-thin scrollbar-track-transparent scrollbar-thumb-visage-500 scrollbar-track-rounded-full">
-          <Separator className="mb-7" />
+        <div className="h-full overflow-y-auto text-[19px] font-bold scrollbar-thin scrollbar-track-transparent scrollbar-thumb-visage-500 scrollbar-thumb-rounded-full">
+          <Separator className="my-7" />
+
           {/* navbar */}
-          <div className="mx-4">
+          <div className="mx-4 h-full">
             {/* 1st bundle */}
             <div className="space-y-[15px]">
               <Link className="block" href={LinkHomepage}>
                 Home
               </Link>
-              <p>Discover Photos</p>
+              <Link className="block" href={LinkImagePage}>
+                Discover Photos
+              </Link>
               <p>Popular Searches</p>
-              <p>Free Videos</p>
+              <Link className="block" href={LinkVideoPage}>
+                Free Videos
+              </Link>
               <p>Challenges</p>
               <p>LeaderBoard</p>
               <p>Visage Blog</p>
@@ -131,29 +140,38 @@ const HamburgerMenu = (props: HamburgerMenuProps) => {
             <Separator className="my-7" />
 
             {/* 4th bundle : logos */}
-            <div className="mb-4 flex items-center justify-between gap-x-2">
-              <IoLogoFacebook
-                className="cursor-pointer"
-                strokeWidth={2.5}
-                size={30}
-              />
-              <IoLogoInstagram
-                className="cursor-pointer"
-                strokeWidth={2.5}
-                size={30}
-              />
-              <IoLogoTwitter
-                className="cursor-pointer"
-                strokeWidth={2.5}
-                size={30}
-              />
-              <IoLogoYoutube
-                className="cursor-pointer"
-                strokeWidth={2.5}
-                size={30}
-              />
-              <ModeToggle />
+            <div className="h-24">
+              <div className="flex items-center justify-between gap-x-2">
+                {SocialLogosLinks.map((link) => (
+                  <Link href={link.href} target="_blank" key={link.href}>
+                    <link.socialLogo size={30}></link.socialLogo>
+                  </Link>
+                ))}
+                {/* <IoLogoFacebook
+                  className="cursor-pointer"
+                  strokeWidth={2.5}
+                  size={30}
+                />
+                <IoLogoInstagram
+                  className="cursor-pointer"
+                  strokeWidth={2.5}
+                  size={30}
+                />
+                <IoLogoTwitter
+                  className="cursor-pointer"
+                  strokeWidth={2.5}
+                  size={30}
+                />
+                <IoLogoYoutube
+                  className="cursor-pointer"
+                  strokeWidth={2.5}
+                  size={30}
+                /> */}
+                <ModeToggle />
+              </div>
             </div>
+
+            <Separator className="my-7" />
           </div>
         </div>
       </DialogContent>
