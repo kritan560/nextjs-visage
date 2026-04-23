@@ -1,24 +1,23 @@
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearch from "@/components/navbar/-navbar-with-search";
 import VideoDynamic from "@/components/search/videos/video-dynamic";
-import { getPexelVideoById } from "@/servers/pexel/pexelVideo.server";
 import { destructureTheIdFromStructuredParams } from "@/helpers/idHandler";
+import { getPexelVideoById } from "@/servers/pexel/pexelVideo.server";
 
 type VideoIdProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 // or Dynamic metadata
-export async function generateMetadata({ params }: VideoIdProps) {
+export async function generateMetadata(props: VideoIdProps) {
+  const params = await props.params;
   return {
     title: `Free Stock Video ${params.id}`,
   };
 }
 
 export default async function VideoIdPage(props: VideoIdProps) {
-  const {
-    params: { id },
-  } = props;
+  const { id } = await props.params;
 
   const videoId = destructureTheIdFromStructuredParams(id);
 

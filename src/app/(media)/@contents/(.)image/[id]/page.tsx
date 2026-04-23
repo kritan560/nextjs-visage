@@ -6,13 +6,12 @@ import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
 import { UniversalImageType } from "@/types/universalImage.type";
 
 type ImageInterceptionRoutePageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 // or Dynamic metadata
-export async function generateMetadata({
-  params,
-}: ImageInterceptionRoutePageProps) {
+export async function generateMetadata(props: ImageInterceptionRoutePageProps) {
+  const params = await props.params;
   return {
     title: `Free Stock Image ${params.id}`,
   };
@@ -23,9 +22,7 @@ let universalImage: UniversalImageType;
 export default async function ImageInterceptionRoutePage(
   props: ImageInterceptionRoutePageProps,
 ) {
-  const {
-    params: { id },
-  } = props;
+  const { id } = await props.params;
 
   const ImageId = destructureTheIdFromStructuredParams(id);
 

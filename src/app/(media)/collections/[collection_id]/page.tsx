@@ -26,7 +26,7 @@ import { redirect } from "next/navigation";
 import { PiVideoLight } from "react-icons/pi";
 
 type CollectionIdPageProps = {
-  params: { collection_id: string };
+  params: Promise<{ collection_id: string }>;
 };
 
 export const metadata: Metadata = {
@@ -34,9 +34,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CollectionIdPage(props: CollectionIdPageProps) {
-  const {
-    params: { collection_id },
-  } = props;
+  const { collection_id } = await props.params;
+
   const { failed, success: collectionNameByIdSuccess } =
     await getCollectionNameById(collection_id);
 

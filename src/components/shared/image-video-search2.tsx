@@ -19,7 +19,7 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import nProgress from "nprogress";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import { useForm } from "react-hook-form";
 import { PiVideoLight } from "react-icons/pi";
 import { CollectionImageResizable } from "../profile/collections/collection-resizable";

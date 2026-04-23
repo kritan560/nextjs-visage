@@ -9,11 +9,12 @@ import { getPexelPhotoById } from "@/servers/pexel/pexelPhoto.server";
 import { UniversalImageType } from "@/types/universalImage.type";
 
 type ImageIdProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 // or Dynamic metadata
-export async function generateMetadata({ params }: ImageIdProps) {
+export async function generateMetadata(props: ImageIdProps) {
+  const params = await props.params;
   return {
     title: `Free Stock Image ${params.id}`,
   };
@@ -22,9 +23,7 @@ export async function generateMetadata({ params }: ImageIdProps) {
 let universalImage: UniversalImageType;
 
 export default async function ImageIdPage(props: ImageIdProps) {
-  const {
-    params: { id },
-  } = props;
+  const { id } = await props.params;
 
   const ImageId = destructureTheIdFromStructuredParams(id);
 

@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 type VisageScrollAreaGlobalType = {
-  globalViewPort: React.RefObject<HTMLDivElement> | null;
-  setGlobalViewPort: (viewPort: React.RefObject<HTMLDivElement>) => void;
+  globalViewPort: React.RefObject<HTMLDivElement | null> | null;
+  setGlobalViewPort: (viewPort: React.RefObject<HTMLDivElement | null>) => void;
 };
 
 /**

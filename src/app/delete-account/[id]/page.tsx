@@ -6,13 +6,12 @@ export const metadata: Metadata = {
 };
 
 type DeleteAccountPageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-const DeleteAccountPage = (props: DeleteAccountPageProps) => {
-  const {
-    params: { id },
-  } = props;
+const DeleteAccountPage = async (props: DeleteAccountPageProps) => {
+  const { id } = await props.params;
+
   return <DeleteAccountClientComponent id={id} />;
 };
 

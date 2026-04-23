@@ -7,20 +7,19 @@ import { getCurrentUserId } from "@/servers/Authentication.server";
 import { getVideosByKeyword } from "@/servers/pexel/pexelVideo.server";
 
 type VideoSearchPageProps = {
-  params: { keyword: string };
+  params: Promise<{ keyword: string }>;
 };
 
 // or Dynamic metadata
-export async function generateMetadata({ params }: VideoSearchPageProps) {
+export async function generateMetadata(props: VideoSearchPageProps) {
+  const params = await props.params;
   return {
     title: `Free Stock Video ${params.keyword}`,
   };
 }
 
 export default async function VideoSearchPage(props: VideoSearchPageProps) {
-  const {
-    params: { keyword },
-  } = props;
+  const { keyword } = await props.params;
 
   const { userId } = await getCurrentUserId();
 

@@ -1,30 +1,29 @@
 "use server";
 
-import AdjustPadding from "@/components/shared/adjust-padding";
 import { NavbarWhenScrolled } from "@/components/navbar/-navbar-when-scrolled";
 import NavbarWithSearchBox from "@/components/navbar/-navbar-with-search";
+import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
 import ImageSearch from "@/components/search/images/image-search";
+import AdjustPadding from "@/components/shared/adjust-padding";
+import { getCurrentUserId } from "@/servers/Authentication.server";
+import { getImagesByTags } from "@/servers/Image.server";
 import { getPexelPhotoByKeyword } from "@/servers/pexel/pexelPhoto.server";
 import { UniversalImagesType } from "@/types/universalImage.type";
-import { getImagesByTags } from "@/servers/Image.server";
-import NavbarWithSearchBoxMobile from "@/components/navbar/-navbar-with-search-mobile";
-import { getCurrentUserId } from "@/servers/Authentication.server";
 
 type ImageSearchPageProps = {
-  params: { keyword: string };
+  params: Promise<{ keyword: string }>;
 };
 
 // or Dynamic metadata
-export async function generateMetadata({ params }: ImageSearchPageProps) {
+export async function generateMetadata(props: ImageSearchPageProps) {
+  const params = await props.params;
   return {
     title: `Free Stock Image ${params.keyword}`,
   };
 }
 
 export default async function ImageSearchPage(props: ImageSearchPageProps) {
-  const {
-    params: { keyword },
-  } = props;
+  const { keyword } = await props.params;
 
   const { userId } = await getCurrentUserId();
 
