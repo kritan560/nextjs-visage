@@ -61,7 +61,7 @@
     "react-spinners": "^0.14.1",
     "react-tag-input": "^6.10.3",
     "react-use-scroll-position": "^2.0.0",
-    "sharp": "^0.33.4",
+    "sharp": "^0.35.3",
     "tailwind-merge": "^2.4.0",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
